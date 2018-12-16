@@ -13,6 +13,18 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[第二篇测试博客]]></title>
+    <url>%2F2018%2F12%2F16%2F%E7%AC%AC%E4%BA%8C%E7%AF%87%E6%B5%8B%E8%AF%95%E5%8D%9A%E5%AE%A2%2F</url>
+    <content type="text"><![CDATA[爆竹声中一岁除，春风送暖入屠苏。千门万户曈曈日，总把新桃换旧符。]]></content>
+      <categories>
+        <category>测试分类名A</category>
+      </categories>
+      <tags>
+        <tag>测试标签1</tag>
+        <tag>测试标签2</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[我个人博客的第一篇博文]]></title>
     <url>%2F2018%2F12%2F15%2F%E6%88%91%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E6%96%87%2F</url>
     <content type="text"><![CDATA[其实，这也是我在使用Hexo搭建博客遇到的一个问题，如果我们检查自己博客在Github上的文件就会发现，github仓库里的文件和我们本地博客站点的文件夹是不同的，确切来说是少了很多内容。如果我们想在不同的电脑上管理自己的博客，就必须有源文件存在远端供我们随时下载、然后修改后重新部署到远端。我们要理解这样一个过程：hexo -d是把本地博客源文件生成的静态网页文件同步到github上，实现部署。但是博客网站的源文件仍需要我们自己保存。这里主要有两种思路可以选择：]]></content>
