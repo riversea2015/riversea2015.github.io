@@ -66,7 +66,7 @@
 
 
 
-  <meta name="keywords" content="测试标签1,测试标签2,测试标签3,测试标签4,">
+  <meta name="keywords" content="iOS,源码学习笔记,">
 
 
 
@@ -77,18 +77,20 @@
 
 
 
-<meta name="description" content="其实，这也是我在使用Hexo搭建博客遇到的一个问题，如果我们检查自己博客在Github上的文件就会发现，github仓库里的文件和我们本地博客站点的文件夹是不同的，确切来说是少了很多内容。如果我们想在不同的电脑上管理自己的博客，就必须有源文件存在远端供我们随时下载、然后修改后重新部署到远端。">
-<meta name="keywords" content="测试标签1,测试标签2,测试标签3,测试标签4">
+<meta name="keywords" content="iOS,源码学习笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="我个人博客的第一篇博文">
-<meta property="og:url" content="http://yoursite.com/2018/12/15/我个人博客的第一篇博文/index.html">
+<meta property="og:title" content="SDWebImage 源码学习笔记·前传 ☞ 升级 4.x.x 后适配 WebP&#x2F;GIF">
+<meta property="og:url" content="http://yoursite.com/2018/12/16/SDWebImage-源码学习笔记·前传-☞-升级-4-x-x-后适配-WebP-GIF/index.html">
 <meta property="og:site_name" content="riversea2015的博客">
-<meta property="og:description" content="其实，这也是我在使用Hexo搭建博客遇到的一个问题，如果我们检查自己博客在Github上的文件就会发现，github仓库里的文件和我们本地博客站点的文件夹是不同的，确切来说是少了很多内容。如果我们想在不同的电脑上管理自己的博客，就必须有源文件存在远端供我们随时下载、然后修改后重新部署到远端。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-16T05:39:58.847Z">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-e988b89d482af8d7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-f5668b58785e3c8f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-f92abbb71d3ce91e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-89f6ed8da3d73c10.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-12-16T06:45:50.618Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="我个人博客的第一篇博文">
-<meta name="twitter:description" content="其实，这也是我在使用Hexo搭建博客遇到的一个问题，如果我们检查自己博客在Github上的文件就会发现，github仓库里的文件和我们本地博客站点的文件夹是不同的，确切来说是少了很多内容。如果我们想在不同的电脑上管理自己的博客，就必须有源文件存在远端供我们随时下载、然后修改后重新部署到远端。">
+<meta name="twitter:title" content="SDWebImage 源码学习笔记·前传 ☞ 升级 4.x.x 后适配 WebP&#x2F;GIF">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2208988-e988b89d482af8d7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
 
@@ -118,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/12/15/我个人博客的第一篇博文/">
+  <link rel="canonical" href="http://yoursite.com/2018/12/16/SDWebImage-源码学习笔记·前传-☞-升级-4-x-x-后适配-WebP-GIF/">
 
 
 
 
 
-  <title>我个人博客的第一篇博文 | riversea2015的博客</title>
+  <title>SDWebImage 源码学习笔记·前传 ☞ 升级 4.x.x 后适配 WebP/GIF | riversea2015的博客</title>
   
 
 
@@ -293,7 +295,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/15/我个人博客的第一篇博文/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/16/SDWebImage-源码学习笔记·前传-☞-升级-4-x-x-后适配-WebP-GIF/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="He Hai">
@@ -310,7 +312,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">我个人博客的第一篇博文</h1>
+          <h1 class="post-title" itemprop="name headline">SDWebImage 源码学习笔记·前传 ☞ 升级 4.x.x 后适配 WebP/GIF</h1>
         
 
         <div class="post-meta">
@@ -322,8 +324,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-15T23:37:59+08:00">
-                2018-12-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-16T14:39:48+08:00">
+                2018-12-16
               </time>
             
 
@@ -345,8 +347,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/测试分类名A/" itemprop="url" rel="index">
-                    <span itemprop="name">测试分类名A</span>
+                  <a href="/categories/源码学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">源码学习笔记</span>
                   </a>
                 </span>
 
@@ -382,7 +384,62 @@
       
 
       
-        <p>其实，这也是我在使用Hexo搭建博客遇到的一个问题，如果我们检查自己博客在Github上的文件就会发现，github仓库里的文件和我们本地博客站点的文件夹是不同的，确切来说是少了很多内容。如果我们想在不同的电脑上管理自己的博客，就必须有源文件存在远端供我们随时下载、然后修改后重新部署到远端。<br><a id="more"></a><br>我们要理解这样一个过程：hexo -d是把本地博客源文件生成的静态网页文件同步到github上，实现部署。但是博客网站的源文件仍需要我们自己保存。这里主要有两种思路可以选择：</p>
+        <p><img src="https://upload-images.jianshu.io/upload_images/2208988-e988b89d482af8d7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="SDWebImage 源码学习笔记·前传.png"><br><a id="more"></a></p>
+<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>前段时间对项目中使用的 <a href="https://github.com/SDWebImage/SDWebImage" target="_blank" rel="noopener">SDWebImage</a> 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：</p>
+<ul>
+<li><a href="https://www.jianshu.com/p/c3ec50e1942f" target="_blank" rel="noopener">SDWebImage 源码学习笔记·前传 ☞ 升级 4.x.x 后适配 WebP/GIF</a></li>
+<li><a href="https://www.jianshu.com/p/99c9564043d2" target="_blank" rel="noopener">SDWebImage源码学习笔记 ☞ 结构及基本流程</a></li>
+<li><a href="https://www.jianshu.com/p/221b335cc760" target="_blank" rel="noopener">SDWebImage源码学习笔记 ☞ SDWebImageManager</a></li>
+<li><a href="https://www.jianshu.com/p/06071cba3404" target="_blank" rel="noopener">SDWebImage源码学习笔记 ☞ SDWebImageDownloader</a></li>
+<li><a href="https://www.jianshu.com/p/e3f4a7f57899" target="_blank" rel="noopener">SDWebImage源码学习笔记 ☞ SDImageCache</a></li>
+</ul>
+<p>本篇是第 1 篇，主要记述了升级过程中的遇到的问题及处理方案。</p>
+<h3 id="二、升级"><a href="#二、升级" class="headerlink" title="二、升级"></a>二、升级</h3><p>现在转回到本篇的主要内容，首先当然是升级了，不过最新版的 SDWebImage 里边分了几个子 pod ，默认下载不全。为了满足我们的日常使用要求，还需要加上 WebP 和 GIF 这两个子 pod：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">platform :ios, &apos;7.0&apos;</span><br><span class="line"></span><br><span class="line">pod &apos;SDWebImage&apos;, &apos;~&gt; 4.0&apos;</span><br><span class="line">pod &apos;SDWebImage/WebP&apos;</span><br><span class="line">pod &apos;SDWebImage/GIF&apos;</span><br></pre></td></tr></table></figure>
+<p>不过，在执行 <code>pod install</code> 的时候，发现 <code>pod &#39;SDWebImage/WebP&#39;</code> 卡在了 <code>Installing libwebp (0.6.0)</code> 的地方。</p>
+<p>据说 WebP 的解析库是 Google 的开源库，所以需要使用 VPN。笔者使用了蓝灯 Lantern，然后发现 浏览器可以正常访问 Google 网站，可是命令行 <code>pod install</code> 依然会卡住，可以通过下边两条命令检测命令行是否已添加 VPN：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl www.google.com</span><br></pre></td></tr></table></figure></p>
+<p>执行上述命令后，如果返回了网页信息，就说明 VPN 已经添加成功。</p>
+<p>于是猛查资料，才有了下文：</p>
+<ol>
+<li><p>下载 Lantern</p>
+</li>
+<li><p>安装后，打开 Lantern，页面如下，查询自己 VPN 软件 (Lantern) 的http代理：</p>
+</li>
+</ol>
+<p><img src="https://upload-images.jianshu.io/upload_images/2208988-f5668b58785e3c8f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Lantern端口号.png"></p>
+<p>可以看出 Lantern 的 http 代理运行在 52425(选中部分) 端口，不同机器上的端口号也会不同。<br>为什么说是 http 而不是 https 呢？将地址栏中的域名复制出来贴到任意文本编辑器，就会发现变成了 <code>http://localhost:52425/axxx</code></p>
+<p>3.在命令行输入以下指令，查看端口使用情况：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo lsof -i -P</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2208988-f92abbb71d3ce91e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="查看端口使用情况.png"></p>
+<p>可以看出来基本使用的只有 2 个代理端口，52425 和 52427，结合第一步可以得出，52425 是 http 的代理端口，52427 是 https 的代理端口 😎</p>
+<p>4.配置命令行代理端口，有两种方式：<br>A、给本地 git 设置 http/https 代理<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 添加 http/https 代理的指令 https://127.0.0.1:XXXX  (XXXX代表端口号)</span><br><span class="line">git config --global http.proxy https://127.0.0.1:52425</span><br><span class="line">git config --global https.proxy https://127.0.0.1:52427</span><br><span class="line"></span><br><span class="line">// 取消 http/https 代理的指令</span><br><span class="line">git config --global --unset http.proxy        </span><br><span class="line">git config --global --unset https.proxy</span><br><span class="line"></span><br><span class="line">// 这种方法可以 pod install 成功，不过 curl www.google.com 不成功，即打不出 Google 的网页信息。</span><br></pre></td></tr></table></figure></p>
+<p>B、设置系统全局变量 http/https 代理<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">切换到etc目录下     cd /etc            </span><br><span class="line"></span><br><span class="line">以管理员身份编辑   sudo vim bashrc </span><br><span class="line"></span><br><span class="line">输入密码进入后,  G $ 定位到文件末尾 按下键盘字母 i 开始输入，在最下面位置粘贴下面两句</span><br><span class="line"></span><br><span class="line">export http_proxy=127.0.0.1:52425</span><br><span class="line">export https_proxy=127.0.0.1:52427 </span><br><span class="line"></span><br><span class="line">然后退出保存  按Esc  :wq</span><br><span class="line"></span><br><span class="line">接下来让修改文件生效  source bashrc</span><br><span class="line"></span><br><span class="line">最后一步 验证成功:  curl www.google.com  如果收到 google 的 html 数据代表已通。</span><br></pre></td></tr></table></figure></p>
+<p>完成后 pod 内部的结构如下：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2208988-89f6ed8da3d73c10.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="SDWebImage4.0.png"></p>
+<h3 id="三、使用"><a href="#三、使用" class="headerlink" title="三、使用"></a>三、使用</h3><p>为叙述方便，此处将图片的 URL 定义成了宏：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#define URL_Normal          [NSURL URLWithString:@&quot;此处是 普通静态图 地址&quot;]</span><br><span class="line">#define URL_WebP_Normal     [NSURL URLWithString:@&quot;此处是 静态 WebP 地址&quot;]</span><br><span class="line">#define URL_WebP_Dynamic    [NSURL URLWithString:@&quot;此处是 动态 WebP 地址&quot;]</span><br><span class="line">#define URL_GIF             [NSURL URLWithString:@&quot;此处是 GIF 地址&quot;]</span><br></pre></td></tr></table></figure>
+<h4 id="第一种方案"><a href="#第一种方案" class="headerlink" title="第一种方案"></a>第一种方案</h4><ul>
+<li>png/jpg，直接使用 SDWebImage 提供的普通方法即可。</li>
+<li>WebP，只要导入了 WebP 的子 pod，直接使用普通方法即可正常加载静态、动态的 WebP。</li>
+<li>GIF，此处使用了 FLAnimatedImageView 代替 UIImageView 来展示 GIF。因为 SDWebImage4.0 以后，如果继续 <code>直接</code> 使用 UIImageView 将只展示 GIF 的第一帧，可以使用推荐的 FLAnimatedImageView 替换 UIImageView。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">    // 普通静态图</span><br><span class="line">    UIImageView *imgV = [[UIImageView alloc] initWithFrame:CGRectMake(125, 70, 160, 160)];</span><br><span class="line">    imgV.backgroundColor = [UIColor lightGrayColor];</span><br><span class="line">    [self.view addSubview:imgV];</span><br><span class="line">    [imgV sd_setImageWithURL:URL_Normal];</span><br><span class="line"></span><br><span class="line">    // WebP</span><br><span class="line">    UIImageView *imgVB = [[UIImageView alloc] initWithFrame:CGRectMake(125, 70+160+10, 160, 160)];</span><br><span class="line">    imgVB.backgroundColor = [UIColor lightGrayColor];</span><br><span class="line">    imgVB.contentMode = UIViewContentModeScaleAspectFill;</span><br><span class="line">    [self.view addSubview:imgVB];</span><br><span class="line">    // WebP 静态图</span><br><span class="line">//    [imgVB sd_setImageWithURL:URL_WebP_Normal];</span><br><span class="line">    // WebP 动态图</span><br><span class="line">    [imgVB sd_setImageWithURL:URL_WebP_Dynamic];</span><br><span class="line"></span><br><span class="line">    // GIF</span><br><span class="line">    FLAnimatedImageView *imgView = [[FLAnimatedImageView alloc] initWithFrame:CGRectMake(125, 70+160+10+160+10, 160, 200)];</span><br><span class="line">    imgView.backgroundColor = [UIColor lightGrayColor];</span><br><span class="line">    imgView.contentMode = UIViewContentModeScaleAspectFill;</span><br><span class="line">    [self.view addSubview:imgView];</span><br><span class="line">    [imgView sd_setShowActivityIndicatorView:YES];</span><br><span class="line">    [imgView sd_setImageWithURL:URL_GIF</span><br><span class="line">             placeholderImage:[UIImage imageNamed:@&quot;placeholder&quot;]</span><br><span class="line">                      options:1];</span><br></pre></td></tr></table></figure>
+<h4 id="第二种方案"><a href="#第二种方案" class="headerlink" title="第二种方案"></a>第二种方案</h4><p>统一都使用 UIImageView 展示图片，不过和上边的第一种方案有以下不同：</p>
+<ul>
+<li>使用 <code>SDWebImageManager</code> 的 <code>loadImageWithURL: options: progress: completed:</code> 方法下载图片；</li>
+<li>根据得到的 data 判断图片类型: <code>SDImageFormat format = [NSData sd_imageFormatForImageData:data];</code>，基本原理是根据 data 的第一个字节来判断；</li>
+<li>WebP 使用专用方法 <code>sd_imageWithWebPData:</code> 解码；</li>
+<li>GIF 也使用专用方法 <code>sd_animatedGIFWithData:</code> 解码。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">UIImageView *gifView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 70+160+10+160+10+200+10, kScreenW-20, 200)];</span><br><span class="line">    gifView.backgroundColor = [UIColor lightGrayColor];</span><br><span class="line">    [self.view addSubview:gifView];</span><br><span class="line">    self.imgView = gifView;</span><br><span class="line"></span><br><span class="line">    SDWebImageManager *mgr = [SDWebImageManager sharedManager];</span><br><span class="line">    __weak typeof(self) weakSelf = self;</span><br><span class="line">    [mgr loadImageWithURL:URL_GIF // URL_WebP_Dynamic // URL_WebP_Normal // URL_Normal</span><br><span class="line">                  options:1</span><br><span class="line">                 progress:nil</span><br><span class="line">                completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL)</span><br><span class="line">    &#123;</span><br><span class="line">        SDImageFormat format = [NSData sd_imageFormatForImageData:data];</span><br><span class="line">        switch (format) &#123;</span><br><span class="line">            case SDImageFormatGIF:</span><br><span class="line">                weakSelf.imgView.image = [UIImage sd_animatedGIFWithData:data];</span><br><span class="line">                break;</span><br><span class="line">            case SDImageFormatWebP:</span><br><span class="line">                weakSelf.imgView.image = [UIImage sd_imageWithWebPData:data];</span><br><span class="line">                break;</span><br><span class="line">            case SDImageFormatPNG:</span><br><span class="line">            case SDImageFormatJPEG:</span><br><span class="line">                weakSelf.imgView.image = image;</span><br><span class="line">                break;</span><br><span class="line">            default:</span><br><span class="line">                break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure>
+<h4 id="第三种方案"><a href="#第三种方案" class="headerlink" title="第三种方案"></a>第三种方案</h4><p>自定义 HHImageView，在它的 init 系列方法中添加了对 GIF 的解析：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[SDWebImageCodersManager sharedInstance] addCoder:[SDWebImageGIFCoder sharedCoder]];</span><br></pre></td></tr></table></figure>
+<p>这种方案对最终的调用方来说，非常简洁，不需要对各种图片区别对待。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">    HHImageView *customView = [[HHImageView alloc] initWithFrame:CGRectMake(125, 70, 160, 160)];</span><br><span class="line">    customView.backgroundColor = [UIColor lightGrayColor];</span><br><span class="line">    [self.view addSubview:customView];</span><br><span class="line">    [customView sd_setShowActivityIndicatorView:YES];</span><br><span class="line">    // 静态图</span><br><span class="line">//    [customView sd_setImageWithURL:URL_Normal];</span><br><span class="line">    // WebP 动图</span><br><span class="line">//    [customView sd_setImageWithURL:URL_WebP_Normal];</span><br><span class="line">    // WebP 静态图</span><br><span class="line">//    [customView sd_setImageWithURL:URL_WebP_Dynamic];</span><br><span class="line">    // GIF</span><br><span class="line">    [customView sd_setImageWithURL:URL_GIF];</span><br></pre></td></tr></table></figure>
+<p>本文完整示例代码见: <a href="https://github.com/riversea2015/CodeForBlogs/tree/master/HHSDWebImageStudy" target="_blank" rel="noopener">HHSDWebImageStudy</a></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="https://www.jianshu.com/p/25ff66fd78c2" target="_blank" rel="noopener">Mac 命令行（终端）设置Lantern vpn代理</a></li>
+<li><a href="https://www.jianshu.com/p/4468f03cf606" target="_blank" rel="noopener">iOS SDWebImage加载webP</a></li>
+</ul>
 
       
     </div>
@@ -400,13 +457,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/测试标签1/" rel="tag"># 测试标签1</a>
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
           
-            <a href="/tags/测试标签2/" rel="tag"># 测试标签2</a>
-          
-            <a href="/tags/测试标签3/" rel="tag"># 测试标签3</a>
-          
-            <a href="/tags/测试标签4/" rel="tag"># 测试标签4</a>
+            <a href="/tags/源码学习笔记/" rel="tag"># 源码学习笔记</a>
           
         </div>
       
@@ -419,8 +472,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/15/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2018/12/16/MBProgressHUD-源码学习笔记/" rel="next" title="MBProgressHUD 源码学习笔记">
+                <i class="fa fa-chevron-left"></i> MBProgressHUD 源码学习笔记
               </a>
             
           </div>
@@ -428,10 +481,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/16/MBProgressHUD-源码学习笔记/" rel="prev" title="MBProgressHUD 源码学习笔记">
-                MBProgressHUD 源码学习笔记 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -483,8 +532,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -574,6 +632,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、前言"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、升级"><span class="nav-number">2.</span> <span class="nav-text">二、升级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、使用"><span class="nav-number">3.</span> <span class="nav-text">三、使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一种方案"><span class="nav-number">3.1.</span> <span class="nav-text">第一种方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二种方案"><span class="nav-number">3.2.</span> <span class="nav-text">第二种方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三种方案"><span class="nav-number">3.3.</span> <span class="nav-text">第三种方案</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

@@ -77,22 +77,19 @@
 
 
 
-<meta name="description" content="1.前言MBProgressHUD 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。 2.视图层级在开始学习源码之前，先大概了解一下整个视图的层级结构吧，主要分这几个视图：   backgroundView，位于最底层，是一个遮罩层，在 HUD 显示时，我们之所以无法点击后边的视图，都是因为它。 bezelView，位于 backgroundView 之上，承载着下边要说">
 <meta name="keywords" content="iOS,源码学习笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MBProgressHUD 源码学习笔记">
 <meta property="og:url" content="http://yoursite.com/2018/12/16/MBProgressHUD-源码学习笔记/index.html">
 <meta property="og:site_name" content="riversea2015的博客">
-<meta property="og:description" content="1.前言MBProgressHUD 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。 2.视图层级在开始学习源码之前，先大概了解一下整个视图的层级结构吧，主要分这几个视图：   backgroundView，位于最底层，是一个遮罩层，在 HUD 显示时，我们之所以无法点击后边的视图，都是因为它。 bezelView，位于 backgroundView 之上，承载着下边要说">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-91ab1cfdab440c59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-c8735aee9340c963.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-953d9e9aa2b0558a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-918632801ae88997.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-12-16T06:23:02.645Z">
+<meta property="og:updated_time" content="2018-12-16T06:37:22.025Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MBProgressHUD 源码学习笔记">
-<meta name="twitter:description" content="1.前言MBProgressHUD 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。 2.视图层级在开始学习源码之前，先大概了解一下整个视图的层级结构吧，主要分这几个视图：   backgroundView，位于最底层，是一个遮罩层，在 HUD 显示时，我们之所以无法点击后边的视图，都是因为它。 bezelView，位于 backgroundView 之上，承载着下边要说">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2208988-91ab1cfdab440c59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
@@ -387,7 +384,7 @@
       
 
       
-        <p><img src="https://upload-images.jianshu.io/upload_images/2208988-91ab1cfdab440c59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="MBProgressHUD 源码学习笔记.png"></p>
+        <p><img src="https://upload-images.jianshu.io/upload_images/2208988-91ab1cfdab440c59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="MBProgressHUD 源码学习笔记.png"><br><a id="more"></a></p>
 <h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p><a href="https://github.com/jdg/MBProgressHUD" target="_blank" rel="noopener">MBProgressHUD</a> 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。</p>
 <h3 id="2-视图层级"><a href="#2-视图层级" class="headerlink" title="2.视图层级"></a>2.视图层级</h3><p>在开始学习源码之前，先大概了解一下整个视图的层级结构吧，主要分这几个视图：</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/2208988-c8735aee9340c963.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="视图层级.png"></p>
@@ -463,8 +460,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/16/第三篇测试博客/" rel="next" title="第三篇测试博客">
-                <i class="fa fa-chevron-left"></i> 第三篇测试博客
+              <a href="/2018/12/15/我个人博客的第一篇博文/" rel="next" title="我个人博客的第一篇博文">
+                <i class="fa fa-chevron-left"></i> 我个人博客的第一篇博文
               </a>
             
           </div>
@@ -472,6 +469,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/16/SDWebImage-源码学习笔记·前传-☞-升级-4-x-x-后适配-WebP-GIF/" rel="prev" title="SDWebImage 源码学习笔记·前传 ☞ 升级 4.x.x 后适配 WebP/GIF">
+                SDWebImage 源码学习笔记·前传 ☞ 升级 4.x.x 后适配 WebP/GIF <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -550,7 +551,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -561,7 +562,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
