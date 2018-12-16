@@ -66,7 +66,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="iOS,源码学习笔记,">
 
 
 
@@ -77,16 +77,23 @@
 
 
 
-<meta name="description" content="iOSer">
-<meta property="og:type" content="website">
-<meta property="og:title" content="riversea2015的博客">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="1.前言MBProgressHUD 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。 2.视图层级在开始学习源码之前，先大概了解一下整个视图的层级结构吧，主要分这几个视图：   backgroundView，位于最底层，是一个遮罩层，在 HUD 显示时，我们之所以无法点击后边的视图，都是因为它。 bezelView，位于 backgroundView 之上，承载着下边要说">
+<meta name="keywords" content="iOS,源码学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MBProgressHUD 源码学习笔记">
+<meta property="og:url" content="http://yoursite.com/2018/12/16/MBProgressHUD-源码学习笔记/index.html">
 <meta property="og:site_name" content="riversea2015的博客">
-<meta property="og:description" content="iOSer">
+<meta property="og:description" content="1.前言MBProgressHUD 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。 2.视图层级在开始学习源码之前，先大概了解一下整个视图的层级结构吧，主要分这几个视图：   backgroundView，位于最底层，是一个遮罩层，在 HUD 显示时，我们之所以无法点击后边的视图，都是因为它。 bezelView，位于 backgroundView 之上，承载着下边要说">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-91ab1cfdab440c59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-c8735aee9340c963.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-953d9e9aa2b0558a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-918632801ae88997.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-12-16T06:23:02.645Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="riversea2015的博客">
-<meta name="twitter:description" content="iOSer">
+<meta name="twitter:title" content="MBProgressHUD 源码学习笔记">
+<meta name="twitter:description" content="1.前言MBProgressHUD 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。 2.视图层级在开始学习源码之前，先大概了解一下整个视图的层级结构吧，主要分这几个视图：   backgroundView，位于最底层，是一个遮罩层，在 HUD 显示时，我们之所以无法点击后边的视图，都是因为它。 bezelView，位于 backgroundView 之上，承载着下边要说">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2208988-91ab1cfdab440c59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
 
@@ -116,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/">
+  <link rel="canonical" href="http://yoursite.com/2018/12/16/MBProgressHUD-源码学习笔记/">
 
 
 
 
 
-  <title>riversea2015的博客</title>
+  <title>MBProgressHUD 源码学习笔记 | riversea2015的博客</title>
   
 
 
@@ -141,8 +148,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -277,9 +283,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -309,9 +315,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/16/MBProgressHUD-源码学习笔记/" itemprop="url">MBProgressHUD 源码学习笔记</a></h1>
+          <h1 class="post-title" itemprop="name headline">MBProgressHUD 源码学习笔记</h1>
         
 
         <div class="post-meta">
@@ -383,9 +387,7 @@
       
 
       
-        
-          
-            <p><img src="https://upload-images.jianshu.io/upload_images/2208988-91ab1cfdab440c59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="MBProgressHUD 源码学习笔记.png"></p>
+        <p><img src="https://upload-images.jianshu.io/upload_images/2208988-91ab1cfdab440c59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="MBProgressHUD 源码学习笔记.png"></p>
 <h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p><a href="https://github.com/jdg/MBProgressHUD" target="_blank" rel="noopener">MBProgressHUD</a> 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。</p>
 <h3 id="2-视图层级"><a href="#2-视图层级" class="headerlink" title="2.视图层级"></a>2.视图层级</h3><p>在开始学习源码之前，先大概了解一下整个视图的层级结构吧，主要分这几个视图：</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/2208988-c8735aee9340c963.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="视图层级.png"></p>
@@ -430,8 +432,6 @@
 <p>隐藏的逻辑与此类似，可自行参看代码，这里简单绘制了一张方法调用流程图作为小结，如下所示：</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/2208988-918632801ae88997.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="show-hide.png"></p>
 
-          
-        
       
     </div>
     
@@ -446,306 +446,38 @@
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/16/第三篇测试博客/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="He Hai">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/riversea2015.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="riversea2015的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/16/第三篇测试博客/" itemprop="url">第三篇测试博客</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-16T11:03:51+08:00">
-                2018-12-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/测试分类名B/" itemprop="url" rel="index">
-                    <span itemprop="name">测试分类名B</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
           
-
+            <a href="/tags/源码学习笔记/" rel="tag"># 源码学习笔记</a>
           
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
+      
 
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+      
       
       
 
       
-        
-          <p>爆竹声中一岁除，春风送暖入屠苏。<br>爆竹声中一岁除，春风送暖入屠苏。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/12/16/第三篇测试博客/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/16/第三篇测试博客/" rel="next" title="第三篇测试博客">
+                <i class="fa fa-chevron-left"></i> 第三篇测试博客
+              </a>
+            
           </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
 
-    
+          <span class="post-nav-divider"></span>
 
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/16/第二篇测试博客/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="He Hai">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/riversea2015.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="riversea2015的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/16/第二篇测试博客/" itemprop="url">第二篇测试博客</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+          <div class="post-nav-prev post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-16T11:00:18+08:00">
-                2018-12-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/测试分类名A/" itemprop="url" rel="index">
-                    <span itemprop="name">测试分类名A</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>爆竹声中一岁除，春风送暖入屠苏。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/12/16/第二篇测试博客/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
           </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
+        </div>
       
 
       
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -755,284 +487,11 @@
   </article>
 
 
-    
-      
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/15/我个人博客的第一篇博文/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="He Hai">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/riversea2015.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="riversea2015的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/15/我个人博客的第一篇博文/" itemprop="url">我个人博客的第一篇博文</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-15T23:37:59+08:00">
-                2018-12-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/测试分类名A/" itemprop="url" rel="index">
-                    <span itemprop="name">测试分类名A</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>其实，这也是我在使用Hexo搭建博客遇到的一个问题，如果我们检查自己博客在Github上的文件就会发现，github仓库里的文件和我们本地博客站点的文件夹是不同的，确切来说是少了很多内容。如果我们想在不同的电脑上管理自己的博客，就必须有源文件存在远端供我们随时下载、然后修改后重新部署到远端。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/12/15/我个人博客的第一篇博文/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/15/hello-world/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="He Hai">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/riversea2015.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="riversea2015的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/15/hello-world/" itemprop="url">Hello World</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-15T22:55:08+08:00">
-                2018-12-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-          
-        
+    <div class="post-spread">
       
     </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
 
 
           </div>
@@ -1040,6 +499,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -1060,8 +523,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -1151,6 +623,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-前言"><span class="nav-number">1.</span> <span class="nav-text">1.前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-视图层级"><span class="nav-number">2.</span> <span class="nav-text">2.视图层级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-源码"><span class="nav-number">3.</span> <span class="nav-text">3.源码</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#3-1-类结构"><span class="nav-number">3.0.0.1.</span> <span class="nav-text">3.1 类结构</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-2-MBProgressHUD"><span class="nav-number">3.0.0.2.</span> <span class="nav-text">3.2 MBProgressHUD</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1293,6 +781,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
