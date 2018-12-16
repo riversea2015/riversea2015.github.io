@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/riversea2015.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/riversea2015.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/riversea2015.png?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="iOS,源码学习笔记,">
+
+
+
+
+
+
+
+
+
+
+<meta name="keywords" content="iOS,源码学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SDWebImage源码学习笔记 ☞ SDImageCache">
+<meta property="og:url" content="http://yoursite.com/2018/12/16/SDWebImage源码学习笔记-☞-SDImageCache/index.html">
+<meta property="og:site_name" content="riversea2015的博客">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-f55aa73842adc3de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-12-16T06:45:54.759Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SDWebImage源码学习笔记 ☞ SDImageCache">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2208988-f55aa73842adc3de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/16/SDWebImage源码学习笔记-☞-SDImageCache/">
+
+
+
+
+
+  <title>SDWebImage源码学习笔记 ☞ SDImageCache | riversea2015的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">riversea2015的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">哈哈哈</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/16/SDWebImage源码学习笔记-☞-SDImageCache/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="He Hai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/riversea2015.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="riversea2015的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SDWebImage源码学习笔记 ☞ SDImageCache</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-16T14:41:33+08:00">
+                2018-12-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/源码学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">源码学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://upload-images.jianshu.io/upload_images/2208988-f55aa73842adc3de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="SDWebImage 源码学习笔记.png"><br><a id="more"></a></p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>这是本系列的第 5 篇，也是最后一篇，主要讨论处理缓存的类 <code>SDImageCache</code> 及相关类 <code>SDMemoryCache</code> 、<code>SDImageCacheConfig</code> 等。</p>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><p>先介绍 SDImageCache.h 中定义的 2 个枚举：<code>SDImageCacheType</code> 和 <code>SDImageCacheOptions</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, SDImageCacheType) &#123;</span><br><span class="line">    // 不缓存，从网络下载数据</span><br><span class="line">    SDImageCacheTypeNone,</span><br><span class="line">    // 磁盘缓存</span><br><span class="line">    SDImageCacheTypeDisk,</span><br><span class="line">    // 内存缓存</span><br><span class="line">    SDImageCacheTypeMemory</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">typedef NS_OPTIONS(NSUInteger, SDImageCacheOptions) &#123;</span><br><span class="line">    // 即使内存中有缓存，也要强制查询磁盘缓存</span><br><span class="line">    SDImageCacheQueryDataWhenInMemory = 1 &lt;&lt; 0,</span><br><span class="line">    // 强制同步查询磁盘缓存</span><br><span class="line">    SDImageCacheQueryDiskSync = 1 &lt;&lt; 1,</span><br><span class="line">    // 压缩大图</span><br><span class="line">    SDImageCacheScaleDownLargeImages = 1 &lt;&lt; 2</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>包含几个重要属性：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/// *** 缓存配置信息 ***</span><br><span class="line">@property (nonatomic, nonnull, readonly) SDImageCacheConfig *config;</span><br><span class="line">/// 内存缓存的最大消耗</span><br><span class="line">@property (assign, nonatomic) NSUInteger maxMemoryCost;</span><br><span class="line">/// 内存缓存的最大缓存数量</span><br><span class="line">@property (assign, nonatomic) NSUInteger maxMemoryCountLimit;</span><br><span class="line"></span><br><span class="line">/// *** 内存缓存 ***</span><br><span class="line">@property (strong, nonatomic, nonnull) SDMemoryCache *memCache;</span><br><span class="line">/// 磁盘缓存路径</span><br><span class="line">@property (strong, nonatomic, nonnull) NSString *diskCachePath;</span><br><span class="line">///</span><br><span class="line">@property (strong, nonatomic, nullable) NSMutableArray&lt;NSString *&gt; *customPaths;</span><br><span class="line">/// 读写操作的串行队列</span><br><span class="line">@property (strong, nonatomic, nullable) dispatch_queue_t ioQueue;</span><br><span class="line">/// 用于操作文件的 fileManager</span><br><span class="line">@property (strong, nonatomic, nonnull) NSFileManager *fileManager;</span><br></pre></td></tr></table></figure>
+<p>其中 2 个属性需要重点关注一下：</p>
+<p>① <code>config</code> 所属类 <code>SDImageCacheConfig</code> 定义了很短属性，只提供了一个init方法，在里边给所有属性付了初值，详见下方法代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">static const NSInteger kDefaultCacheMaxCacheAge = 60 * 60 * 24 * 7; // 1 week</span><br><span class="line"></span><br><span class="line">@implementation SDImageCacheConfig</span><br><span class="line"></span><br><span class="line">- (instancetype)init &#123;</span><br><span class="line">    if (self = [super init]) &#123;</span><br><span class="line">        _shouldDecompressImages = YES;</span><br><span class="line">        _shouldDisableiCloud = YES;</span><br><span class="line">        _shouldCacheImagesInMemory = YES;</span><br><span class="line">        _shouldUseWeakMemoryCache = YES;</span><br><span class="line">        _diskCacheReadingOptions = 0;</span><br><span class="line">        _diskCacheWritingOptions = NSDataWritingAtomic;</span><br><span class="line">        _maxCacheAge = kDefaultCacheMaxCacheAge;</span><br><span class="line">        _maxCacheSize = 0;</span><br><span class="line">        _diskCacheExpireType = SDImageCacheConfigExpireTypeModificationDate;</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>② <code>memCache</code> 它属于一个继承自 NSCache 的缓存类 <code>SDMemoryCache</code>， 他有一个关键属性：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// weakCache 是 NSMapTable 类型</span><br><span class="line">@property (nonatomic, strong, nonnull) NSMapTable&lt;KeyType, ObjectType&gt; *weakCache;</span><br></pre></td></tr></table></figure>
+<p>下面观察一下 SDMemoryCache 的初始化及相关代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">- (instancetype)initWithConfig:(SDImageCacheConfig *)config &#123;</span><br><span class="line">    self = [super init];</span><br><span class="line">    if (self) &#123;</span><br><span class="line"></span><br><span class="line">        self.weakCache = [[NSMapTable alloc] initWithKeyOptions:NSPointerFunctionsStrongMemory valueOptions:NSPointerFunctionsWeakMemory capacity:0];</span><br><span class="line"></span><br><span class="line">        // 其他省略 ...</span><br><span class="line"></span><br><span class="line">        [[NSNotificationCenter defaultCenter] addObserver:self</span><br><span class="line">                                                 selector:@selector(didReceiveMemoryWarning:)</span><br><span class="line">                                                     name:UIApplicationDidReceiveMemoryWarningNotification</span><br><span class="line">                                                   object:nil];</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)didReceiveMemoryWarning:(NSNotification *)notification &#123;</span><br><span class="line">    // 注意：此处是调用的 suoper 方法，所以并没有移除 weak cache，如果是调用 self 重写的 removeAllObjects 方法，就会移除 weak cache。</span><br><span class="line">    [super removeAllObjects];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)dealloc &#123;</span><br><span class="line">    [[NSNotificationCenter defaultCenter] removeObserver:self</span><br><span class="line">                                                    name:UIApplicationDidReceiveMemoryWarningNotification</span><br><span class="line">                                                  object:nil];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当遇到内存警告的时候，缓存会被清除，但 weak cache 并不会被移除，如果手动清除的话，weak cache 当然会被移除。</p>
+<p>这里 value 设置成 weak 可以避免可能的循环引用，虽然是 weak，不过，image 实例可以被其他对象持有，像 imageView，这种情况下，value 就不是 nil。</p>
+<h6 id="似乎扯远了O-∩-∩-O哈哈-，好了，我们还是切回来继续讨论-SDImageCache-提供的方法吧！"><a href="#似乎扯远了O-∩-∩-O哈哈-，好了，我们还是切回来继续讨论-SDImageCache-提供的方法吧！" class="headerlink" title="似乎扯远了O(∩_∩)O哈哈~，好了，我们还是切回来继续讨论 SDImageCache 提供的方法吧！"></a>似乎扯远了O(∩_∩)O哈哈~，好了，我们还是切回来继续讨论 SDImageCache 提供的方法吧！</h6><p>首先，是 <code>SDImageCache</code> 的创建方法，它给我们提供了一个单例方法 <code>+ (nonnull instancetype)sharedImageCache</code>，下边是他的方法实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+ (nonnull instancetype)sharedImageCache &#123;</span><br><span class="line">    static dispatch_once_t once;</span><br><span class="line">    static id instance;</span><br><span class="line">    dispatch_once(&amp;once, ^&#123;</span><br><span class="line">        instance = [self new];</span><br><span class="line">    &#125;);</span><br><span class="line">    return instance;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后，看看初始化方法，我们发现所有初始化方法最后均调用了同一个核心方法 <code>- (nonnull instancetype)initWithNamespace: diskCacheDirectory:</code>，具体作用见下方代码注释。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">- (instancetype)init &#123;</span><br><span class="line">    return [self initWithNamespace:@&quot;default&quot;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (nonnull instancetype)initWithNamespace:(nonnull NSString *)ns &#123;</span><br><span class="line">    NSString *path = [self makeDiskCachePath:ns];</span><br><span class="line">    return [self initWithNamespace:ns diskCacheDirectory:path];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (nonnull instancetype)initWithNamespace:(nonnull NSString *)ns</span><br><span class="line">                       diskCacheDirectory:(nonnull NSString *)directory &#123;</span><br><span class="line">    if ((self = [super init])) &#123;</span><br><span class="line">        NSString *fullNamespace = [@&quot;com.hackemist.SDWebImageCache.&quot; stringByAppendingString:ns];</span><br><span class="line"></span><br><span class="line">        // 创建一个 IO 串行队列 (依次执行操作)</span><br><span class="line">        _ioQueue = dispatch_queue_create(&quot;com.hackemist.SDWebImageCache&quot;, DISPATCH_QUEUE_SERIAL);</span><br><span class="line"></span><br><span class="line">        // 初始化内存缓存</span><br><span class="line">        _config = [[SDImageCacheConfig alloc] init];</span><br><span class="line">        _memCache = [[SDMemoryCache alloc] initWithConfig:_config];</span><br><span class="line">        _memCache.name = fullNamespace;</span><br><span class="line"></span><br><span class="line">        // 初始化磁盘缓存路径</span><br><span class="line">        if (directory != nil) &#123;</span><br><span class="line">            _diskCachePath = [directory stringByAppendingPathComponent:fullNamespace];</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            NSString *path = [self makeDiskCachePath:ns];</span><br><span class="line">            _diskCachePath = path;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        dispatch_sync(_ioQueue, ^&#123;</span><br><span class="line">            self.fileManager = [NSFileManager new];</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">#if SD_UIKIT</span><br><span class="line">        // App 即将关闭的时候，清除过期缓存</span><br><span class="line">        [[NSNotificationCenter defaultCenter] addObserver:self</span><br><span class="line">                                                 selector:@selector(deleteOldFiles)</span><br><span class="line">                                                     name:UIApplicationWillTerminateNotification</span><br><span class="line">                                                   object:nil];</span><br><span class="line">        // App 即将进入后台的时候，清除过期缓存</span><br><span class="line">        [[NSNotificationCenter defaultCenter] addObserver:self</span><br><span class="line">                                                 selector:@selector(backgroundDeleteOldFiles)</span><br><span class="line">                                                     name:UIApplicationDidEnterBackgroundNotification</span><br><span class="line">                                                   object:nil];</span><br><span class="line">#endif</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>记得 <a href="https://www.jianshu.com/p/221b335cc760" target="_blank" rel="noopener">上一篇</a> 介绍 SDWebImageManager 的时候，是这样使用 imageCache 的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">operation.cacheOperation = [self.imageCache queryCacheOperationForKey:key</span><br><span class="line">                                                              options:cacheOptions</span><br><span class="line">                                                                 done:^(UIImage *cachedImage, NSData *cachedData, SDImageCacheType cacheType)</span><br><span class="line">&#123;</span><br><span class="line">      // 查询完成后的操作在这里，可能查到了，也可能没查到 ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在，我们就来揭开这个方法的什么面纱。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">- (nullable NSOperation *)queryCacheOperationForKey:(nullable NSString *)key</span><br><span class="line">                                            options:(SDImageCacheOptions)options</span><br><span class="line">                                               done:(nullable SDCacheQueryCompletedBlock)doneBlock</span><br><span class="line">&#123;</span><br><span class="line">    // 1.校验参数</span><br><span class="line">    if (!key) &#123;</span><br><span class="line">        if (doneBlock) &#123;</span><br><span class="line">            doneBlock(nil, nil, SDImageCacheTypeNone);</span><br><span class="line">        &#125;</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 2.查询内存缓存 (NSCache)</span><br><span class="line">    UIImage *image = [self imageFromMemoryCacheForKey:key];</span><br><span class="line">    BOOL shouldQueryMemoryOnly = (image &amp;&amp; !(options &amp; SDImageCacheQueryDataWhenInMemory));</span><br><span class="line">    if (shouldQueryMemoryOnly) &#123;</span><br><span class="line">        if (doneBlock) &#123;</span><br><span class="line">            doneBlock(image, nil, SDImageCacheTypeMemory);</span><br><span class="line">        &#125;</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    NSOperation *operation = [NSOperation new];</span><br><span class="line"></span><br><span class="line">    // 3.将获取缓存及解压的 ‘耗时’ 操作封装成一个 block</span><br><span class="line">    void(^queryDiskBlock)(void) =  ^&#123;</span><br><span class="line"></span><br><span class="line">        // 如果已经取消，不作任何处理，直接返回。</span><br><span class="line">        if (operation.isCancelled) &#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @autoreleasepool &#123;</span><br><span class="line"></span><br><span class="line">            NSData *diskData = [self diskImageDataBySearchingAllPathsForKey:key];</span><br><span class="line">            UIImage *diskImage;</span><br><span class="line">            SDImageCacheType cacheType = SDImageCacheTypeDisk;</span><br><span class="line"></span><br><span class="line">            if (image) &#123;</span><br><span class="line"></span><br><span class="line">                // A &gt; 从 memery 取的</span><br><span class="line"></span><br><span class="line">                diskImage = image;</span><br><span class="line">                cacheType = SDImageCacheTypeMemory;</span><br><span class="line"></span><br><span class="line">            &#125; else if (diskData) &#123;</span><br><span class="line"></span><br><span class="line">                // B &gt; 如果内存没有，但是从 disc 取到了，需要解压</span><br><span class="line"></span><br><span class="line">                diskImage = [self diskImageForKey:key data:diskData options:options];</span><br><span class="line"></span><br><span class="line">                if (diskImage &amp;&amp; self.config.shouldCacheImagesInMemory) &#123; // 缓存到内存</span><br><span class="line">                    NSUInteger cost = SDCacheCostForImage(diskImage); // 计算大小</span><br><span class="line">                    [self.memCache setObject:diskImage forKey:key cost:cost];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            if (doneBlock) &#123;</span><br><span class="line">                if (options &amp; SDImageCacheQueryDiskSync) &#123;  // 同步执行完成回调</span><br><span class="line">                    doneBlock(diskImage, diskData, cacheType);</span><br><span class="line">                &#125; else &#123;                                    // 异步执行完成回调</span><br><span class="line">                    dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">                        doneBlock(diskImage, diskData, cacheType);</span><br><span class="line">                    &#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    // 4.执行查询磁盘缓存的 block</span><br><span class="line">    if (options &amp; SDImageCacheQueryDiskSync) &#123;</span><br><span class="line">        queryDiskBlock();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        dispatch_async(self.ioQueue, queryDiskBlock);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return operation;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如上边的代码所示，主要分了这么 4 步：</p>
+<p>① 校验参数 — 如果 key 不存在，直接 doneBlock，返回 nil。</p>
+<p>② 查询内存缓存 NSCache — 如果内存中有，并且没有强制要求必须查询磁盘，则 执行 doneBlock，将 image 返回。</p>
+<p>③ 将获取缓存及解压的 ‘耗时’ 操作封装成一个 block — 这是为了最后执行异步操作的方便。</p>
+<p>④ 执行查询磁盘缓存的 block — 如果设置了 <code>SDImageCacheQueryDiskSync</code>，则同步执行；否则，默认是异步执行。</p>
+<p>第 ③ 步中查询磁盘缓存的 <code>queryDiskBlock</code> 里边有两个比较重要的方法：<code>- (nullable NSData *)diskImageDataBySearchingAllPathsForKey:</code> 和 <code>- (nullable UIImage *)diskImageForKey: data: options:</code>，下边分别了解一下这两个方法：</p>
+<ul>
+<li>diskImageDataBySearchingAllPathsForKey:  这个方法用于查询磁盘缓存，实现及代码注释如下，拼接缓存路径的方法就不展开了，其中文件名的生成是对传入的 key 执行了一次 MD5。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">- (nullable NSData *)diskImageDataBySearchingAllPathsForKey:(nullable NSString *)key &#123;</span><br><span class="line">    // 1.尝试 通过默认路径查询磁盘缓存</span><br><span class="line">    NSString *defaultPath = [self defaultCachePathForKey:key];</span><br><span class="line">    NSData *data = [NSData dataWithContentsOfFile:defaultPath options:self.config.diskCacheReadingOptions error:nil];</span><br><span class="line">    if (data) &#123;</span><br><span class="line">        return data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 2.异常情况的处理：更换了路径再取一次，新路径是将默认路径的后缀去掉 (如果有的话)</span><br><span class="line">    data = [NSData dataWithContentsOfFile:defaultPath.stringByDeletingPathExtension options:self.config.diskCacheReadingOptions error:nil];</span><br><span class="line">    if (data) &#123;</span><br><span class="line">        return data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 3.遍历所有用户自定义的路径，执行类似 1、2 的操作，查询磁盘缓存</span><br><span class="line">    NSArray&lt;NSString *&gt; *customPaths = [self.customPaths copy];</span><br><span class="line">    for (NSString *path in customPaths) &#123;</span><br><span class="line">        NSString *filePath = [self cachePathForKey:key inPath:path];</span><br><span class="line">        NSData *imageData = [NSData dataWithContentsOfFile:filePath options:self.config.diskCacheReadingOptions error:nil];</span><br><span class="line">        if (imageData) &#123;</span><br><span class="line">            return imageData;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        imageData = [NSData dataWithContentsOfFile:filePath.stringByDeletingPathExtension options:self.config.diskCacheReadingOptions error:nil];</span><br><span class="line">        if (imageData) &#123;</span><br><span class="line">            return imageData;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    // 没查到的话，返回 nil</span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>diskImageForKey: data: options: 此方法的作用是对从 Disc 直接取的 data，进行 解码、解压操作，实现代码如下。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">- (nullable UIImage *)diskImageForKey:(nullable NSString *)key data:(nullable NSData *)data options:(SDImageCacheOptions)options &#123;</span><br><span class="line">    if (data) &#123;</span><br><span class="line"></span><br><span class="line">        // 1.解码</span><br><span class="line">        UIImage *image = [[SDWebImageCodersManager sharedInstance] decodedImageWithData:data];</span><br><span class="line">        image = [self scaledImageForKey:key image:image];</span><br><span class="line"></span><br><span class="line">        // 2.解压</span><br><span class="line">        if (self.config.shouldDecompressImages) &#123;</span><br><span class="line">            BOOL shouldScaleDown = options &amp; SDImageCacheScaleDownLargeImages;</span><br><span class="line"></span><br><span class="line">            image = [[SDWebImageCodersManager sharedInstance] decompressedImageWithImage:image data:&amp;data options:@&#123;SDWebImageCoderScaleDownLargeImagesKey: @(shouldScaleDown)&#125;];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return image;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此方法分别使用了 SDWebImageCodersManager 的 2 个重要方法：</p>
+<ul>
+<li>解码方法 <code>- (UIImage *)decodedImageWithData:data</code>，其中 coder 可以理解为一个解码器，<code>SDWebImage</code> 提供了多种 coder，如 <code>SDWebImageIOCoder</code>、<code>SDWebImageGIFCoder</code> 分别用于解码某一种类型的图片，如果新增一种图片，可以将对应的 coder（需遵守协议：SDWebImageCoder） 添加到 coders 里即可。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// SDWebImageCodersManager.m</span><br><span class="line"></span><br><span class="line">- (UIImage *)decodedImageWithData:(NSData *)data &#123;</span><br><span class="line"></span><br><span class="line">    LOCK(self.codersLock);</span><br><span class="line">    NSArray&lt;id&lt;SDWebImageCoder&gt;&gt; *coders = self.coders;</span><br><span class="line">    UNLOCK(self.codersLock);</span><br><span class="line"></span><br><span class="line">    for (id&lt;SDWebImageCoder&gt; coder in coders.reverseObjectEnumerator) &#123;</span><br><span class="line">        if ([coder canDecodeFromData:data]) &#123;</span><br><span class="line">            return [coder decodedImageWithData:data];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>解压方法 <code>- (UIImage *)decompressedImageWithImage:image data:data options:optionsDict</code>，这个方法和上边的解码方法都属于   <code>SDWebImageCoder</code> 这个协议，与解码方法类似，也是针对不同类型的 image 有不同的 coder。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">// SDWebImageCodersManager.m</span><br><span class="line"></span><br><span class="line">- (UIImage *)decompressedImageWithImage:(UIImage *)image</span><br><span class="line">                                   data:(NSData *__autoreleasing  _Nullable *)data</span><br><span class="line">                                options:(nullable NSDictionary&lt;NSString*, NSObject*&gt;*)optionsDict &#123;</span><br><span class="line">    if (!image) &#123;</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;</span><br><span class="line">    LOCK(self.codersLock);</span><br><span class="line">    NSArray&lt;id&lt;SDWebImageCoder&gt;&gt; *coders = self.coders;</span><br><span class="line">    UNLOCK(self.codersLock);</span><br><span class="line">    for (id&lt;SDWebImageCoder&gt; coder in coders.reverseObjectEnumerator) &#123;</span><br><span class="line">        if ([coder canDecodeFromData:*data]) &#123;</span><br><span class="line">            UIImage *decompressedImage = [coder decompressedImageWithImage:image data:data options:optionsDict];</span><br><span class="line">            decompressedImage.sd_imageFormat = image.sd_imageFormat;</span><br><span class="line">            return decompressedImage;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那么，这些 coder 是什么时候加进去的，又是怎么添加的呢？其实，这些逻辑都在 SDWebImageCodersManager 的实现代码里。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// SDWebImageCodersManager.m</span><br><span class="line"></span><br><span class="line">- (instancetype)init &#123;</span><br><span class="line">    if (self = [super init]) &#123;</span><br><span class="line">        // 初始化 coders</span><br><span class="line">        NSMutableArray&lt;id&lt;SDWebImageCoder&gt;&gt; *mutableCoders = [@[[SDWebImageImageIOCoder sharedCoder]] mutableCopy];</span><br><span class="line">#ifdef SD_WEBP</span><br><span class="line">        [mutableCoders addObject:[SDWebImageWebPCoder sharedCoder]];</span><br><span class="line">#endif</span><br><span class="line">        _coders = [mutableCoders copy];</span><br><span class="line">        _codersLock = dispatch_semaphore_create(1);</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从初始化方法可以看出来，此时只给 coders 添加了一种 coder，即 SDWebImageImageIOCoder，它是用来对普通的 JPG、PNG 等图片解码的。</p>
+<p>为了支持对其他类型图片（如 GIF）的解码，manager 给我们提供了下边这个添加 coder 的方法，代码逻辑很简单，就不多做解释了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// SDWebImageCodersManager.m</span><br><span class="line"></span><br><span class="line">- (void)addCoder:(nonnull id&lt;SDWebImageCoder&gt;)coder &#123;</span><br><span class="line">    if (![coder conformsToProtocol:@protocol(SDWebImageCoder)]) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    LOCK(self.codersLock);</span><br><span class="line">    NSMutableArray&lt;id&lt;SDWebImageCoder&gt;&gt; *mutableCoders = [self.coders mutableCopy];</span><br><span class="line">    if (!mutableCoders) &#123;</span><br><span class="line">        mutableCoders = [NSMutableArray array];</span><br><span class="line">    &#125;</span><br><span class="line">    [mutableCoders addObject:coder];</span><br><span class="line">    self.coders = [mutableCoders copy];</span><br><span class="line">    UNLOCK(self.codersLock);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>关于缓存相关的类暂时就先介绍到这里，当然还有很多细节没来得及讨论，不过可以查看 demo 中的注释。</p>
+<p>到此，关于 SDWebImage 的源码学习就告一段落了，目前的理解可能有点肤浅，以后随着理解的深入，会不定时的更新。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/源码学习笔记/" rel="tag"># 源码学习笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/16/SDWebImage源码学习笔记-☞-SDWebImageDownloader/" rel="next" title="SDWebImage源码学习笔记 ☞ SDWebImageDownloader">
+                <i class="fa fa-chevron-left"></i> SDWebImage源码学习笔记 ☞ SDWebImageDownloader
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/riversea2015.png" alt="He Hai">
+            
+              <p class="site-author-name" itemprop="name">He Hai</p>
+              <p class="site-description motion-element" itemprop="description">iOSer</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/riversea2015" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:hehai682@126.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/riversea2015" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>微博</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/71f817a3a70b" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-book"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#似乎扯远了O-∩-∩-O哈哈-，好了，我们还是切回来继续讨论-SDImageCache-提供的方法吧！"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">似乎扯远了O(∩_∩)O哈哈~，好了，我们还是切回来继续讨论 SDImageCache 提供的方法吧！</span></a></li></ol></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">3.</span> <span class="nav-text">小结</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">He Hai</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
