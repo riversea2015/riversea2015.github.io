@@ -79,20 +79,23 @@
 
 
 
+<meta name="description" content="前言这是本系列的第 2 篇，本篇的目的如题所示，就是了解 SDWebImage 这个常用框架的文件结构，然后通过案例梳理流程，作为后边章节的主线。">
 <meta name="keywords" content="iOS,源码学习笔记,SDWebImage">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SDWebImage源码学习笔记 ☞ 结构及基本流程">
 <meta property="og:url" content="http://yoursite.com/2018/12/16/SDWebImage源码学习笔记-☞-结构及基本流程/index.html">
 <meta property="og:site_name" content="riversea2015的博客">
+<meta property="og:description" content="前言这是本系列的第 2 篇，本篇的目的如题所示，就是了解 SDWebImage 这个常用框架的文件结构，然后通过案例梳理流程，作为后边章节的主线。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-f55aa73842adc3de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-6a0eabcaabb5ee6c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-f414668709bfccc3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-90d9b6495d87a6c3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-12-16T06:56:35.587Z">
+<meta property="og:updated_time" content="2018-12-17T14:24:22.718Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SDWebImage源码学习笔记 ☞ 结构及基本流程">
-<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2208988-f55aa73842adc3de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:description" content="前言这是本系列的第 2 篇，本篇的目的如题所示，就是了解 SDWebImage 这个常用框架的文件结构，然后通过案例梳理流程，作为后边章节的主线。">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
 
@@ -405,13 +408,13 @@
       
 
       
-        <p><img src="https://upload-images.jianshu.io/upload_images/2208988-f55aa73842adc3de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="SDWebImage 源码学习笔记.png"><br><a id="more"></a></p>
-<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>这是本系列的第 2 篇，本篇的目的如题所示，就是了解 SDWebImage 这个常用框架的文件结构，然后通过案例梳理流程，作为后边章节的主线。</p>
-<h3 id="二、目录结构"><a href="#二、目录结构" class="headerlink" title="二、目录结构"></a>二、目录结构</h3><p>为了查看 <code>SDWebImage</code> 的完整目录结构，首先需要导入 <a href="https://github.com/SDWebImage/SDWebImage" target="_blank" rel="noopener">SDWebImage</a>，由 <a href="https://www.jianshu.com/p/c3ec50e1942f" target="_blank" rel="noopener">上一篇</a> 我们了解到，新版 <code>SDWebImage</code> 总共分了 4 个子 pod，默认只导入了 Core，为了将它们全部导入 demo 中，Podfile 文件需要这么来写：</p>
+        <p><img src="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="SDWebImage-源码学习笔记.png"></p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>这是本系列的第 2 篇，本篇的目的如题所示，就是了解 SDWebImage 这个常用框架的文件结构，然后通过案例梳理流程，作为后边章节的主线。<br><a id="more"></a></p>
+<h3 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h3><p>为了查看 <code>SDWebImage</code> 的完整目录结构，首先需要导入 <a href="https://github.com/SDWebImage/SDWebImage" target="_blank" rel="noopener">SDWebImage</a>，由 <a href="https://www.jianshu.com/p/c3ec50e1942f" target="_blank" rel="noopener">上一篇</a> 我们了解到，新版 <code>SDWebImage</code> 总共分了 4 个子 pod，默认只导入了 Core，为了将它们全部导入 demo 中，Podfile 文件需要这么来写：</p>
 <figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">source <span class="string">'https://github.com/CocoaPods/Specs.git'</span></span><br><span class="line"><span class="keyword">platform</span> :ios, <span class="string">'9.0'</span></span><br><span class="line"></span><br><span class="line">target <span class="string">'HHSDWebImageStudy'</span> <span class="keyword">do</span></span><br><span class="line"></span><br><span class="line">pod <span class="string">'SDWebImage'</span>, <span class="string">'4.4.2'</span>  <span class="comment">// 为了讨论方便，这里选定了一个比较新的版本</span></span><br><span class="line">pod <span class="string">'SDWebImage/WebP'</span></span><br><span class="line">pod <span class="string">'SDWebImage/GIF'</span></span><br><span class="line">pod <span class="string">'SDWebImage/MapKit'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 <p>执行 <code>pod install</code> 之后得到的目录结构如下图所示，<a href="https://upload-images.jianshu.io/upload_images/2208988-043e98867ce30bf6.JPG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" target="_blank" rel="noopener">点此查看完整目录结构</a> 。</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/2208988-6a0eabcaabb5ee6c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="SDWebImage-目录结构.png"></p>
-<h3 id="三、示例：用-UIImageView-展示一张静态网络图片"><a href="#三、示例：用-UIImageView-展示一张静态网络图片" class="headerlink" title="三、示例：用 UIImageView 展示一张静态网络图片"></a>三、示例：用 UIImageView 展示一张静态网络图片</h3><p>下面是使用时的代码，加载图片时调用的是 <code>UIImageView+WebCache</code> 中的方法 <code>sd_setImageWithURL:</code>。</p>
+<h3 id="示例：用-UIImageView-展示一张静态网络图片"><a href="#示例：用-UIImageView-展示一张静态网络图片" class="headerlink" title="示例：用 UIImageView 展示一张静态网络图片"></a>示例：用 UIImageView 展示一张静态网络图片</h3><p>下面是使用时的代码，加载图片时调用的是 <code>UIImageView+WebCache</code> 中的方法 <code>sd_setImageWithURL:</code>。</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1.创建 UIImageView</span></span><br><span class="line"><span class="built_in">UIImageView</span> *imgV = [[<span class="built_in">UIImageView</span> alloc] initWithFrame:<span class="built_in">CGRectMake</span>(<span class="number">125</span>, <span class="number">70</span>, <span class="number">160</span>, <span class="number">160</span>)];</span><br><span class="line">[<span class="keyword">self</span>.view addSubview:imgV];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2.加载网络图片</span></span><br><span class="line">[imgV sd_setImageWithURL:[<span class="built_in">NSURL</span> URLWithString:<span class="string">@"https://img.zcool.cn/community/01c81558a2723ca801219c77a1e34e.jpg"</span>]];</span><br></pre></td></tr></table></figure>
 <p>查看 <code>sd_setImageWithURL:</code> 的实现，内部调用了一个参数很全的方法 <code>sd_setImageWithURL: placeholderImage: options: progress: completed:</code>，只不过其他参数已经给了默认值。<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)<span class="string">sd_setImageWithURL:</span>(nullable NSURL *)url &#123;</span><br><span class="line">    [self <span class="string">sd_setImageWithURL:</span>url <span class="string">placeholderImage:</span>nil <span class="string">options:</span><span class="number">0</span> <span class="string">progress:</span>nil <span class="string">completed:</span>nil];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>其实，还有很多类似方法，都是对这个方法不同程度的封装，即给一些参数提供了默认值，或者增加了一些额外操作，比如下边这几个方法：</p>
@@ -440,7 +443,7 @@
 <ul>
 <li>无论是查询缓存还是请求网络数据，最终都会给 imageView 赋值，也就是我们通常希望达到的效果。</li>
 </ul>
-<h3 id="四、小结"><a href="#四、小结" class="headerlink" title="四、小结"></a>四、小结</h3><p>至此，我们大概理了一下 使用 <code>SDWebImage</code> 加载网络图片的主要流程，最后借用 <code>SDWebImage</code>  作者提供的一张时序图做个简单总结吧。</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>至此，我们大概理了一下 使用 <code>SDWebImage</code> 加载网络图片的主要流程，最后借用 <code>SDWebImage</code>  作者提供的一张时序图做个简单总结吧。</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/2208988-90d9b6495d87a6c3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="SDWebImageSequenceDiagram.png"></p>
 <h3 id="源码注释及-demo"><a href="#源码注释及-demo" class="headerlink" title="源码注释及 demo"></a>源码注释及 demo</h3><p><a href="https://github.com/riversea2015/CodeForBlogs/tree/master/HHSDWebImageStudy" target="_blank" rel="noopener">HHSDWebImageStudy</a></p>
 
@@ -658,7 +661,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、前言"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、目录结构"><span class="nav-number">2.</span> <span class="nav-text">二、目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、示例：用-UIImageView-展示一张静态网络图片"><span class="nav-number">3.</span> <span class="nav-text">三、示例：用 UIImageView 展示一张静态网络图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、小结"><span class="nav-number">4.</span> <span class="nav-text">四、小结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码注释及-demo"><span class="nav-number">5.</span> <span class="nav-text">源码注释及 demo</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#目录结构"><span class="nav-number">2.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例：用-UIImageView-展示一张静态网络图片"><span class="nav-number">3.</span> <span class="nav-text">示例：用 UIImageView 展示一张静态网络图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">4.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码注释及-demo"><span class="nav-number">5.</span> <span class="nav-text">源码注释及 demo</span></a></li></ol></div>
             
 
           </div>
