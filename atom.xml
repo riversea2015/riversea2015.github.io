@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-12-17T15:16:10.104Z</updated>
+  <updated>2018-12-17T15:16:34.033Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>AFNetWorking 源码学习笔记 ☞ Reachability</title>
+    <link href="http://yoursite.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-Reachability/"/>
+    <id>http://yoursite.com/2018/12/17/AFNetWorking-源码学习笔记-☞-Reachability/</id>
+    <published>2018-12-17T15:13:40.000Z</published>
+    <updated>2018-12-17T15:16:34.033Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;AFNetWorking 源码学习笔记.png&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;本文是 AFNetWorking 源码学习笔记的第五篇，本篇将介绍第四部分 – Reachability 目录下的类，也就是 AFNetworkReachabilityManager。&lt;/p&gt;
+&lt;p&gt;虽然之前经历的几个项目里边都是对苹果提供的 &lt;a href=&quot;https://developer.apple.com/library/ios/samplecode/reachability/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Reachability&lt;/a&gt; 进行了一次封装，不过，还是有必要学习一下 AFNetWorking 中监听网络状态的类 AFNetworkReachabilityManager，也就是本文的重点。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="源码学习笔记" scheme="http://yoursite.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+    
+      <category term="源码学习笔记" scheme="http://yoursite.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="AFNetWorking" scheme="http://yoursite.com/tags/AFNetWorking/"/>
+    
+  </entry>
   
   <entry>
     <title>AFNetWorking 源码学习笔记 ☞ Serialization</title>
