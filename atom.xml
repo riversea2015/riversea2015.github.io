@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-12-16T06:56:17.888Z</updated>
+  <updated>2018-12-17T14:27:37.526Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,11 +21,12 @@
     <link href="http://yoursite.com/2018/12/16/SDWebImage%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-SDImageCache/"/>
     <id>http://yoursite.com/2018/12/16/SDWebImage源码学习笔记-☞-SDImageCache/</id>
     <published>2018-12-16T06:41:33.000Z</published>
-    <updated>2018-12-16T06:56:17.888Z</updated>
+    <updated>2018-12-17T14:27:37.526Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-f55aa73842adc3de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;SDWebImage 源码学习笔记.png&quot;&gt;&lt;br&gt;
+      &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;SDWebImage-源码学习笔记.png&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;这是本系列的第 5 篇，也是最后一篇，主要讨论处理缓存的类 &lt;code&gt;SDImageCache&lt;/code&gt; 及相关类 &lt;code&gt;SDMemoryCache&lt;/code&gt; 、&lt;code&gt;SDImageCacheConfig&lt;/code&gt; 等。&lt;br&gt;
     
     </summary>
     
@@ -45,11 +46,12 @@
     <link href="http://yoursite.com/2018/12/16/SDWebImage%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-SDWebImageDownloader/"/>
     <id>http://yoursite.com/2018/12/16/SDWebImage源码学习笔记-☞-SDWebImageDownloader/</id>
     <published>2018-12-16T06:41:11.000Z</published>
-    <updated>2018-12-16T06:56:19.440Z</updated>
+    <updated>2018-12-17T14:27:40.169Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-f55aa73842adc3de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;SDWebImage 源码学习笔记.png&quot;&gt;&lt;br&gt;
+      &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;SDWebImage-源码学习笔记.png&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;这是本系列的第 4 篇，本篇将主要介绍 &lt;code&gt;SDWebImageDownloader&lt;/code&gt; 这个负责下载的类，当然还有一些相关类及协议，如： &lt;code&gt;SDWebImageDownloadToken&lt;/code&gt;、&lt;code&gt;SDWebImageDownloaderOperation&lt;/code&gt; 和 &lt;code&gt;SDWebImageDownloaderOperationInterface&lt;/code&gt; 等。&lt;br&gt;
     
     </summary>
     
@@ -69,11 +71,12 @@
     <link href="http://yoursite.com/2018/12/16/SDWebImage%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-SDWebImageManager/"/>
     <id>http://yoursite.com/2018/12/16/SDWebImage源码学习笔记-☞-SDWebImageManager/</id>
     <published>2018-12-16T06:40:50.000Z</published>
-    <updated>2018-12-16T06:56:20.508Z</updated>
+    <updated>2018-12-17T14:27:42.419Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-f55aa73842adc3de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;SDWebImage 源码学习笔记.png&quot;&gt;&lt;br&gt;
+      &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;SDWebImage-源码学习笔记.png&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;这是本系列的第 3 篇，在前一篇中，我们了解了 SDWebImage 执行的基本流程，本篇就来介绍第一个核心类 &lt;code&gt;SDWebImageMananger&lt;/code&gt;。&lt;br&gt;
     
     </summary>
     
@@ -93,7 +96,7 @@
     <link href="http://yoursite.com/2018/12/16/SDWebImage%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-%E7%BB%93%E6%9E%84%E5%8F%8A%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B/"/>
     <id>http://yoursite.com/2018/12/16/SDWebImage源码学习笔记-☞-结构及基本流程/</id>
     <published>2018-12-16T06:40:18.000Z</published>
-    <updated>2018-12-17T14:24:22.718Z</updated>
+    <updated>2018-12-17T14:27:44.050Z</updated>
     
     <summary type="html">
     
@@ -118,7 +121,7 @@
     <link href="http://yoursite.com/2018/12/16/SDWebImage-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%C2%B7%E5%89%8D%E4%BC%A0-%E2%98%9E-%E5%8D%87%E7%BA%A7-4-x-x-%E5%90%8E%E9%80%82%E9%85%8D-WebP-GIF/"/>
     <id>http://yoursite.com/2018/12/16/SDWebImage-源码学习笔记·前传-☞-升级-4-x-x-后适配-WebP-GIF/</id>
     <published>2018-12-16T06:39:48.000Z</published>
-    <updated>2018-12-17T14:22:22.990Z</updated>
+    <updated>2018-12-17T14:27:33.928Z</updated>
     
     <summary type="html">
     
