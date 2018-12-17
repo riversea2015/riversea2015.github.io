@@ -79,19 +79,22 @@
 
 
 
+<meta name="description" content="前言MBProgressHUD 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。 视图层级在开始学习源码之前，先大概了解一下整个视图的层级结构吧，主要分这几个视图：">
 <meta name="keywords" content="iOS,源码学习笔记,MBProgressHUD">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MBProgressHUD 源码学习笔记">
 <meta property="og:url" content="http://yoursite.com/2018/12/16/MBProgressHUD-源码学习笔记/index.html">
 <meta property="og:site_name" content="riversea2015的博客">
+<meta property="og:description" content="前言MBProgressHUD 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。 视图层级在开始学习源码之前，先大概了解一下整个视图的层级结构吧，主要分这几个视图：">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-91ab1cfdab440c59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-c8735aee9340c963.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-953d9e9aa2b0558a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-918632801ae88997.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-12-17T14:02:50.887Z">
+<meta property="og:updated_time" content="2018-12-17T15:55:32.585Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MBProgressHUD 源码学习笔记">
+<meta name="twitter:description" content="前言MBProgressHUD 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。 视图层级在开始学习源码之前，先大概了解一下整个视图的层级结构吧，主要分这几个视图：">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2208988-91ab1cfdab440c59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
@@ -405,10 +408,10 @@
       
 
       
-        <p><img src="https://upload-images.jianshu.io/upload_images/2208988-91ab1cfdab440c59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="MBProgressHUD 源码学习笔记.png"><br><a id="more"></a></p>
+        <p><img src="https://upload-images.jianshu.io/upload_images/2208988-91ab1cfdab440c59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="MBProgressHUD 源码学习笔记.png"></p>
 <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p><a href="https://github.com/jdg/MBProgressHUD" target="_blank" rel="noopener">MBProgressHUD</a> 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。</p>
 <h3 id="视图层级"><a href="#视图层级" class="headerlink" title="视图层级"></a>视图层级</h3><p>在开始学习源码之前，先大概了解一下整个视图的层级结构吧，主要分这几个视图：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2208988-c8735aee9340c963.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="视图层级.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2208988-c8735aee9340c963.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="视图层级.png"><br><a id="more"></a></p>
 <ul>
 <li><code>backgroundView</code>，位于最底层，是一个遮罩层，在 HUD 显示时，我们之所以无法点击后边的视图，都是因为它。</li>
 <li><code>bezelView</code>，位于 backgroundView 之上，承载着下边要说的几个视图，下边 4 个视图位于同一层级。</li>
@@ -574,7 +577,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -585,7 +588,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -596,7 +599,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
