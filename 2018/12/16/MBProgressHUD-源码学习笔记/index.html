@@ -89,7 +89,7 @@
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-c8735aee9340c963.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-953d9e9aa2b0558a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-918632801ae88997.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-12-16T16:14:12.259Z">
+<meta property="og:updated_time" content="2018-12-17T14:00:19.267Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MBProgressHUD 源码学习笔记">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2208988-91ab1cfdab440c59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
@@ -406,8 +406,8 @@
 
       
         <p><img src="https://upload-images.jianshu.io/upload_images/2208988-91ab1cfdab440c59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="MBProgressHUD 源码学习笔记.png"><br><a id="more"></a></p>
-<h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p><a href="https://github.com/jdg/MBProgressHUD" target="_blank" rel="noopener">MBProgressHUD</a> 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。</p>
-<h3 id="2-视图层级"><a href="#2-视图层级" class="headerlink" title="2.视图层级"></a>2.视图层级</h3><p>在开始学习源码之前，先大概了解一下整个视图的层级结构吧，主要分这几个视图：</p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p><a href="https://github.com/jdg/MBProgressHUD" target="_blank" rel="noopener">MBProgressHUD</a> 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。</p>
+<h3 id="视图层级"><a href="#视图层级" class="headerlink" title="视图层级"></a>视图层级</h3><p>在开始学习源码之前，先大概了解一下整个视图的层级结构吧，主要分这几个视图：</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/2208988-c8735aee9340c963.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="视图层级.png"></p>
 <ul>
 <li><code>backgroundView</code>，位于最底层，是一个遮罩层，在 HUD 显示时，我们之所以无法点击后边的视图，都是因为它。</li>
@@ -419,9 +419,9 @@
 </ul>
 <p>当然，以上这些视图不一定要全部显示，可以由用户（我们自己 O(∩_∩)O ）自由选择。</p>
 <h3 id="3-源码"><a href="#3-源码" class="headerlink" title="3.源码"></a>3.源码</h3><p>言归正传，现在开始读源码。</p>
-<h6 id="3-1-类结构"><a href="#3-1-类结构" class="headerlink" title="3.1 类结构"></a>3.1 类结构</h6><p>虽然 MBProgressHUD 的文件数量非常少，只有 2 个：MBProgressHUD.h 和 MBProgressHUD.m，但还有几个相关的类和协议：</p>
+<h4 id="类结构"><a href="#类结构" class="headerlink" title="类结构"></a>类结构</h4><p>虽然 MBProgressHUD 的文件数量非常少，只有 2 个：MBProgressHUD.h 和 MBProgressHUD.m，但还有几个相关的类和协议：</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/2208988-953d9e9aa2b0558a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="类之间的相互关系.png"></p>
-<h6 id="3-2-MBProgressHUD"><a href="#3-2-MBProgressHUD" class="headerlink" title="3.2 MBProgressHUD"></a>3.2 MBProgressHUD</h6><p>我们主要研究主类 <code>MBProgressHUD</code>，首先看几个重要的属性：</p>
+<h4 id="MBProgressHUD"><a href="#MBProgressHUD" class="headerlink" title="MBProgressHUD"></a>MBProgressHUD</h4><p>我们主要研究主类 <code>MBProgressHUD</code>，首先看几个重要的属性：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSTimeInterval</span> graceTime;   <span class="comment">// 显示的宽限时间，即从显示方法被调用到真正显示之间的时间差</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSTimeInterval</span> minShowTime;  <span class="comment">// HUD 最小的展示时间  </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">weak</span>) <span class="built_in">NSTimer</span> *graceTimer;        <span class="comment">// 延迟显示的 timer</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">weak</span>) <span class="built_in">NSTimer</span> *minShowTimer;      <span class="comment">// 保证 HUD 最短显示维持时间 的timer</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">weak</span>) <span class="built_in">NSTimer</span> *hideDelayTimer;    <span class="comment">// 延迟隐藏的 timer</span></span><br></pre></td></tr></table></figure>
 <p>接下来看看 <code>MBProgressHUD</code> 为我们提供的 3 个类方法用于展示和隐藏 HUD 的方法：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 展示 HUD</span></span><br><span class="line">+ (<span class="keyword">instancetype</span>)showHUDAddedTo:(<span class="built_in">UIView</span> *)view animated:(<span class="built_in">BOOL</span>)animated;</span><br><span class="line"><span class="comment">// 隐藏 HUD</span></span><br><span class="line">+ (<span class="built_in">BOOL</span>)hideHUDForView:(<span class="built_in">UIView</span> *)view animated:(<span class="built_in">BOOL</span>)animated;</span><br><span class="line"><span class="comment">// 返回最顶层未结束的 HUD</span></span><br><span class="line">+ (<span class="keyword">nullable</span> MBProgressHUD *)HUDForView:(<span class="built_in">UIView</span> *)view;</span><br></pre></td></tr></table></figure>
@@ -664,7 +664,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-前言"><span class="nav-number">1.</span> <span class="nav-text">1.前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-视图层级"><span class="nav-number">2.</span> <span class="nav-text">2.视图层级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-源码"><span class="nav-number">3.</span> <span class="nav-text">3.源码</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#3-1-类结构"><span class="nav-number">3.0.0.1.</span> <span class="nav-text">3.1 类结构</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-2-MBProgressHUD"><span class="nav-number">3.0.0.2.</span> <span class="nav-text">3.2 MBProgressHUD</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#视图层级"><span class="nav-number">2.</span> <span class="nav-text">视图层级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-源码"><span class="nav-number">3.</span> <span class="nav-text">3.源码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类结构"><span class="nav-number">3.1.</span> <span class="nav-text">类结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MBProgressHUD"><span class="nav-number">3.2.</span> <span class="nav-text">MBProgressHUD</span></a></li></ol></li></ol></div>
             
 
           </div>
