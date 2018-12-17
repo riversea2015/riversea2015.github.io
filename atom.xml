@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-12-17T14:57:20.991Z</updated>
+  <updated>2018-12-17T15:05:15.413Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>AFNetWorking 源码学习笔记 ☞ 主体流程</title>
+    <link href="http://yoursite.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-%E4%B8%BB%E4%BD%93%E6%B5%81%E7%A8%8B/"/>
+    <id>http://yoursite.com/2018/12/17/AFNetWorking-源码学习笔记-☞-主体流程/</id>
+    <published>2018-12-17T15:02:45.000Z</published>
+    <updated>2018-12-17T15:05:15.413Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;AFNetWorking 源码学习笔记.png&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/AFNetworking/AFNetworking&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;AFNetworking&lt;/a&gt; 是使用 Objective-C 开发 iOS App 时首选的第三方网络框架，当然早期还有 ASI 的框架，不过因为长期无人维护，已很少与人使用了。本系列主要是对 AFNetWorking (3.2.1) 源码学习的一个记录，共分 5 篇进行讨论，目录如下：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/b1c9639207d2&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;AFNetWorking 源码学习笔记 ☞ 主体流程&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/569e184cc9aa&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;AFNetWorking 源码学习笔记 ☞ NSURLSession&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/77e8ab1b231e&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;AFNetWorking 源码学习笔记 ☞ Security&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/0132afd13e24&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;AFNetWorking 源码学习笔记 ☞ Serialization&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/451eb3eebda7&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;AFNetWorking 源码学习笔记 ☞ Reachability&lt;/a&gt;&lt;br&gt;
+    
+    </summary>
+    
+      <category term="源码学习笔记" scheme="http://yoursite.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+    
+      <category term="源码学习笔记" scheme="http://yoursite.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="AFNetWorking" scheme="http://yoursite.com/tags/AFNetWorking/"/>
+    
+  </entry>
   
   <entry>
     <title>SDWebImage源码学习笔记 ☞ SDImageCache</title>
