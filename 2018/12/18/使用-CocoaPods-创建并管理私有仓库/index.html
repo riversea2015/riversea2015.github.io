@@ -66,7 +66,7 @@
 
 
 
-  <meta name="keywords" content="iOS,工具,">
+  <meta name="keywords" content="CocoaPods,工具,">
 
 
 
@@ -80,7 +80,7 @@
 
 
 <meta name="description" content="CocoaPods 是一个比较常用的 iOS 依赖管理工具，我们目前的项目中就在使用，今天抽空做一个小结，记录一下在 Git 环境下如何使用 CocoaPods 创建并管理我们私有仓库。 创建私有仓库的主要步骤：  创建私有的 Spec Repo。(从未创建过私有库时需要，只需创建一次) 创建(具体的 Pod 需要的)项目工程文件。(2 和 3 二选一) 创建(具体的 Pod 对应的) xxx.">
-<meta name="keywords" content="iOS,工具">
+<meta name="keywords" content="CocoaPods,工具">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用 CocoaPods 创建并管理私有仓库">
 <meta property="og:url" content="http://yoursite.com/2018/12/18/使用-CocoaPods-创建并管理私有仓库/index.html">
@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-73468a539690d478.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-f618e8df6f6325ce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-12-17T16:03:53.535Z">
+<meta property="og:updated_time" content="2018-12-17T16:08:08.619Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用 CocoaPods 创建并管理私有仓库">
 <meta name="twitter:description" content="CocoaPods 是一个比较常用的 iOS 依赖管理工具，我们目前的项目中就在使用，今天抽空做一个小结，记录一下在 Git 环境下如何使用 CocoaPods 创建并管理我们私有仓库。 创建私有仓库的主要步骤：  创建私有的 Spec Repo。(从未创建过私有库时需要，只需创建一次) 创建(具体的 Pod 需要的)项目工程文件。(2 和 3 二选一) 创建(具体的 Pod 对应的) xxx.">
@@ -548,7 +548,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/iOS/" rel="tag"># iOS</a>
+            <a href="/tags/CocoaPods/" rel="tag"># CocoaPods</a>
           
             <a href="/tags/工具/" rel="tag"># 工具</a>
           
@@ -672,7 +672,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -740,7 +740,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、创建私有-Spec-Repo"><span class="nav-number">1.</span> <span class="nav-text">一、创建私有 Spec Repo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、创建-Pod-项目工程文件"><span class="nav-number">2.</span> <span class="nav-text">二、创建 Pod 项目工程文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-创建项目（-pod-Example）"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 创建项目（ pod + Example）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-添加库文件，并提交远端仓库"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 添加库文件，并提交远端仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#补充说明"><span class="nav-number">2.2.0.1.</span> <span class="nav-text">补充说明:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-配置-修改-xxx-podspec-文件"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 配置/修改 xxx.podspec 文件</span></a></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#三、创建-具体的Pod-对应的-xxx-podspec-文件。-“步骤二”-和-“步骤三”-2选1"><span class="nav-number">3.</span> <span class="nav-text">三、创建 具体的Pod 对应的 xxx.podspec 文件。(“步骤二” 和 “步骤三” 2选1)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、本地测试-xxx-podspec-文件及-Pod-功能"><span class="nav-number">4.</span> <span class="nav-text">四、本地测试 xxx.podspec 文件及 Pod 功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、向-Spec-Repo-提交-xxx-podspec"><span class="nav-number">5.</span> <span class="nav-text">五、向 Spec Repo 提交 xxx.podspec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、使用制作好的-Pod"><span class="nav-number">6.</span> <span class="nav-text">六、使用制作好的 Pod</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、更新维护-xxx-podspec"><span class="nav-number">7.</span> <span class="nav-text">七、更新维护 xxx.podspec</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-添加更多的子-pod"><span class="nav-number">7.1.</span> <span class="nav-text">7.1 添加更多的子 pod</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-删除、恢复私有-Spec-Repo"><span class="nav-number">7.2.</span> <span class="nav-text">7.2 删除、恢复私有 Spec Repo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-3-删除私有-Spec-Repo-下的某一个-podspec"><span class="nav-number">7.3.</span> <span class="nav-text">7.3 删除私有 Spec Repo 下的某一个 podspec</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#八、错误处理"><span class="nav-number">8.</span> <span class="nav-text">八、错误处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#参考资料："><span class="nav-number">8.1.</span> <span class="nav-text">参考资料：</span></a></li></ol></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、创建私有-Spec-Repo"><span class="nav-text">一、创建私有 Spec Repo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、创建-Pod-项目工程文件"><span class="nav-text">二、创建 Pod 项目工程文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-创建项目（-pod-Example）"><span class="nav-text">2.1 创建项目（ pod + Example）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-添加库文件，并提交远端仓库"><span class="nav-text">2.2 添加库文件，并提交远端仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#补充说明"><span class="nav-text">补充说明:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-配置-修改-xxx-podspec-文件"><span class="nav-text">2.3 配置/修改 xxx.podspec 文件</span></a></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#三、创建-具体的Pod-对应的-xxx-podspec-文件。-“步骤二”-和-“步骤三”-2选1"><span class="nav-text">三、创建 具体的Pod 对应的 xxx.podspec 文件。(“步骤二” 和 “步骤三” 2选1)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、本地测试-xxx-podspec-文件及-Pod-功能"><span class="nav-text">四、本地测试 xxx.podspec 文件及 Pod 功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、向-Spec-Repo-提交-xxx-podspec"><span class="nav-text">五、向 Spec Repo 提交 xxx.podspec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、使用制作好的-Pod"><span class="nav-text">六、使用制作好的 Pod</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、更新维护-xxx-podspec"><span class="nav-text">七、更新维护 xxx.podspec</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-添加更多的子-pod"><span class="nav-text">7.1 添加更多的子 pod</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-删除、恢复私有-Spec-Repo"><span class="nav-text">7.2 删除、恢复私有 Spec Repo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-3-删除私有-Spec-Repo-下的某一个-podspec"><span class="nav-text">7.3 删除私有 Spec Repo 下的某一个 podspec</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#八、错误处理"><span class="nav-text">八、错误处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#参考资料："><span class="nav-text">参考资料：</span></a></li></ol></li></div>
             
 
           </div>
