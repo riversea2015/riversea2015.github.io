@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-12-17T15:09:37.597Z</updated>
+  <updated>2018-12-17T15:16:10.104Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,21 +17,68 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>AFNetWorking 源码学习笔记 ☞ Serialization</title>
+    <link href="http://yoursite.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-Serialization/"/>
+    <id>http://yoursite.com/2018/12/17/AFNetWorking-源码学习笔记-☞-Serialization/</id>
+    <published>2018-12-17T15:13:19.000Z</published>
+    <updated>2018-12-17T15:16:10.104Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;AFNetWorking 源码学习笔记.png&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;本文是 AFNetWorking 源码学习笔记的第四篇，将介绍第三部分 – Serialization 目录下的文件：AFURLRequestSerialization(.h/.m) 和 AFURLResponseSerialization(.h/.m) ，仔细观察这些文件发现，AFURLRequestSerialization 和 AFURLResponseSerialization 不仅是文件名，还是 2 个协议的名称。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="源码学习笔记" scheme="http://yoursite.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+    
+      <category term="源码学习笔记" scheme="http://yoursite.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="AFNetWorking" scheme="http://yoursite.com/tags/AFNetWorking/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>AFNetWorking 源码学习笔记 ☞ Security</title>
+    <link href="http://yoursite.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-Security/"/>
+    <id>http://yoursite.com/2018/12/17/AFNetWorking-源码学习笔记-☞-Security/</id>
+    <published>2018-12-17T15:10:48.000Z</published>
+    <updated>2018-12-17T15:14:12.032Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;AFNetWorking 源码学习笔记.png&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;本文是 AFNetWorking 源码学习笔记的第三篇，本篇将介绍第二部分 – Security 目录下的类，其实只有一个就是 AFSecurityPolicy。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-309ecb42b9c3870d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;AFNetWorking-Security.png&quot;&gt;&lt;br&gt;
+    
+    </summary>
+    
+      <category term="源码学习笔记" scheme="http://yoursite.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+    
+      <category term="源码学习笔记" scheme="http://yoursite.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="AFNetWorking" scheme="http://yoursite.com/tags/AFNetWorking/"/>
+    
+  </entry>
+  
+  <entry>
     <title>AFNetWorking 源码学习笔记 ☞ NSURLSession</title>
     <link href="http://yoursite.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-NSURLSession/"/>
     <id>http://yoursite.com/2018/12/17/AFNetWorking-源码学习笔记-☞-NSURLSession/</id>
     <published>2018-12-17T15:07:23.000Z</published>
-    <updated>2018-12-17T15:09:37.597Z</updated>
+    <updated>2018-12-17T15:14:15.643Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          &lt;p&gt;&lt;img
-        
-      
+      &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;AFNetWorking 源码学习笔记.png&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;本文是 AFNetWorking 源码学习笔记的第二篇，从本篇开始每次介绍四个部分中的一个，按顺序先介绍第一部分 – NSURLSession 目录下的两个关键类 AFHTTPSessionManager 和 AFURLSessionManager。&lt;/p&gt;
+&lt;p&gt;注：标题容易让人误解，其实指的是 AFNetWorking 源码中的 NSURLSession 目录，而不是真的 NSURLSession 这个类。&lt;br&gt;
     
     </summary>
     
@@ -51,7 +98,7 @@
     <link href="http://yoursite.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-%E4%B8%BB%E4%BD%93%E6%B5%81%E7%A8%8B/"/>
     <id>http://yoursite.com/2018/12/17/AFNetWorking-源码学习笔记-☞-主体流程/</id>
     <published>2018-12-17T15:02:45.000Z</published>
-    <updated>2018-12-17T15:05:15.413Z</updated>
+    <updated>2018-12-17T15:14:14.248Z</updated>
     
     <summary type="html">
     

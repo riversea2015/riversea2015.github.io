@@ -90,7 +90,7 @@
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-8eac5a9ae89af994.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-0501a7562633de99.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-12-17T15:09:37.597Z">
+<meta property="og:updated_time" content="2018-12-17T15:14:15.643Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AFNetWorking 源码学习笔记 ☞ NSURLSession">
 <meta name="twitter:description" content="前言本文是 AFNetWorking 源码学习笔记的第二篇，从本篇开始每次介绍四个部分中的一个，按顺序先介绍第一部分 – NSURLSession 目录下的两个关键类 AFHTTPSessionManager 和 AFURLSessionManager。 注：标题容易让人误解，其实指的是 AFNetWorking 源码中的 NSURLSession 目录，而不是真的 NSURLSession 这">
@@ -409,8 +409,7 @@
       
         <p><img src="https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="AFNetWorking 源码学习笔记.png"></p>
 <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>本文是 AFNetWorking 源码学习笔记的第二篇，从本篇开始每次介绍四个部分中的一个，按顺序先介绍第一部分 – NSURLSession 目录下的两个关键类 AFHTTPSessionManager 和 AFURLSessionManager。</p>
-<p>注：标题容易让人误解，其实指的是 AFNetWorking 源码中的 NSURLSession 目录，而不是真的 NSURLSession 这个类。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2208988-8eac5a9ae89af994.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="AFNetWorking-NSURLSession.png"></p>
+<p>注：标题容易让人误解，其实指的是 AFNetWorking 源码中的 NSURLSession 目录，而不是真的 NSURLSession 这个类。<br><a id="more"></a><br><img src="https://upload-images.jianshu.io/upload_images/2208988-8eac5a9ae89af994.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="AFNetWorking-NSURLSession.png"></p>
 <h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><p>我们从整个框架对外的最直接接口 AFHTTPSessionManager.h 文件开始查看，此文件主要分三部分：</p>
 <h4 id="4个基本属性："><a href="#4个基本属性：" class="headerlink" title="4个基本属性："></a>4个基本属性：</h4><p>①baseURL：顾名思义，基础的 URL ，对于同一个 App，通常情况下，请求 url 的前半部分都是相同的，将这一部分赋值给 baseURL，发送请求时就可以使用相对路径了。<br>②requestSerializer：请求的序列化类，负责拼接参数，及对参数的编码。<br>③responseSerializer：负责对请求结果的处理，<br>④securityPolicy：安全策略类，负责对服务器证书的内部验证，即在 AFNetWorking 内部先进行一次验证。</p>
 <h4 id="创建及初始化方法"><a href="#创建及初始化方法" class="headerlink" title="创建及初始化方法"></a>创建及初始化方法</h4><p>虽然提供了3种看似不同的创建及初始化方法(见下方代码)，实际上前两者只是对后者不同程度的封装，最终都是调用了最后一个参数最多的初始化方法。</p>
@@ -528,6 +527,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/12/17/AFNetWorking-源码学习笔记-☞-Security/" rel="prev" title="AFNetWorking 源码学习笔记 ☞ Security">
+                AFNetWorking 源码学习笔记 ☞ Security <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -605,7 +608,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

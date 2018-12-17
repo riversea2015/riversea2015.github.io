@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/riversea2015.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/riversea2015.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/riversea2015.png?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="iOS,源码学习笔记,AFNetWorking,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="riversea2015的博客" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="前言本文是 AFNetWorking 源码学习笔记的第三篇，本篇将介绍第二部分 – Security 目录下的类，其实只有一个就是 AFSecurityPolicy。">
+<meta name="keywords" content="iOS,源码学习笔记,AFNetWorking">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AFNetWorking 源码学习笔记 ☞ Security">
+<meta property="og:url" content="http://yoursite.com/2018/12/17/AFNetWorking-源码学习笔记-☞-Security/index.html">
+<meta property="og:site_name" content="riversea2015的博客">
+<meta property="og:description" content="前言本文是 AFNetWorking 源码学习笔记的第三篇，本篇将介绍第二部分 – Security 目录下的类，其实只有一个就是 AFSecurityPolicy。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-309ecb42b9c3870d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-12-17T15:14:12.032Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AFNetWorking 源码学习笔记 ☞ Security">
+<meta name="twitter:description" content="前言本文是 AFNetWorking 源码学习笔记的第三篇，本篇将介绍第二部分 – Security 目录下的类，其实只有一个就是 AFSecurityPolicy。">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/17/AFNetWorking-源码学习笔记-☞-Security/">
+
+
+
+
+
+  <title>AFNetWorking 源码学习笔记 ☞ Security | riversea2015的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">riversea2015的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">既然选择了远方，便只顾风雨兼程！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/17/AFNetWorking-源码学习笔记-☞-Security/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="He Hai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/riversea2015.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="riversea2015的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">AFNetWorking 源码学习笔记 ☞ Security</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-17T23:10:48+08:00">
+                2018-12-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/源码学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">源码学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2k 字
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="AFNetWorking 源码学习笔记.png"></p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>本文是 AFNetWorking 源码学习笔记的第三篇，本篇将介绍第二部分 – Security 目录下的类，其实只有一个就是 AFSecurityPolicy。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2208988-309ecb42b9c3870d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="AFNetWorking-Security.png"><br><a id="more"></a></p>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><p>依照惯例，先从声明文件开始，打开 AFSecurityPolicy.h 文件，我们发现内容非常少，只有 4 个属性和 5 个方法。</p>
+<p>首先来看看这几个属性，各自的作用见代码注释。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根据 SSL 证书验证 server trust 的标准，默认为不验证。</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) AFSSLPinningMode SSLPinningMode;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据 SSL pinning mode 验证 server trust  的证书</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>, <span class="keyword">nullable</span>) <span class="built_in">NSSet</span> &lt;<span class="built_in">NSData</span> *&gt; *pinnedCertificates;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 是否允许无效或已经过期的 SSL 证书。</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="built_in">BOOL</span> allowInvalidCertificates;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 是否验证证书中的域名，默认为 YES。</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="built_in">BOOL</span> validatesDomainName;</span><br></pre></td></tr></table></figure>
+<p>然后再来看看它提供的 5 个代理方法，</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="built_in">NSSet</span> &lt;<span class="built_in">NSData</span> *&gt; *)certificatesInBundle:(<span class="built_in">NSBundle</span> *)bundle;</span><br></pre></td></tr></table></figure>
+<p>此类方法的作用是获取 Bundle 中的所有证书文件（xxx.cer）存放在 set 里边。</p>
+<figure class="highlight elm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+ (instance<span class="keyword">type</span>)defaultPolicy;</span><br><span class="line">+ (instance<span class="keyword">type</span>)policyWithPinningMode:(<span class="type">AFSSLPinningMode</span>)pinningMode；</span><br><span class="line">+ (instance<span class="keyword">type</span>)policyWithPinningMode:(<span class="type">AFSSLPinningMode</span>)pinningMode withPinnedCertificates:(<span class="type">NSSet</span> *)pinnedCertificates;</span><br></pre></td></tr></table></figure>
+<p>这 3 个方法都在创建 AFSecurityPolicy 对象，第一个默认将属性 SSLPinningMode 设置为 AFSSLPinningModeNone，即不做验证；第二个可以指定 SSLPinningMode，最后一个还可以指定 pinnedCertificates。</p>
+<p>下边这个实例方法负责基于当前安全策略评估传入的 serverTrust 是否可以接受，也就是我们在上一篇中接受认证挑战时掉那个的方法。</p>
+<figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- <span class="params">(BOOL)</span>evaluateServerTrust:<span class="params">(SecTrustRef)</span>serverTrust</span><br><span class="line">                  forDomain:<span class="params">(nullable NSString *)</span>domain;</span><br></pre></td></tr></table></figure>
+<p>接下来，我们看看 .m 文件，这里就只介绍其中的两个主要方法实现。第一个是 <code>- (void)setPinnedCertificates:(NSSet *)pinnedCertificates</code>，这里不仅给 _pinnedCertificates 赋值，而且取出了所有证书中的公钥（public key），存放到集合 self.pinnedPublicKeys 里边。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)setPinnedCertificates:(<span class="built_in">NSSet</span> *)pinnedCertificates &#123;</span><br><span class="line">    <span class="comment">// 1.给 _pinnedCertificates 赋值</span></span><br><span class="line">    _pinnedCertificates = pinnedCertificates;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2.给 self.pinnedPublicKeys 赋值，值是从 Certificates 中提取的 publicKeys</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.pinnedCertificates) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">NSMutableSet</span> *mutablePinnedPublicKeys = [<span class="built_in">NSMutableSet</span> setWithCapacity:[<span class="keyword">self</span>.pinnedCertificates count]];</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">NSData</span> *certificate <span class="keyword">in</span> <span class="keyword">self</span>.pinnedCertificates) &#123;</span><br><span class="line">            <span class="keyword">id</span> publicKey = AFPublicKeyForCertificate(certificate);</span><br><span class="line">            <span class="keyword">if</span> (!publicKey) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            [mutablePinnedPublicKeys addObject:publicKey];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">self</span>.pinnedPublicKeys = [<span class="built_in">NSSet</span> setWithSet:mutablePinnedPublicKeys];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">self</span>.pinnedPublicKeys = <span class="literal">nil</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>提取 Certificate 中的 public key 时，利用了 <code>AFPublicKeyForCertificate()</code> 这个静态函数，下面来看看它的具体实现。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">id</span> AFPublicKeyForCertificate(<span class="built_in">NSData</span> *certificate) &#123;</span><br><span class="line">    <span class="comment">// 1.初始化会用到的局部变量</span></span><br><span class="line">    <span class="keyword">id</span> allowedPublicKey = <span class="literal">nil</span>;</span><br><span class="line">    SecCertificateRef allowedCertificate;</span><br><span class="line">    SecPolicyRef policy = <span class="literal">nil</span>;</span><br><span class="line">    SecTrustRef allowedTrust = <span class="literal">nil</span>;</span><br><span class="line">    SecTrustResultType result;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2.提取公钥</span></span><br><span class="line">    <span class="comment">// ① 根据传入的二进制证书数据生成一个 SecCertificateRef 类型的证书，并验证结果</span></span><br><span class="line">    allowedCertificate = SecCertificateCreateWithData(<span class="literal">NULL</span>, (__bridge <span class="built_in">CFDataRef</span>)certificate);</span><br><span class="line">    __Require_Quiet(allowedCertificate != <span class="literal">NULL</span>, _<span class="keyword">out</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ② 生成一个默认 X.509 policy 的实例</span></span><br><span class="line">    policy = SecPolicyCreateBasicX509();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ③ 基于证书 (allowedCertificate) 和安全策略 (policy) 创建一个信任管理对象 (a trust management object)</span></span><br><span class="line">    __Require_noErr_Quiet(SecTrustCreateWithCertificates(allowedCertificate, policy, &amp;allowedTrust), _<span class="keyword">out</span>);</span><br><span class="line">    <span class="comment">// ④ 利用步骤 ③ 创建的 allowedTrust 校验证书，并将结果写入 result，不过后边好像没有用到它</span></span><br><span class="line">    __Require_noErr_Quiet(SecTrustEvaluate(allowedTrust, &amp;result), _<span class="keyword">out</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ⑤ 验证通过后，从 allowedTrust 中获取公钥</span></span><br><span class="line">    allowedPublicKey = (__bridge_transfer <span class="keyword">id</span>)SecTrustCopyPublicKey(allowedTrust);</span><br><span class="line"></span><br><span class="line">_<span class="keyword">out</span>:</span><br><span class="line">    <span class="comment">// 3.释放内存</span></span><br><span class="line">    <span class="keyword">if</span> (allowedTrust) &#123;</span><br><span class="line">        <span class="built_in">CFRelease</span>(allowedTrust);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (policy) &#123;</span><br><span class="line">        <span class="built_in">CFRelease</span>(policy);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (allowedCertificate) &#123;</span><br><span class="line">        <span class="built_in">CFRelease</span>(allowedCertificate);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> allowedPublicKey;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从上边的代码中我们发现，重点在第 2 步获取公钥的代码，具体内容建代码注释，这里就不啰嗦了。其中用到了系统提供的 2 个宏：<code>__Require_Quiet</code> 和 <code>__Require_noErr_Quiet</code>，下边来看看他们的定义：</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#ifndef __Require_Quiet</span></span><br><span class="line">	<span class="comment">#define __Require_Quiet(assertion, exceptionLabel)                            \</span></span><br><span class="line">	  <span class="keyword">do</span>                                                                          <span class="string">\</span></span><br><span class="line">	  &#123;                                                                           <span class="string">\</span></span><br><span class="line">		  <span class="keyword">if</span> ( __builtin_expect(!(assertion), <span class="number">0</span>) )                                <span class="string">\</span></span><br><span class="line">		  &#123;                                                                       <span class="string">\</span></span><br><span class="line">			  goto exceptionLabel;                                                <span class="string">\</span></span><br><span class="line">		  &#125;                                                                       <span class="string">\</span></span><br><span class="line">	  &#125; <span class="keyword">while</span> ( <span class="number">0</span> )</span><br><span class="line"><span class="comment">#endif</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#ifndef __Require_noErr_Quiet</span></span><br><span class="line">	<span class="comment">#define __Require_noErr_Quiet(errorCode, exceptionLabel)                      \</span></span><br><span class="line">	  <span class="keyword">do</span>                                                                          <span class="string">\</span></span><br><span class="line">	  &#123;                                                                           <span class="string">\</span></span><br><span class="line">		  <span class="keyword">if</span> ( __builtin_expect(<span class="number">0</span> != (errorCode), <span class="number">0</span>) )                            <span class="string">\</span></span><br><span class="line">		  &#123;                                                                       <span class="string">\</span></span><br><span class="line">			  goto exceptionLabel;                                                <span class="string">\</span></span><br><span class="line">		  &#125;                                                                       <span class="string">\</span></span><br><span class="line">	  &#125; <span class="keyword">while</span> ( <span class="number">0</span> )</span><br><span class="line"><span class="comment">#endif</span></span><br></pre></td></tr></table></figure>
+<p>从定义可以看出，对于 <strong>Require_Quiet，当入参 assertion 为空的时候，会跳转到 exceptionLabel 所在位置去继续执行；而 </strong>Require_noErr_Quiet，是当入参 errorCode != 0 即出错的时候会跳转至 exceptionLabel 所在行继续执行。</p>
+<h5 id="核心方法"><a href="#核心方法" class="headerlink" title="核心方法"></a>核心方法</h5><p>下边我们来看看 <a href="https://www.jianshu.com/p/569e184cc9aa" target="_blank" rel="noopener">上一篇</a> 提到过的方法 <code>evaluateServerTrust: forDomain:</code>，该方法是 AFNetWorking 自己提前做的一次 HTTPS 认证，用于验证服务器是否合法，如果验证不通过就不再继续调用系统方法验证了。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">BOOL</span>)evaluateServerTrust:(SecTrustRef)serverTrust</span><br><span class="line">                  forDomain:(<span class="built_in">NSString</span> *)domain</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 1.过滤</span></span><br><span class="line">    <span class="comment">// 域名存在 &amp;&amp; 允许自签名证书 &amp;&amp; 需要验证域名 &amp;&amp; (要求不做验证 || 没有证书)</span></span><br><span class="line">    <span class="keyword">if</span> (domain &amp;&amp; <span class="keyword">self</span>.allowInvalidCertificates &amp;&amp; <span class="keyword">self</span>.validatesDomainName &amp;&amp; (<span class="keyword">self</span>.SSLPinningMode == AFSSLPinningModeNone || [<span class="keyword">self</span>.pinnedCertificates count] == <span class="number">0</span>)) &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"In order to validate a domain name for self signed certificates, you MUST use pinning."</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NO</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2.准备安全策略，并将其设置到 serverTrust 里边，以备后边验证使用</span></span><br><span class="line">    <span class="built_in">NSMutableArray</span> *policies = [<span class="built_in">NSMutableArray</span> array];</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.validatesDomainName) &#123;</span><br><span class="line">        [policies addObject:(__bridge_transfer <span class="keyword">id</span>)SecPolicyCreateSSL(<span class="literal">true</span>, (__bridge <span class="built_in">CFStringRef</span>)domain)];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        [policies addObject:(__bridge_transfer <span class="keyword">id</span>)SecPolicyCreateBasicX509()];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Sets the policies to use in an evaluation.</span></span><br><span class="line">    SecTrustSetPolicies(serverTrust, (__bridge <span class="built_in">CFArrayRef</span>)policies);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3.再次过滤</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.SSLPinningMode == AFSSLPinningModeNone) &#123;</span><br><span class="line">        <span class="comment">// 不验证的情况下</span></span><br><span class="line">        <span class="comment">// 如果允许自签名证书或者 serverTrust 验证成功时，返回 YES</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span>.allowInvalidCertificates || AFServerTrustIsValid(serverTrust);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!AFServerTrustIsValid(serverTrust) &amp;&amp; !<span class="keyword">self</span>.allowInvalidCertificates) &#123;</span><br><span class="line">        <span class="comment">// 如果 serverTrust 验证失败 &amp;&amp; 不允许自签名证书，则返回 NO</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NO</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 4.验证</span></span><br><span class="line">    <span class="keyword">switch</span> (<span class="keyword">self</span>.SSLPinningMode) &#123;</span><br><span class="line">        <span class="keyword">case</span> AFSSLPinningModeNone:</span><br><span class="line">            <span class="comment">/**</span></span><br><span class="line"><span class="comment">             *  1.不验证</span></span><br><span class="line"><span class="comment">             *</span></span><br><span class="line"><span class="comment">             *  但 紧上边的那个 if-else 语句已经处理了 AFSSLPinningModeNone 的情况，这里还做这个判断有意义吗？难道是是为了看起来完整。</span></span><br><span class="line"><span class="comment">             */</span></span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">NO</span>;</span><br><span class="line">        <span class="keyword">case</span> AFSSLPinningModeCertificate: &#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">/**</span></span><br><span class="line"><span class="comment">             *  2.验证证书</span></span><br><span class="line"><span class="comment">             *</span></span><br><span class="line"><span class="comment">             *  从serverTrust中去获取证书链，然后和我们一开始初始化设置的证书集合self.pinnedCertificates去匹配，如果有一对能匹配成功的，就返回YES，否则NO。</span></span><br><span class="line"><span class="comment">             */</span></span><br><span class="line">            <span class="built_in">NSMutableArray</span> *pinnedCertificates = [<span class="built_in">NSMutableArray</span> array];</span><br><span class="line">            <span class="keyword">for</span> (<span class="built_in">NSData</span> *certificateData <span class="keyword">in</span> <span class="keyword">self</span>.pinnedCertificates) &#123;</span><br><span class="line">                [pinnedCertificates addObject:(__bridge_transfer <span class="keyword">id</span>)SecCertificateCreateWithData(<span class="literal">NULL</span>, (__bridge <span class="built_in">CFDataRef</span>)certificateData)];</span><br><span class="line">            &#125;</span><br><span class="line">            SecTrustSetAnchorCertificates(serverTrust, (__bridge <span class="built_in">CFArrayRef</span>)pinnedCertificates);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (!AFServerTrustIsValid(serverTrust)) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">NO</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// obtain the chain after being validated, which *should* contain the pinned certificate in the last position (if it's the Root CA)</span></span><br><span class="line">            <span class="built_in">NSArray</span> *serverCertificates = AFCertificateTrustChainForServerTrust(serverTrust);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (<span class="built_in">NSData</span> *trustChainCertificate <span class="keyword">in</span> [serverCertificates reverseObjectEnumerator]) &#123;</span><br><span class="line">                <span class="keyword">if</span> ([<span class="keyword">self</span>.pinnedCertificates containsObject:trustChainCertificate]) &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">NO</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">case</span> AFSSLPinningModePublicKey: &#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">/**</span></span><br><span class="line"><span class="comment">             *  3.验证公钥</span></span><br><span class="line"><span class="comment">             *</span></span><br><span class="line"><span class="comment">             *  从serverTrust，获取证书链每一个证书的公钥，放到数组中。和我们的self.pinnedPublicKeys，去配对，如果有一个相同的，就返回YES，否则NO。</span></span><br><span class="line"><span class="comment">             */</span></span><br><span class="line">            <span class="built_in">NSUInteger</span> trustedPublicKeyCount = <span class="number">0</span>;</span><br><span class="line">            <span class="built_in">NSArray</span> *publicKeys = AFPublicKeyTrustChainForServerTrust(serverTrust);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">id</span> trustChainPublicKey <span class="keyword">in</span> publicKeys) &#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">id</span> pinnedPublicKey <span class="keyword">in</span> <span class="keyword">self</span>.pinnedPublicKeys) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (AFSecKeyIsEqualToKey((__bridge SecKeyRef)trustChainPublicKey, (__bridge SecKeyRef)pinnedPublicKey)) &#123;</span><br><span class="line">                        trustedPublicKeyCount += <span class="number">1</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> trustedPublicKeyCount &gt; <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NO</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码稍微有点长，不过主要做了这些事：</p>
+<ul>
+<li>过滤一些特殊情况：域名存在 &amp;&amp; 允许自签名证书 &amp;&amp; 需要验证域名 &amp;&amp; (要求不做验证 || 没有证书)；</li>
+<li>准备安全策略，并将其设置到 serverTrust 里边，以备后边验证使用；</li>
+<li>再次过滤：不验证、serverTrust 验证失败 &amp;&amp; 不允许自签名证书 的情况；</li>
+<li>开始验证，根据 self.SSLPinningMode 分成了几种情况分别验证：<ul>
+<li>1.不验证</li>
+<li>2.验证证书</li>
+<li>3.验证公钥</li>
+</ul>
+</li>
+</ul>
+<p>这一步的验证中又用到了几个静态函数，下边来简单看一下。</p>
+<ul>
+<li>验证serverTrust 是否有效，调用了系统方法 SecTrustEvaluate() 进行校验。</li>
+</ul>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="type">BOOL</span> <span class="type">AFServerTrustIsValid</span>(<span class="type">SecTrustRef</span> serverTrust) &#123;</span><br><span class="line">    <span class="type">BOOL</span> isValid = <span class="type">NO</span>;</span><br><span class="line">    <span class="type">SecTrustResultType</span> <span class="literal">result</span>;</span><br><span class="line">    __Require_noErr_Quiet(<span class="type">SecTrustEvaluate</span>(serverTrust, &amp;<span class="literal">result</span>), _out);</span><br><span class="line"></span><br><span class="line">    // 只有当 <span class="string">"用户未指定验证的策略，即使用系统提供的默认策略"</span> 或者 <span class="string">"要求永远信任"</span> 的时候，才会返回 <span class="type">YES</span>，其他时候都是 <span class="type">NO</span>。</span><br><span class="line">    isValid = (<span class="literal">result</span> == kSecTrustResultUnspecified || <span class="literal">result</span> == kSecTrustResultProceed);</span><br><span class="line"></span><br><span class="line">_out:</span><br><span class="line">    <span class="keyword">return</span> isValid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>取出 serverTrust 里边的所有证书，将其二进制文件组成的数组返回。</li>
+</ul>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="built_in">NSArray</span> * AFCertificateTrustChainForServerTrust(SecTrustRef serverTrust) &#123;</span><br><span class="line">    <span class="built_in">CFIndex</span> certificateCount = SecTrustGetCertificateCount(serverTrust);</span><br><span class="line">    <span class="built_in">NSMutableArray</span> *trustChain = [<span class="built_in">NSMutableArray</span> arrayWithCapacity:(<span class="built_in">NSUInteger</span>)certificateCount];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">CFIndex</span> i = <span class="number">0</span>; i &lt; certificateCount; i++) &#123;</span><br><span class="line">        SecCertificateRef certificate = SecTrustGetCertificateAtIndex(serverTrust, i);</span><br><span class="line">        [trustChain addObject:(__bridge_transfer <span class="built_in">NSData</span> *)SecCertificateCopyData(certificate)];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">NSArray</span> arrayWithArray:trustChain];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>取出 serverTrust 里边的所有证书，然后遍历证书取出其中的 public key，将公钥组成的数组返回。</li>
+</ul>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="built_in">NSArray</span> * AFPublicKeyTrustChainForServerTrust(SecTrustRef serverTrust) &#123;</span><br><span class="line">    SecPolicyRef policy = SecPolicyCreateBasicX509();</span><br><span class="line">    <span class="built_in">CFIndex</span> certificateCount = SecTrustGetCertificateCount(serverTrust);</span><br><span class="line">    <span class="built_in">NSMutableArray</span> *trustChain = [<span class="built_in">NSMutableArray</span> arrayWithCapacity:(<span class="built_in">NSUInteger</span>)certificateCount];</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">CFIndex</span> i = <span class="number">0</span>; i &lt; certificateCount; i++) &#123;</span><br><span class="line">        SecCertificateRef certificate = SecTrustGetCertificateAtIndex(serverTrust, i);</span><br><span class="line"></span><br><span class="line">        SecCertificateRef someCertificates[] = &#123;certificate&#125;;</span><br><span class="line">        <span class="built_in">CFArrayRef</span> certificates = <span class="built_in">CFArrayCreate</span>(<span class="literal">NULL</span>, (<span class="keyword">const</span> <span class="keyword">void</span> **)someCertificates, <span class="number">1</span>, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">        SecTrustRef trust;</span><br><span class="line">        __Require_noErr_Quiet(SecTrustCreateWithCertificates(certificates, policy, &amp;trust), _<span class="keyword">out</span>);</span><br><span class="line"></span><br><span class="line">        SecTrustResultType result;</span><br><span class="line">        __Require_noErr_Quiet(SecTrustEvaluate(trust, &amp;result), _<span class="keyword">out</span>);</span><br><span class="line"></span><br><span class="line">        [trustChain addObject:(__bridge_transfer <span class="keyword">id</span>)SecTrustCopyPublicKey(trust)];</span><br><span class="line"></span><br><span class="line">    _<span class="keyword">out</span>:</span><br><span class="line">        <span class="keyword">if</span> (trust) &#123;</span><br><span class="line">            <span class="built_in">CFRelease</span>(trust);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (certificates) &#123;</span><br><span class="line">            <span class="built_in">CFRelease</span>(certificates);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">CFRelease</span>(policy);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">NSArray</span> arrayWithArray:trustChain];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>以上就是安全验证过程中会使用到的类 AFSecurityPolicy 中的主要内容，其他部分本文暂不做过多讨论，以后有时间再更新吧。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/源码学习笔记/" rel="tag"># 源码学习笔记</a>
+          
+            <a href="/tags/AFNetWorking/" rel="tag"># AFNetWorking</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/17/AFNetWorking-源码学习笔记-☞-NSURLSession/" rel="next" title="AFNetWorking 源码学习笔记 ☞ NSURLSession">
+                <i class="fa fa-chevron-left"></i> AFNetWorking 源码学习笔记 ☞ NSURLSession
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/17/AFNetWorking-源码学习笔记-☞-Serialization/" rel="prev" title="AFNetWorking 源码学习笔记 ☞ Serialization">
+                AFNetWorking 源码学习笔记 ☞ Serialization <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/riversea2015.png" alt="He Hai">
+            
+              <p class="site-author-name" itemprop="name">He Hai</p>
+              <p class="site-description motion-element" itemprop="description">iOSer：OC & Swift</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/riversea2015" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:hehai682@126.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/riversea2015" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>微博</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/71f817a3a70b" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-book"></i>简书</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#核心方法"><span class="nav-number">2.0.1.</span> <span class="nav-text">核心方法</span></a></li></ol></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">3.</span> <span class="nav-text">小结</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">He Hai</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
