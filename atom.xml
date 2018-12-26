@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-12-17T16:23:53.840Z</updated>
+  <updated>2018-12-25T13:53:02.874Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,20 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>发生在 main() 之前</title>
+    <link href="http://yoursite.com/2018/12/23/%E5%8F%91%E7%94%9F%E5%9C%A8-main-%E4%B9%8B%E5%89%8D/"/>
+    <id>http://yoursite.com/2018/12/23/发生在-main-之前/</id>
+    <published>2018-12-23T03:12:00.000Z</published>
+    <updated>2018-12-25T13:53:02.874Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>使用 CocoaPods 创建并管理私有仓库</title>
@@ -35,7 +49,7 @@
 &lt;li&gt;本地测试 xxx.podspec 文件及 Pod 库 功能。&lt;/li&gt;
 &lt;li&gt;向私有的 Spec Repo 中提交 xxx.podspec。&lt;/li&gt;
 &lt;li&gt;使用创建好的 Pod 库。&lt;/li&gt;
-&lt;li&gt;更新维护 xxx.podspec。
+&lt;li&gt;更新维护 xxx.podspec。&lt;/li&gt;&lt;/ul&gt;
     
     </summary>
     
@@ -59,7 +73,7 @@
     
       &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;AFNetWorking 源码学习笔记.png&quot;&gt;&lt;/p&gt;
 &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;本文是 AFNetWorking 源码学习笔记的第五篇，本篇将介绍第四部分 – Reachability 目录下的类，也就是 AFNetworkReachabilityManager。&lt;/p&gt;
-&lt;p&gt;虽然之前经历的几个项目里边都是对苹果提供的 &lt;a href=&quot;https://developer.apple.com/library/ios/samplecode/reachability/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Reachability&lt;/a&gt; 进行了一次封装，不过，还是有必要学习一下 AFNetWorking 中监听网络状态的类 AFNetworkReachabilityManager，也就是本文的重点。&lt;br&gt;
+&lt;p&gt;虽然之前经历的几个项目里边都是对苹果提供的 &lt;a href=&quot;https://developer.apple.com/library/ios/samplecode/reachability/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Reachability&lt;/a&gt; 进行了一次封装，不过，还是有必要学习一下 AFNetWorking 中监听网络状态的类 AFNetworkReachabilityManager，也就是本文的重点。&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
@@ -84,7 +98,7 @@
     <summary type="html">
     
       &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;AFNetWorking 源码学习笔记.png&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;本文是 AFNetWorking 源码学习笔记的第四篇，将介绍第三部分 – Serialization 目录下的文件：AFURLRequestSerialization(.h/.m) 和 AFURLResponseSerialization(.h/.m) ，仔细观察这些文件发现，AFURLRequestSerialization 和 AFURLResponseSerialization 不仅是文件名，还是 2 个协议的名称。&lt;br&gt;
+&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;本文是 AFNetWorking 源码学习笔记的第四篇，将介绍第三部分 – Serialization 目录下的文件：AFURLRequestSerialization(.h/.m) 和 AFURLResponseSerialization(.h/.m) ，仔细观察这些文件发现，AFURLRequestSerialization 和 AFURLResponseSerialization 不仅是文件名，还是 2 个协议的名称。&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
@@ -110,7 +124,7 @@
     
       &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;AFNetWorking 源码学习笔记.png&quot;&gt;&lt;/p&gt;
 &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;本文是 AFNetWorking 源码学习笔记的第三篇，本篇将介绍第二部分 – Security 目录下的类，其实只有一个就是 AFSecurityPolicy。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-309ecb42b9c3870d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;AFNetWorking-Security.png&quot;&gt;&lt;br&gt;
+&lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-309ecb42b9c3870d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;AFNetWorking-Security.png&quot;&gt;&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
@@ -136,7 +150,7 @@
     
       &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;AFNetWorking 源码学习笔记.png&quot;&gt;&lt;/p&gt;
 &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;本文是 AFNetWorking 源码学习笔记的第二篇，从本篇开始每次介绍四个部分中的一个，按顺序先介绍第一部分 – NSURLSession 目录下的两个关键类 AFHTTPSessionManager 和 AFURLSessionManager。&lt;/p&gt;
-&lt;p&gt;注：标题容易让人误解，其实指的是 AFNetWorking 源码中的 NSURLSession 目录，而不是真的 NSURLSession 这个类。&lt;br&gt;
+&lt;p&gt;注：标题容易让人误解，其实指的是 AFNetWorking 源码中的 NSURLSession 目录，而不是真的 NSURLSession 这个类。&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
@@ -162,7 +176,7 @@
     
       &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;AFNetWorking 源码学习笔记.png&quot;&gt;&lt;/p&gt;
 &lt;h3 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/AFNetworking/AFNetworking&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;AFNetworking&lt;/a&gt; 是使用 Objective-C 开发 iOS App 时首选的第三方网络框架，当然早期还有 ASI 的框架，不过因为长期无人维护，已很少与人使用了。本系列主要是对 AFNetWorking (3.2.1) 源码学习的一个记录，共分 5 篇进行讨论，目录如下：&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/b1c9639207d2&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;AFNetWorking 源码学习笔记 ☞ 主体流程&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/569e184cc9aa&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;AFNetWorking 源码学习笔记 ☞ NSURLSession&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/77e8ab1b231e&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;AFNetWorking 源码学习笔记 ☞ Security&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/0132afd13e24&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;AFNetWorking 源码学习笔记 ☞ Serialization&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/451eb3eebda7&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;AFNetWorking 源码学习笔记 ☞ Reachability&lt;/a&gt;&lt;br&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/b1c9639207d2&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;AFNetWorking 源码学习笔记 ☞ 主体流程&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/569e184cc9aa&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;AFNetWorking 源码学习笔记 ☞ NSURLSession&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/77e8ab1b231e&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;AFNetWorking 源码学习笔记 ☞ Security&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/0132afd13e24&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;AFNetWorking 源码学习笔记 ☞ Serialization&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/451eb3eebda7&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;AFNetWorking 源码学习笔记 ☞ Reachability&lt;/a&gt;&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
@@ -187,7 +201,7 @@
     <summary type="html">
     
       &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;SDWebImage-源码学习笔记.png&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;这是本系列的第 5 篇，也是最后一篇，主要讨论处理缓存的类 &lt;code&gt;SDImageCache&lt;/code&gt; 及相关类 &lt;code&gt;SDMemoryCache&lt;/code&gt; 、&lt;code&gt;SDImageCacheConfig&lt;/code&gt; 等。&lt;br&gt;
+&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;这是本系列的第 5 篇，也是最后一篇，主要讨论处理缓存的类 &lt;code&gt;SDImageCache&lt;/code&gt; 及相关类 &lt;code&gt;SDMemoryCache&lt;/code&gt; 、&lt;code&gt;SDImageCacheConfig&lt;/code&gt; 等。&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
@@ -212,7 +226,7 @@
     <summary type="html">
     
       &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;SDWebImage-源码学习笔记.png&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;这是本系列的第 4 篇，本篇将主要介绍 &lt;code&gt;SDWebImageDownloader&lt;/code&gt; 这个负责下载的类，当然还有一些相关类及协议，如： &lt;code&gt;SDWebImageDownloadToken&lt;/code&gt;、&lt;code&gt;SDWebImageDownloaderOperation&lt;/code&gt; 和 &lt;code&gt;SDWebImageDownloaderOperationInterface&lt;/code&gt; 等。&lt;br&gt;
+&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;这是本系列的第 4 篇，本篇将主要介绍 &lt;code&gt;SDWebImageDownloader&lt;/code&gt; 这个负责下载的类，当然还有一些相关类及协议，如： &lt;code&gt;SDWebImageDownloadToken&lt;/code&gt;、&lt;code&gt;SDWebImageDownloaderOperation&lt;/code&gt; 和 &lt;code&gt;SDWebImageDownloaderOperationInterface&lt;/code&gt; 等。&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
@@ -237,7 +251,7 @@
     <summary type="html">
     
       &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;SDWebImage-源码学习笔记.png&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;这是本系列的第 3 篇，在前一篇中，我们了解了 SDWebImage 执行的基本流程，本篇就来介绍第一个核心类 &lt;code&gt;SDWebImageMananger&lt;/code&gt;。&lt;br&gt;
+&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;这是本系列的第 3 篇，在前一篇中，我们了解了 SDWebImage 执行的基本流程，本篇就来介绍第一个核心类 &lt;code&gt;SDWebImageMananger&lt;/code&gt;。&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
@@ -262,7 +276,7 @@
     <summary type="html">
     
       &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;SDWebImage-源码学习笔记.png&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;这是本系列的第 2 篇，本篇的目的如题所示，就是了解 SDWebImage 这个常用框架的文件结构，然后通过案例梳理流程，作为后边章节的主线。&lt;br&gt;
+&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;这是本系列的第 2 篇，本篇的目的如题所示，就是了解 SDWebImage 这个常用框架的文件结构，然后通过案例梳理流程，作为后边章节的主线。&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
@@ -293,7 +307,7 @@
 &lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/99c9564043d2&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SDWebImage源码学习笔记 ☞ 结构及基本流程&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/221b335cc760&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SDWebImage源码学习笔记 ☞ SDWebImageManager&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/06071cba3404&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SDWebImage源码学习笔记 ☞ SDWebImageDownloader&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/e3f4a7f57899&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SDWebImage源码学习笔记 ☞ SDImageCache&lt;/a&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/e3f4a7f57899&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SDWebImage源码学习笔记 ☞ SDImageCache&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
     
     </summary>
     
@@ -313,14 +327,14 @@
     <link href="http://yoursite.com/2018/12/16/MBProgressHUD-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     <id>http://yoursite.com/2018/12/16/MBProgressHUD-源码学习笔记/</id>
     <published>2018-12-16T06:20:59.000Z</published>
-    <updated>2018-12-22T00:52:18.428Z</updated>
+    <updated>2018-12-22T00:54:04.572Z</updated>
     
     <summary type="html">
     
       &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-91ab1cfdab440c59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;MBProgressHUD 源码学习笔记.png&quot;&gt;&lt;/p&gt;
 &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/jdg/MBProgressHUD&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;MBProgressHUD&lt;/a&gt; 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。&lt;/p&gt;
 &lt;h3 id=&quot;视图层级&quot;&gt;&lt;a href=&quot;#视图层级&quot; class=&quot;headerlink&quot; title=&quot;视图层级&quot;&gt;&lt;/a&gt;视图层级&lt;/h3&gt;&lt;p&gt;在开始学习源码之前，先大概了解一下整个视图的层级结构吧，主要分这几个视图：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-c8735aee9340c963.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;视图层级.png&quot;&gt;&lt;br&gt;
+&lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-c8735aee9340c963.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;视图层级.png&quot;&gt;&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
@@ -344,7 +358,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&quot;https://hexo.io/docs/troubleshooting.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&quot;https://github.com/hexojs/hexo/issues&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;GitHub&lt;/a&gt;.&lt;br&gt;
+      &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&quot;https://hexo.io/docs/troubleshooting.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&quot;https://github.com/hexojs/hexo/issues&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;GitHub&lt;/a&gt;.&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
