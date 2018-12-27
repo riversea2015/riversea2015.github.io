@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-12-25T13:53:02.874Z</updated>
+  <updated>2018-12-17T16:23:53.840Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,20 +15,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>发生在 main() 之前</title>
-    <link href="http://yoursite.com/2018/12/23/%E5%8F%91%E7%94%9F%E5%9C%A8-main-%E4%B9%8B%E5%89%8D/"/>
-    <id>http://yoursite.com/2018/12/23/发生在-main-之前/</id>
-    <published>2018-12-23T03:12:00.000Z</published>
-    <updated>2018-12-25T13:53:02.874Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-    
-  </entry>
   
   <entry>
     <title>使用 CocoaPods 创建并管理私有仓库</title>
