@@ -5,9 +5,9 @@
   <subtitle>既然选择了远方，便只顾风雨兼程！</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
+  <link href="https://devhe.com/"/>
   <updated>2018-12-17T16:23:53.840Z</updated>
-  <id>http://yoursite.com/</id>
+  <id>https://devhe.com/</id>
   
   <author>
     <name>He Hai</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>使用 CocoaPods 创建并管理私有仓库</title>
-    <link href="http://yoursite.com/2018/12/18/%E4%BD%BF%E7%94%A8-CocoaPods-%E5%88%9B%E5%BB%BA%E5%B9%B6%E7%AE%A1%E7%90%86%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93/"/>
-    <id>http://yoursite.com/2018/12/18/使用-CocoaPods-创建并管理私有仓库/</id>
+    <link href="https://devhe.com/2018/12/18/%E4%BD%BF%E7%94%A8-CocoaPods-%E5%88%9B%E5%BB%BA%E5%B9%B6%E7%AE%A1%E7%90%86%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93/"/>
+    <id>https://devhe.com/2018/12/18/使用-CocoaPods-创建并管理私有仓库/</id>
     <published>2018-12-17T16:01:23.000Z</published>
     <updated>2018-12-17T16:23:53.840Z</updated>
     
@@ -39,19 +39,19 @@
     
     </summary>
     
-      <category term="工具" scheme="http://yoursite.com/categories/%E5%B7%A5%E5%85%B7/"/>
+      <category term="工具" scheme="https://devhe.com/categories/%E5%B7%A5%E5%85%B7/"/>
     
     
-      <category term="CocoaPods" scheme="http://yoursite.com/tags/CocoaPods/"/>
+      <category term="CocoaPods" scheme="https://devhe.com/tags/CocoaPods/"/>
     
-      <category term="工具" scheme="http://yoursite.com/tags/%E5%B7%A5%E5%85%B7/"/>
+      <category term="工具" scheme="https://devhe.com/tags/%E5%B7%A5%E5%85%B7/"/>
     
   </entry>
   
   <entry>
     <title>AFNetWorking 源码学习笔记 ☞ Reachability</title>
-    <link href="http://yoursite.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-Reachability/"/>
-    <id>http://yoursite.com/2018/12/17/AFNetWorking-源码学习笔记-☞-Reachability/</id>
+    <link href="https://devhe.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-Reachability/"/>
+    <id>https://devhe.com/2018/12/17/AFNetWorking-源码学习笔记-☞-Reachability/</id>
     <published>2018-12-17T15:13:40.000Z</published>
     <updated>2018-12-17T15:16:34.033Z</updated>
     
@@ -63,21 +63,21 @@
     
     </summary>
     
-      <category term="源码学习笔记" scheme="http://yoursite.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="源码学习笔记" scheme="https://devhe.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     
-      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+      <category term="iOS" scheme="https://devhe.com/tags/iOS/"/>
     
-      <category term="源码学习笔记" scheme="http://yoursite.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="源码学习笔记" scheme="https://devhe.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
-      <category term="AFNetWorking" scheme="http://yoursite.com/tags/AFNetWorking/"/>
+      <category term="AFNetWorking" scheme="https://devhe.com/tags/AFNetWorking/"/>
     
   </entry>
   
   <entry>
     <title>AFNetWorking 源码学习笔记 ☞ Serialization</title>
-    <link href="http://yoursite.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-Serialization/"/>
-    <id>http://yoursite.com/2018/12/17/AFNetWorking-源码学习笔记-☞-Serialization/</id>
+    <link href="https://devhe.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-Serialization/"/>
+    <id>https://devhe.com/2018/12/17/AFNetWorking-源码学习笔记-☞-Serialization/</id>
     <published>2018-12-17T15:13:19.000Z</published>
     <updated>2018-12-17T15:16:10.104Z</updated>
     
@@ -88,21 +88,21 @@
     
     </summary>
     
-      <category term="源码学习笔记" scheme="http://yoursite.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="源码学习笔记" scheme="https://devhe.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     
-      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+      <category term="iOS" scheme="https://devhe.com/tags/iOS/"/>
     
-      <category term="源码学习笔记" scheme="http://yoursite.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="源码学习笔记" scheme="https://devhe.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
-      <category term="AFNetWorking" scheme="http://yoursite.com/tags/AFNetWorking/"/>
+      <category term="AFNetWorking" scheme="https://devhe.com/tags/AFNetWorking/"/>
     
   </entry>
   
   <entry>
     <title>AFNetWorking 源码学习笔记 ☞ Security</title>
-    <link href="http://yoursite.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-Security/"/>
-    <id>http://yoursite.com/2018/12/17/AFNetWorking-源码学习笔记-☞-Security/</id>
+    <link href="https://devhe.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-Security/"/>
+    <id>https://devhe.com/2018/12/17/AFNetWorking-源码学习笔记-☞-Security/</id>
     <published>2018-12-17T15:10:48.000Z</published>
     <updated>2018-12-17T15:14:12.032Z</updated>
     
@@ -114,21 +114,21 @@
     
     </summary>
     
-      <category term="源码学习笔记" scheme="http://yoursite.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="源码学习笔记" scheme="https://devhe.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     
-      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+      <category term="iOS" scheme="https://devhe.com/tags/iOS/"/>
     
-      <category term="源码学习笔记" scheme="http://yoursite.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="源码学习笔记" scheme="https://devhe.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
-      <category term="AFNetWorking" scheme="http://yoursite.com/tags/AFNetWorking/"/>
+      <category term="AFNetWorking" scheme="https://devhe.com/tags/AFNetWorking/"/>
     
   </entry>
   
   <entry>
     <title>AFNetWorking 源码学习笔记 ☞ NSURLSession</title>
-    <link href="http://yoursite.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-NSURLSession/"/>
-    <id>http://yoursite.com/2018/12/17/AFNetWorking-源码学习笔记-☞-NSURLSession/</id>
+    <link href="https://devhe.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-NSURLSession/"/>
+    <id>https://devhe.com/2018/12/17/AFNetWorking-源码学习笔记-☞-NSURLSession/</id>
     <published>2018-12-17T15:07:23.000Z</published>
     <updated>2018-12-17T15:14:15.643Z</updated>
     
@@ -140,21 +140,21 @@
     
     </summary>
     
-      <category term="源码学习笔记" scheme="http://yoursite.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="源码学习笔记" scheme="https://devhe.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     
-      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+      <category term="iOS" scheme="https://devhe.com/tags/iOS/"/>
     
-      <category term="源码学习笔记" scheme="http://yoursite.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="源码学习笔记" scheme="https://devhe.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
-      <category term="AFNetWorking" scheme="http://yoursite.com/tags/AFNetWorking/"/>
+      <category term="AFNetWorking" scheme="https://devhe.com/tags/AFNetWorking/"/>
     
   </entry>
   
   <entry>
     <title>AFNetWorking 源码学习笔记 ☞ 主体流程</title>
-    <link href="http://yoursite.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-%E4%B8%BB%E4%BD%93%E6%B5%81%E7%A8%8B/"/>
-    <id>http://yoursite.com/2018/12/17/AFNetWorking-源码学习笔记-☞-主体流程/</id>
+    <link href="https://devhe.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-%E4%B8%BB%E4%BD%93%E6%B5%81%E7%A8%8B/"/>
+    <id>https://devhe.com/2018/12/17/AFNetWorking-源码学习笔记-☞-主体流程/</id>
     <published>2018-12-17T15:02:45.000Z</published>
     <updated>2018-12-17T15:14:14.248Z</updated>
     
@@ -166,21 +166,21 @@
     
     </summary>
     
-      <category term="源码学习笔记" scheme="http://yoursite.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="源码学习笔记" scheme="https://devhe.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     
-      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+      <category term="iOS" scheme="https://devhe.com/tags/iOS/"/>
     
-      <category term="源码学习笔记" scheme="http://yoursite.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="源码学习笔记" scheme="https://devhe.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
-      <category term="AFNetWorking" scheme="http://yoursite.com/tags/AFNetWorking/"/>
+      <category term="AFNetWorking" scheme="https://devhe.com/tags/AFNetWorking/"/>
     
   </entry>
   
   <entry>
     <title>SDWebImage源码学习笔记 ☞ SDImageCache</title>
-    <link href="http://yoursite.com/2018/12/16/SDWebImage%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-SDImageCache/"/>
-    <id>http://yoursite.com/2018/12/16/SDWebImage源码学习笔记-☞-SDImageCache/</id>
+    <link href="https://devhe.com/2018/12/16/SDWebImage%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-SDImageCache/"/>
+    <id>https://devhe.com/2018/12/16/SDWebImage源码学习笔记-☞-SDImageCache/</id>
     <published>2018-12-16T06:41:33.000Z</published>
     <updated>2018-12-17T14:57:20.991Z</updated>
     
@@ -191,21 +191,21 @@
     
     </summary>
     
-      <category term="源码学习笔记" scheme="http://yoursite.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="源码学习笔记" scheme="https://devhe.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     
-      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+      <category term="iOS" scheme="https://devhe.com/tags/iOS/"/>
     
-      <category term="源码学习笔记" scheme="http://yoursite.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="源码学习笔记" scheme="https://devhe.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
-      <category term="SDWebImage" scheme="http://yoursite.com/tags/SDWebImage/"/>
+      <category term="SDWebImage" scheme="https://devhe.com/tags/SDWebImage/"/>
     
   </entry>
   
   <entry>
     <title>SDWebImage源码学习笔记 ☞ SDWebImageDownloader</title>
-    <link href="http://yoursite.com/2018/12/16/SDWebImage%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-SDWebImageDownloader/"/>
-    <id>http://yoursite.com/2018/12/16/SDWebImage源码学习笔记-☞-SDWebImageDownloader/</id>
+    <link href="https://devhe.com/2018/12/16/SDWebImage%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-SDWebImageDownloader/"/>
+    <id>https://devhe.com/2018/12/16/SDWebImage源码学习笔记-☞-SDWebImageDownloader/</id>
     <published>2018-12-16T06:41:11.000Z</published>
     <updated>2018-12-17T14:27:40.169Z</updated>
     
@@ -216,21 +216,21 @@
     
     </summary>
     
-      <category term="源码学习笔记" scheme="http://yoursite.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="源码学习笔记" scheme="https://devhe.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     
-      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+      <category term="iOS" scheme="https://devhe.com/tags/iOS/"/>
     
-      <category term="源码学习笔记" scheme="http://yoursite.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="源码学习笔记" scheme="https://devhe.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
-      <category term="SDWebImage" scheme="http://yoursite.com/tags/SDWebImage/"/>
+      <category term="SDWebImage" scheme="https://devhe.com/tags/SDWebImage/"/>
     
   </entry>
   
   <entry>
     <title>SDWebImage源码学习笔记 ☞ SDWebImageManager</title>
-    <link href="http://yoursite.com/2018/12/16/SDWebImage%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-SDWebImageManager/"/>
-    <id>http://yoursite.com/2018/12/16/SDWebImage源码学习笔记-☞-SDWebImageManager/</id>
+    <link href="https://devhe.com/2018/12/16/SDWebImage%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-SDWebImageManager/"/>
+    <id>https://devhe.com/2018/12/16/SDWebImage源码学习笔记-☞-SDWebImageManager/</id>
     <published>2018-12-16T06:40:50.000Z</published>
     <updated>2018-12-17T14:27:42.419Z</updated>
     
@@ -241,21 +241,21 @@
     
     </summary>
     
-      <category term="源码学习笔记" scheme="http://yoursite.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="源码学习笔记" scheme="https://devhe.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     
-      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+      <category term="iOS" scheme="https://devhe.com/tags/iOS/"/>
     
-      <category term="源码学习笔记" scheme="http://yoursite.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="源码学习笔记" scheme="https://devhe.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
-      <category term="SDWebImage" scheme="http://yoursite.com/tags/SDWebImage/"/>
+      <category term="SDWebImage" scheme="https://devhe.com/tags/SDWebImage/"/>
     
   </entry>
   
   <entry>
     <title>SDWebImage源码学习笔记 ☞ 结构及基本流程</title>
-    <link href="http://yoursite.com/2018/12/16/SDWebImage%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-%E7%BB%93%E6%9E%84%E5%8F%8A%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B/"/>
-    <id>http://yoursite.com/2018/12/16/SDWebImage源码学习笔记-☞-结构及基本流程/</id>
+    <link href="https://devhe.com/2018/12/16/SDWebImage%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-%E7%BB%93%E6%9E%84%E5%8F%8A%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B/"/>
+    <id>https://devhe.com/2018/12/16/SDWebImage源码学习笔记-☞-结构及基本流程/</id>
     <published>2018-12-16T06:40:18.000Z</published>
     <updated>2018-12-17T14:27:44.050Z</updated>
     
@@ -266,21 +266,21 @@
     
     </summary>
     
-      <category term="源码学习笔记" scheme="http://yoursite.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="源码学习笔记" scheme="https://devhe.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     
-      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+      <category term="iOS" scheme="https://devhe.com/tags/iOS/"/>
     
-      <category term="源码学习笔记" scheme="http://yoursite.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="源码学习笔记" scheme="https://devhe.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
-      <category term="SDWebImage" scheme="http://yoursite.com/tags/SDWebImage/"/>
+      <category term="SDWebImage" scheme="https://devhe.com/tags/SDWebImage/"/>
     
   </entry>
   
   <entry>
     <title>SDWebImage 源码学习笔记·前传 ☞ 升级 4.x.x 后适配 WebP/GIF</title>
-    <link href="http://yoursite.com/2018/12/16/SDWebImage-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%C2%B7%E5%89%8D%E4%BC%A0-%E2%98%9E-%E5%8D%87%E7%BA%A7-4-x-x-%E5%90%8E%E9%80%82%E9%85%8D-WebP-GIF/"/>
-    <id>http://yoursite.com/2018/12/16/SDWebImage-源码学习笔记·前传-☞-升级-4-x-x-后适配-WebP-GIF/</id>
+    <link href="https://devhe.com/2018/12/16/SDWebImage-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%C2%B7%E5%89%8D%E4%BC%A0-%E2%98%9E-%E5%8D%87%E7%BA%A7-4-x-x-%E5%90%8E%E9%80%82%E9%85%8D-WebP-GIF/"/>
+    <id>https://devhe.com/2018/12/16/SDWebImage-源码学习笔记·前传-☞-升级-4-x-x-后适配-WebP-GIF/</id>
     <published>2018-12-16T06:39:48.000Z</published>
     <updated>2018-12-17T14:27:33.928Z</updated>
     
@@ -297,21 +297,21 @@
     
     </summary>
     
-      <category term="源码学习笔记" scheme="http://yoursite.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="源码学习笔记" scheme="https://devhe.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     
-      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+      <category term="iOS" scheme="https://devhe.com/tags/iOS/"/>
     
-      <category term="源码学习笔记" scheme="http://yoursite.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="源码学习笔记" scheme="https://devhe.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
-      <category term="SDWebImage" scheme="http://yoursite.com/tags/SDWebImage/"/>
+      <category term="SDWebImage" scheme="https://devhe.com/tags/SDWebImage/"/>
     
   </entry>
   
   <entry>
     <title>MBProgressHUD 源码学习笔记</title>
-    <link href="http://yoursite.com/2018/12/16/MBProgressHUD-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    <id>http://yoursite.com/2018/12/16/MBProgressHUD-源码学习笔记/</id>
+    <link href="https://devhe.com/2018/12/16/MBProgressHUD-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    <id>https://devhe.com/2018/12/16/MBProgressHUD-源码学习笔记/</id>
     <published>2018-12-16T06:20:59.000Z</published>
     <updated>2018-12-22T00:54:04.572Z</updated>
     
@@ -324,21 +324,21 @@
     
     </summary>
     
-      <category term="源码学习笔记" scheme="http://yoursite.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="源码学习笔记" scheme="https://devhe.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     
-      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+      <category term="iOS" scheme="https://devhe.com/tags/iOS/"/>
     
-      <category term="源码学习笔记" scheme="http://yoursite.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="源码学习笔记" scheme="https://devhe.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
-      <category term="MBProgressHUD" scheme="http://yoursite.com/tags/MBProgressHUD/"/>
+      <category term="MBProgressHUD" scheme="https://devhe.com/tags/MBProgressHUD/"/>
     
   </entry>
   
   <entry>
     <title>Hello World</title>
-    <link href="http://yoursite.com/2018/12/15/hello-world/"/>
-    <id>http://yoursite.com/2018/12/15/hello-world/</id>
+    <link href="https://devhe.com/2018/12/15/hello-world/"/>
+    <id>https://devhe.com/2018/12/15/hello-world/</id>
     <published>2018-12-15T14:55:08.978Z</published>
     <updated>2018-12-16T06:37:47.223Z</updated>
     
