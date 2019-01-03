@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://devhe.com/"/>
-  <updated>2018-12-17T16:23:53.840Z</updated>
+  <updated>2019-01-03T17:08:29.792Z</updated>
   <id>https://devhe.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MJRefresh 源码学习笔记</title>
+    <link href="https://devhe.com/2019/01/04/MJRefresh-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    <id>https://devhe.com/2019/01/04/MJRefresh-源码学习笔记/</id>
+    <published>2019-01-03T17:06:02.000Z</published>
+    <updated>2019-01-03T17:08:29.792Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-2e6b48062059edf2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;MJRefresh源码学习笔记.png&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;1-前言&quot;&gt;&lt;a href=&quot;#1-前言&quot; class=&quot;headerlink&quot; title=&quot;1.前言&quot;&gt;&lt;/a&gt;1.前言&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/CoderMJLee/MJRefresh&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;MJRefresh&lt;/a&gt; 是日常 iOS 开发中使用频率比较高的一款&lt;code&gt;下拉刷新&lt;/code&gt;/&lt;code&gt;上拉加载更多&lt;/code&gt;的第三方控件，平时似乎没有完整查看过源码，此处就记录一下探究源码的过程吧。&lt;/p&gt;
+&lt;h2 id=&quot;2-使用示例&quot;&gt;&lt;a href=&quot;#2-使用示例&quot; class=&quot;headerlink&quot; title=&quot;2.使用示例&quot;&gt;&lt;/a&gt;2.使用示例&lt;/h2&gt;&lt;p&gt;官方给的 Example 里边提供了很多种刷新样式 ，本文我们只以其中 2 种样式（&lt;code&gt;UITableView + 下拉刷新 动画图片&lt;/code&gt; 和 &lt;code&gt;UITableView + 上拉刷新动画图片&lt;/code&gt; ）为例展开讨论。&lt;br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="源码学习笔记" scheme="https://devhe.com/categories/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="iOS" scheme="https://devhe.com/tags/iOS/"/>
+    
+      <category term="源码学习笔记" scheme="https://devhe.com/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="MJRefresh" scheme="https://devhe.com/tags/MJRefresh/"/>
+    
+  </entry>
   
   <entry>
     <title>使用 CocoaPods 创建并管理私有仓库</title>
