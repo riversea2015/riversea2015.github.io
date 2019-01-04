@@ -339,13 +339,13 @@
     <link href="https://devhe.com/2018/12/16/MBProgressHUD-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     <id>https://devhe.com/2018/12/16/MBProgressHUD-源码学习笔记/</id>
     <published>2018-12-16T06:20:59.000Z</published>
-    <updated>2018-12-22T00:54:04.572Z</updated>
+    <updated>2019-01-04T16:32:29.586Z</updated>
     
     <summary type="html">
     
       &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-91ab1cfdab440c59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;MBProgressHUD 源码学习笔记.png&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/jdg/MBProgressHUD&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;MBProgressHUD&lt;/a&gt; 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。&lt;/p&gt;
-&lt;h3 id=&quot;视图层级&quot;&gt;&lt;a href=&quot;#视图层级&quot; class=&quot;headerlink&quot; title=&quot;视图层级&quot;&gt;&lt;/a&gt;视图层级&lt;/h3&gt;&lt;p&gt;在开始学习源码之前，先大概了解一下整个视图的层级结构吧，主要分这几个视图：&lt;/p&gt;
+&lt;h3 id=&quot;1-前言&quot;&gt;&lt;a href=&quot;#1-前言&quot; class=&quot;headerlink&quot; title=&quot;1.前言&quot;&gt;&lt;/a&gt;1.前言&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/jdg/MBProgressHUD&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;MBProgressHUD&lt;/a&gt; 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。&lt;/p&gt;
+&lt;h3 id=&quot;2-视图层级&quot;&gt;&lt;a href=&quot;#2-视图层级&quot; class=&quot;headerlink&quot; title=&quot;2.视图层级&quot;&gt;&lt;/a&gt;2.视图层级&lt;/h3&gt;&lt;p&gt;在开始学习源码之前，先大概了解一下整个视图的层级结构吧，主要分这几个视图：&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-c8735aee9340c963.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;视图层级.png&quot;&gt;&lt;br&gt;&lt;/p&gt;
     
     </summary>
