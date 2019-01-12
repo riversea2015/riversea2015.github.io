@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://devhe.com/"/>
-  <updated>2019-01-12T05:42:34.330Z</updated>
+  <updated>2019-01-12T05:47:17.184Z</updated>
   <id>https://devhe.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://devhe.com/2019/01/12/MLeaksFinder-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     <id>https://devhe.com/2019/01/12/MLeaksFinder-源码学习笔记/</id>
     <published>2019-01-12T05:41:00.000Z</published>
-    <updated>2019-01-12T05:42:34.330Z</updated>
+    <updated>2019-01-12T05:47:17.184Z</updated>
     
     <summary type="html">
     
@@ -29,9 +29,6 @@
 &lt;h2 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0.前言&quot;&gt;&lt;/a&gt;0.前言&lt;/h2&gt;&lt;p&gt;项目中集成了 &lt;code&gt;MLeaksFinder&lt;/code&gt; 用于平时检测内存泄漏之用，它的基本工作原理也多少了解一些，最近恰好有点空闲时间，决定还是仔细看一下源码实现，毕竟自己查的才比较放心O(∩_∩)O哈哈~，于是就有了本文。&lt;/p&gt;
 &lt;h2 id=&quot;1-用法&quot;&gt;&lt;a href=&quot;#1-用法&quot; class=&quot;headerlink&quot; title=&quot;1.用法&quot;&gt;&lt;/a&gt;1.用法&lt;/h2&gt;&lt;p&gt;&lt;code&gt;MLeaksFinder&lt;/code&gt; 的使用非常人性化，直接通过 cocoaPods 导入工程中就行，当检测到泄露的时候会自动在控制台打印出相关堆栈信息。&lt;/p&gt;
 &lt;h2 id=&quot;2-原理&quot;&gt;&lt;a href=&quot;#2-原理&quot; class=&quot;headerlink&quot; title=&quot;2.原理&quot;&gt;&lt;/a&gt;2.原理&lt;/h2&gt;&lt;h4 id=&quot;2-1-基本原理&quot;&gt;&lt;a href=&quot;#2-1-基本原理&quot; class=&quot;headerlink&quot; title=&quot;2.1 基本原理&quot;&gt;&lt;/a&gt;2.1 基本原理&lt;/h4&gt;&lt;p&gt;一般情况下，当一个 ViewController 或 NavigationController 被 dismiss 或 pop 的时候，它自己、view、view的 subView 等都应该会很快释放掉。于是，只需要在 dismiss 或 pop 之后检测这些对象是否还存在，就可以判断是否存在内泄。&lt;/p&gt;
-&lt;h4 id=&quot;2-2-MLeaksFinder-的基本实现&quot;&gt;&lt;a href=&quot;#2-2-MLeaksFinder-的基本实现&quot; class=&quot;headerlink&quot; title=&quot;2.2 MLeaksFinder 的基本实现&quot;&gt;&lt;/a&gt;2.2 MLeaksFinder 的基本实现&lt;/h4&gt;&lt;p&gt;为基类 NSObject 添加一个方法 &lt;code&gt;-willDealloc&lt;/code&gt; ，它先用一个弱指针指向 self，并在一小段时间 (2秒) 后，通过这个弱指针调用 &lt;code&gt;-assertNotDealloc&lt;/code&gt;，而 &lt;code&gt;-assertNotDealloc&lt;/code&gt; 主要作用是打印堆栈信息 (早期版本是直接中断言，不过那样会打断正常的开发工作)。&lt;/p&gt;
-&lt;p&gt;当我们认为某个对象应该要被释放了，在释放前调用 &lt;code&gt;-assertNotDealloc&lt;/code&gt; ，如果 2 秒后它被释放成功，weakSelf 就指向 nil，&lt;code&gt;-assertNotDealloc&lt;/code&gt; 方法就不会执行（向 nil 发送消息，实际什么也不会做），如果它没被释放，&lt;code&gt;-assertNotDealloc&lt;/code&gt; 就会执行，从而打印出堆栈信息。&lt;/p&gt;
-&lt;p&gt;于是，当一个NavigationController 或 UIViewController 被 pop 或 dismiss 时，我们遍历它的所有 view，依次调 &lt;code&gt;-willDealloc&lt;/code&gt;，若 2 秒后没被释放，就会打印相关堆栈信息。&lt;br&gt;&lt;/p&gt;
     
     </summary>
     

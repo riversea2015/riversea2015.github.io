@@ -419,9 +419,6 @@
 <h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><p>项目中集成了 <code>MLeaksFinder</code> 用于平时检测内存泄漏之用，它的基本工作原理也多少了解一些，最近恰好有点空闲时间，决定还是仔细看一下源码实现，毕竟自己查的才比较放心O(∩_∩)O哈哈~，于是就有了本文。</p>
 <h2 id="1-用法"><a href="#1-用法" class="headerlink" title="1.用法"></a>1.用法</h2><p><code>MLeaksFinder</code> 的使用非常人性化，直接通过 cocoaPods 导入工程中就行，当检测到泄露的时候会自动在控制台打印出相关堆栈信息。</p>
 <h2 id="2-原理"><a href="#2-原理" class="headerlink" title="2.原理"></a>2.原理</h2><h4 id="2-1-基本原理"><a href="#2-1-基本原理" class="headerlink" title="2.1 基本原理"></a>2.1 基本原理</h4><p>一般情况下，当一个 ViewController 或 NavigationController 被 dismiss 或 pop 的时候，它自己、view、view的 subView 等都应该会很快释放掉。于是，只需要在 dismiss 或 pop 之后检测这些对象是否还存在，就可以判断是否存在内泄。</p>
-<h4 id="2-2-MLeaksFinder-的基本实现"><a href="#2-2-MLeaksFinder-的基本实现" class="headerlink" title="2.2 MLeaksFinder 的基本实现"></a>2.2 MLeaksFinder 的基本实现</h4><p>为基类 NSObject 添加一个方法 <code>-willDealloc</code> ，它先用一个弱指针指向 self，并在一小段时间 (2秒) 后，通过这个弱指针调用 <code>-assertNotDealloc</code>，而 <code>-assertNotDealloc</code> 主要作用是打印堆栈信息 (早期版本是直接中断言，不过那样会打断正常的开发工作)。</p>
-<p>当我们认为某个对象应该要被释放了，在释放前调用 <code>-assertNotDealloc</code> ，如果 2 秒后它被释放成功，weakSelf 就指向 nil，<code>-assertNotDealloc</code> 方法就不会执行（向 nil 发送消息，实际什么也不会做），如果它没被释放，<code>-assertNotDealloc</code> 就会执行，从而打印出堆栈信息。</p>
-<p>于是，当一个NavigationController 或 UIViewController 被 pop 或 dismiss 时，我们遍历它的所有 view，依次调 <code>-willDealloc</code>，若 2 秒后没被释放，就会打印相关堆栈信息。<br></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2019/01/12/MLeaksFinder-源码学习笔记/#more" rel="contents">
