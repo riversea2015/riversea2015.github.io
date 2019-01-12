@@ -415,7 +415,7 @@
 
       
         
-          <p><img src="https://upload-images.jianshu.io/upload_images/2208988-5153f8a7862d5ce1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="MLeaksFinder 源码学习笔记.png"></p>
+          <p><img src="https://upload-images.jianshu.io/upload_images/2208988-0b2ab7a12ee00898.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="MLeaksFinder 源码学习笔记.png"></p>
 <h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><p>项目中集成了 <code>MLeaksFinder</code> 用于平时检测内存泄漏之用，它的基本工作原理也多少了解一些，最近恰好有点空闲时间，决定还是仔细看一下源码实现，毕竟自己查的才比较放心O(∩_∩)O哈哈~，于是就有了本文。</p>
 <h2 id="1-用法"><a href="#1-用法" class="headerlink" title="1.用法"></a>1.用法</h2><p><code>MLeaksFinder</code> 的使用非常人性化，直接通过 cocoaPods 导入工程中就行，当检测到泄露的时候会自动在控制台打印出相关堆栈信息。</p>
 <h2 id="2-原理"><a href="#2-原理" class="headerlink" title="2.原理"></a>2.原理</h2><h3 id="2-1-基本原理"><a href="#2-1-基本原理" class="headerlink" title="2.1 基本原理"></a>2.1 基本原理</h3><p>一般情况下，当一个 ViewController 或 NavigationController 被 dismiss 或 pop 的时候，它自己、view、view的 subView 等都应该会很快释放掉。于是，只需要在 dismiss 或 pop 之后检测这些对象是否还存在，就可以判断是否存在内泄。</p>
