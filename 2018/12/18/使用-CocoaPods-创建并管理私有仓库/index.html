@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-73468a539690d478.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-f618e8df6f6325ce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2019-01-04T16:43:47.641Z">
+<meta property="og:updated_time" content="2019-01-04T16:50:17.414Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用 CocoaPods 创建并管理私有仓库">
 <meta name="twitter:description" content="0.前言CocoaPods 是一个比较常用的 iOS 依赖管理工具，我们目前的项目中就在使用，今天抽空做一个小结，记录一下在 Git 环境下如何使用 CocoaPods 创建并管理我们私有仓库。 创建私有仓库的主要步骤：  创建私有的 Spec Repo。(从未创建过私有库时需要，只需创建一次) 创建(具体的 Pod 需要的)项目工程文件。(2 和 3 二选一) 创建(具体的 Pod 对应的)">
@@ -502,7 +502,7 @@
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">pod</span> update --<span class="literal">no</span>-repo-update <span class="comment"># 更新库依赖</span></span><br></pre></td></tr></table></figure>
 <p>打开项目可以看到，我们自己的库文件已经出现在 Pods 子项目中的 Pods 子目录下了，而不再是 Development Pods。</p>
 <p>注意：这里 Podfile 文件前两行应该是：</p>
-<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source 'https://github.com/CocoaPods/Specs.git'	<span class="meta"># GitHub 的公有仓库</span></span><br><span class="line">source 'https://gitee.com/riversea<span class="number">2015</span>/riversea<span class="number">2015</span>_mobile_iphone_repo.git'  <span class="meta"># 码云上的私有仓库</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> <span class="string">'https://github.com/CocoaPods/Specs.git'</span>	<span class="comment"># GitHub 的公有仓库</span></span><br><span class="line"><span class="built_in">source</span> <span class="string">'https://gitee.com/riversea2015/riversea2015_mobile_iphone_repo.git'</span>  <span class="comment"># 码云上的私有仓库</span></span><br></pre></td></tr></table></figure>
 <h3 id="7-更新维护-xxx-podspec"><a href="#7-更新维护-xxx-podspec" class="headerlink" title="7.更新维护 xxx.podspec"></a>7.更新维护 xxx.podspec</h3><p>最后再来说一下制作好的 HHPodTestLibrary.podspec 文件后续的更新维护工作，比如如何添加新的版本，如何删除 Pod。</p>
 <p>现在已经制作好了 HHPodTestLibrary 的 0.1.0 版本，现在对他做一些更新维护工作：</p>
 <h4 id="7-1-添加更多的子-pod"><a href="#7-1-添加更多的子-pod" class="headerlink" title="7.1 添加更多的子 pod"></a>7.1 添加更多的子 pod</h4><p>这次我添加了更多的模块到 PodTestLibrary 之中，包括工具类，底层 Model 及 UIKit 扩展等，这里又尝试了一下 subspec 功能，给 PodTestLibrary 创建了多个子分支。</p>
@@ -689,7 +689,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
