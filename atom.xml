@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://devhe.com/"/>
-  <updated>2019-01-12T08:26:39.372Z</updated>
+  <updated>2019-02-04T09:35:26.604Z</updated>
   <id>https://devhe.com/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>深入理解 Objective-C ☞ Class</title>
+    <link href="https://devhe.com/2019/02/04/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-Objective-C-%E2%98%9E-Class/"/>
+    <id>https://devhe.com/2019/02/04/深入理解-Objective-C-☞-Class/</id>
+    <published>2019-02-04T09:31:54.000Z</published>
+    <updated>2019-02-04T09:35:26.604Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;&lt;img
+        
+      
+    
+    </summary>
+    
+      <category term="深入理解 Objective-C" scheme="https://devhe.com/categories/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-Objective-C/"/>
+    
+    
+      <category term="iOS" scheme="https://devhe.com/tags/iOS/"/>
+    
+      <category term="Class" scheme="https://devhe.com/tags/Class/"/>
+    
+  </entry>
   
   <entry>
     <title>MLeaksFinder 源码学习笔记</title>
@@ -107,12 +135,12 @@
     <link href="https://devhe.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-Reachability/"/>
     <id>https://devhe.com/2018/12/17/AFNetWorking-源码学习笔记-☞-Reachability/</id>
     <published>2018-12-17T15:13:40.000Z</published>
-    <updated>2018-12-17T15:16:34.033Z</updated>
+    <updated>2019-01-19T12:54:49.303Z</updated>
     
     <summary type="html">
     
       &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;AFNetWorking 源码学习笔记.png&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;本文是 AFNetWorking 源码学习笔记的第五篇，本篇将介绍第四部分 – Reachability 目录下的类，也就是 AFNetworkReachabilityManager。&lt;/p&gt;
+&lt;h3 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0.前言&quot;&gt;&lt;/a&gt;0.前言&lt;/h3&gt;&lt;p&gt;本文是 AFNetWorking 源码学习笔记的第五篇，本篇将介绍第四部分 – Reachability 目录下的类，也就是 AFNetworkReachabilityManager。&lt;/p&gt;
 &lt;p&gt;虽然之前经历的几个项目里边都是对苹果提供的 &lt;a href=&quot;https://developer.apple.com/library/ios/samplecode/reachability/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Reachability&lt;/a&gt; 进行了一次封装，不过，还是有必要学习一下 AFNetWorking 中监听网络状态的类 AFNetworkReachabilityManager，也就是本文的重点。&lt;br&gt;&lt;/p&gt;
     
     </summary>
@@ -184,12 +212,12 @@
     <link href="https://devhe.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-NSURLSession/"/>
     <id>https://devhe.com/2018/12/17/AFNetWorking-源码学习笔记-☞-NSURLSession/</id>
     <published>2018-12-17T15:07:23.000Z</published>
-    <updated>2018-12-17T15:14:15.643Z</updated>
+    <updated>2019-01-19T13:00:46.903Z</updated>
     
     <summary type="html">
     
       &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;AFNetWorking 源码学习笔记.png&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;本文是 AFNetWorking 源码学习笔记的第二篇，从本篇开始每次介绍四个部分中的一个，按顺序先介绍第一部分 – NSURLSession 目录下的两个关键类 AFHTTPSessionManager 和 AFURLSessionManager。&lt;/p&gt;
+&lt;h3 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0.前言&quot;&gt;&lt;/a&gt;0.前言&lt;/h3&gt;&lt;p&gt;本文是 AFNetWorking 源码学习笔记的第二篇，从本篇开始每次介绍四个部分中的一个，按顺序先介绍第一部分 – NSURLSession 目录下的两个关键类 AFHTTPSessionManager 和 AFURLSessionManager。&lt;/p&gt;
 &lt;p&gt;注：标题容易让人误解，其实指的是 AFNetWorking 源码中的 NSURLSession 目录，而不是真的 NSURLSession 这个类。&lt;br&gt;&lt;/p&gt;
     
     </summary>

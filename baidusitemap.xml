@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://devhe.com/2019/02/04/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-Objective-C-%E2%98%9E-Class/</loc>
+    <lastmod>2019-02-04T09:35:26.604Z</lastmod>
+  </url>  <url>
+    <loc>https://devhe.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-NSURLSession/</loc>
+    <lastmod>2019-01-19T13:00:46.903Z</lastmod>
+  </url>  <url>
+    <loc>https://devhe.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-Reachability/</loc>
+    <lastmod>2019-01-19T12:54:49.303Z</lastmod>
+  </url>  <url>
     <loc>https://devhe.com/2018/12/18/%E4%BD%BF%E7%94%A8-CocoaPods-%E5%88%9B%E5%BB%BA%E5%B9%B6%E7%AE%A1%E7%90%86%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93/</loc>
     <lastmod>2019-01-17T13:27:34.052Z</lastmod>
   </url>  <url>
@@ -13,14 +22,8 @@
     <loc>https://devhe.com/2019/01/04/MJRefresh-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2019-01-03T17:08:29.792Z</lastmod>
   </url>  <url>
-    <loc>https://devhe.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-Reachability/</loc>
-    <lastmod>2018-12-17T15:16:34.033Z</lastmod>
-  </url>  <url>
     <loc>https://devhe.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-Serialization/</loc>
     <lastmod>2018-12-17T15:16:10.104Z</lastmod>
-  </url>  <url>
-    <loc>https://devhe.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-NSURLSession/</loc>
-    <lastmod>2018-12-17T15:14:15.643Z</lastmod>
   </url>  <url>
     <loc>https://devhe.com/2018/12/17/AFNetWorking-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%98%9E-%E4%B8%BB%E4%BD%93%E6%B5%81%E7%A8%8B/</loc>
     <lastmod>2018-12-17T15:14:14.248Z</lastmod>
