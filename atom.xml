@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://devhe.com/"/>
-  <updated>2019-02-04T09:35:26.604Z</updated>
+  <updated>2019-02-04T09:41:52.197Z</updated>
   <id>https://devhe.com/</id>
   
   <author>
@@ -17,21 +17,44 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>深入理解-Objective-C-☞-Block</title>
+    <link href="https://devhe.com/2019/02/04/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-Objective-C-%E2%98%9E-Block/"/>
+    <id>https://devhe.com/2019/02/04/深入理解-Objective-C-☞-Block/</id>
+    <published>2019-02-04T09:36:34.000Z</published>
+    <updated>2019-02-04T09:41:52.197Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-95e16fa598771e27.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0.前言&quot;&gt;&lt;/a&gt;0.前言&lt;/h2&gt;&lt;p&gt;日常开发中经常会用到 Block，也熟悉各种注意事项，不过对于它的底层实现并没有特别深入地挖掘过，还不能算是真正掌握了，本篇就来探究一下 Block 的底层实现原理。&lt;/p&gt;
+&lt;h2 id=&quot;1-举个-🌰&quot;&gt;&lt;a href=&quot;#1-举个-🌰&quot; class=&quot;headerlink&quot; title=&quot;1.举个 🌰&quot;&gt;&lt;/a&gt;1.举个 🌰&lt;/h2&gt;&lt;p&gt;先来看一个例子，下边是一种简单的 block 使用场景: 无参数、无返回值的 block。&lt;/p&gt;
+&lt;figure class=&quot;highlight objc&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;(^MyBlock)(&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; main(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; argc, &lt;span class=&quot;keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;char&lt;/span&gt; * argv[]) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;@autoreleasepool&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; age = &lt;span class=&quot;number&quot;&gt;30&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;comment&quot;&gt;// 创建&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        MyBlock blk = ^&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;built_in&quot;&gt;NSLog&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;@&quot;My age is %d .&quot;&lt;/span&gt;, age);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;comment&quot;&gt;// 执行&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        blk();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+      <category term="深入理解 Objective-C" scheme="https://devhe.com/categories/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-Objective-C/"/>
+    
+    
+      <category term="iOS" scheme="https://devhe.com/tags/iOS/"/>
+    
+      <category term="Block" scheme="https://devhe.com/tags/Block/"/>
+    
+  </entry>
+  
+  <entry>
     <title>深入理解 Objective-C ☞ Class</title>
     <link href="https://devhe.com/2019/02/04/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-Objective-C-%E2%98%9E-Class/"/>
     <id>https://devhe.com/2019/02/04/深入理解-Objective-C-☞-Class/</id>
     <published>2019-02-04T09:31:54.000Z</published>
-    <updated>2019-02-04T09:35:26.604Z</updated>
+    <updated>2019-02-04T09:41:57.218Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          &lt;p&gt;&lt;img
-        
-      
+      &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-56f3d6347575d6ec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0.前言&quot;&gt;&lt;/a&gt;0.前言&lt;/h2&gt;&lt;p&gt;从事 iOS 开发已有 3 年多时间，大部分时间都是在用 Objective-C 开发 App（最近也在做 OC 与 Swift 的混编实践），虽然对 OC 底层知识有一定的了解，不过都是零散的片段，计划趁着过年的时间将这些片段梳理串联起来，于是便有了这个系列。&lt;/p&gt;
+&lt;p&gt;本文是第 1 篇，从我们平常用的最多的&lt;code&gt;类&lt;/code&gt;和&lt;code&gt;对象&lt;/code&gt;开始，深入探究他们的实现机理。&lt;/p&gt;
+&lt;h2 id=&quot;1-概述&quot;&gt;&lt;a href=&quot;#1-概述&quot; class=&quot;headerlink&quot; title=&quot;1.概述&quot;&gt;&lt;/a&gt;1.概述&lt;/h2&gt;&lt;p&gt;我们平常编写的 &lt;code&gt;OC&lt;/code&gt; 代码都会先编译成 &lt;code&gt;C/C++代码&lt;/code&gt;，然后再依次翻译成 &lt;code&gt;汇编代码&lt;/code&gt; 、&lt;code&gt;机器码(01代码)&lt;/code&gt;，最后，机器会自动运行该机器语言程序，并将计算结果输出。为了探究 &lt;code&gt;OC&lt;/code&gt; 的本质，通过 &lt;code&gt;C/C++&lt;/code&gt; 是比较合适的方式，因为之后的汇编和01代码看着太费劲(主要是自己只了解点皮毛(⊙﹏⊙)b)，而 OC 本身又不是开源的。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-e81ccd1ac4d30246.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;&quot;&gt;&lt;br&gt;&lt;/p&gt;
     
     </summary>
     

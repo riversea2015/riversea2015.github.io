@@ -95,7 +95,7 @@
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-2fa389e7d9b2a956.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-7aa27c1426269365.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-119840e350b6904f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2019-02-04T09:35:26.604Z">
+<meta property="og:updated_time" content="2019-02-04T09:41:57.218Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解 Objective-C ☞ Class">
 <meta name="twitter:description" content="0.前言从事 iOS 开发已有 3 年多时间，大部分时间都是在用 Objective-C 开发 App（最近也在做 OC 与 Swift 的混编实践），虽然对 OC 底层知识有一定的了解，不过都是零散的片段，计划趁着过年的时间将这些片段梳理串联起来，于是便有了这个系列。 本文是第 1 篇，从我们平常用的最多的类和对象开始，深入探究他们的实现机理。 1.概述我们平常编写的 OC 代码都会先编译成">
@@ -426,7 +426,7 @@
 <h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><p>从事 iOS 开发已有 3 年多时间，大部分时间都是在用 Objective-C 开发 App（最近也在做 OC 与 Swift 的混编实践），虽然对 OC 底层知识有一定的了解，不过都是零散的片段，计划趁着过年的时间将这些片段梳理串联起来，于是便有了这个系列。</p>
 <p>本文是第 1 篇，从我们平常用的最多的<code>类</code>和<code>对象</code>开始，深入探究他们的实现机理。</p>
 <h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h2><p>我们平常编写的 <code>OC</code> 代码都会先编译成 <code>C/C++代码</code>，然后再依次翻译成 <code>汇编代码</code> 、<code>机器码(01代码)</code>，最后，机器会自动运行该机器语言程序，并将计算结果输出。为了探究 <code>OC</code> 的本质，通过 <code>C/C++</code> 是比较合适的方式，因为之后的汇编和01代码看着太费劲(主要是自己只了解点皮毛(⊙﹏⊙)b)，而 OC 本身又不是开源的。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2208988-e81ccd1ac4d30246.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2208988-e81ccd1ac4d30246.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><a id="more"></a></p>
 <h2 id="2-从一个-🌰-开始"><a href="#2-从一个-🌰-开始" class="headerlink" title="2.从一个 🌰 开始"></a>2.从一个 🌰 开始</h2><h3 id="2-1-最简单的例子"><a href="#2-1-最简单的例子" class="headerlink" title="2.1 最简单的例子"></a>2.1 最简单的例子</h3><p>我们先来看一个例子：</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 以下代码位于 main.m</span></span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="comment">// 创建一个 NSObject 的实例对象</span></span><br><span class="line">        <span class="built_in">NSObject</span> *obj = [[<span class="built_in">NSObject</span> alloc] init];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>如上所示，在 main() 函数里边创建了一个 <code>NSObject</code> 的实例对象，然后终端执行下边的指令，将代码编译成 C/C++ 代码 (新代码在 main.cpp 文件中)：</p>
@@ -584,6 +584,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/02/04/深入理解-Objective-C-☞-Block/" rel="prev" title="深入理解-Objective-C-☞-Block">
+                深入理解-Objective-C-☞-Block <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -664,7 +668,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -686,7 +690,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

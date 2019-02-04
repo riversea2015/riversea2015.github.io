@@ -294,6 +294,184 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://devhe.com/2019/02/04/深入理解-Objective-C-☞-Block/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="He Hai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/riversea2015.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="riversea2015's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/04/深入理解-Objective-C-☞-Block/" itemprop="url">深入理解-Objective-C-☞-Block</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-04T17:36:34+08:00">
+                2019-02-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/深入理解-Objective-C/" itemprop="url" rel="index">
+                    <span itemprop="name">深入理解 Objective-C</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/02/04/深入理解-Objective-C-☞-Block/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/02/04/深入理解-Objective-C-☞-Block/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  4k 字
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><img src="https://upload-images.jianshu.io/upload_images/2208988-95e16fa598771e27.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><p>日常开发中经常会用到 Block，也熟悉各种注意事项，不过对于它的底层实现并没有特别深入地挖掘过，还不能算是真正掌握了，本篇就来探究一下 Block 的底层实现原理。</p>
+<h2 id="1-举个-🌰"><a href="#1-举个-🌰" class="headerlink" title="1.举个 🌰"></a>1.举个 🌰</h2><p>先来看一个例子，下边是一种简单的 block 使用场景: 无参数、无返回值的 block。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">void</span>(^MyBlock)(<span class="keyword">void</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="keyword">int</span> age = <span class="number">30</span>;</span><br><span class="line">        <span class="comment">// 创建</span></span><br><span class="line">        MyBlock blk = ^&#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"My age is %d ."</span>, age);</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">// 执行</span></span><br><span class="line">        blk();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/04/深入理解-Objective-C-☞-Block/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://devhe.com/2019/02/04/深入理解-Objective-C-☞-Class/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -415,129 +593,18 @@
 
       
         
-          
-            <p><img src="https://upload-images.jianshu.io/upload_images/2208988-56f3d6347575d6ec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+          <p><img src="https://upload-images.jianshu.io/upload_images/2208988-56f3d6347575d6ec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
 <h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><p>从事 iOS 开发已有 3 年多时间，大部分时间都是在用 Objective-C 开发 App（最近也在做 OC 与 Swift 的混编实践），虽然对 OC 底层知识有一定的了解，不过都是零散的片段，计划趁着过年的时间将这些片段梳理串联起来，于是便有了这个系列。</p>
 <p>本文是第 1 篇，从我们平常用的最多的<code>类</code>和<code>对象</code>开始，深入探究他们的实现机理。</p>
 <h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h2><p>我们平常编写的 <code>OC</code> 代码都会先编译成 <code>C/C++代码</code>，然后再依次翻译成 <code>汇编代码</code> 、<code>机器码(01代码)</code>，最后，机器会自动运行该机器语言程序，并将计算结果输出。为了探究 <code>OC</code> 的本质，通过 <code>C/C++</code> 是比较合适的方式，因为之后的汇编和01代码看着太费劲(主要是自己只了解点皮毛(⊙﹏⊙)b)，而 OC 本身又不是开源的。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2208988-e81ccd1ac4d30246.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<h2 id="2-从一个-🌰-开始"><a href="#2-从一个-🌰-开始" class="headerlink" title="2.从一个 🌰 开始"></a>2.从一个 🌰 开始</h2><h3 id="2-1-最简单的例子"><a href="#2-1-最简单的例子" class="headerlink" title="2.1 最简单的例子"></a>2.1 最简单的例子</h3><p>我们先来看一个例子：</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 以下代码位于 main.m</span></span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="comment">// 创建一个 NSObject 的实例对象</span></span><br><span class="line">        <span class="built_in">NSObject</span> *obj = [[<span class="built_in">NSObject</span> alloc] init];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如上所示，在 main() 函数里边创建了一个 <code>NSObject</code> 的实例对象，然后终端执行下边的指令，将代码编译成 C/C++ 代码 (新代码在 main.cpp 文件中)：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clang -rewrite-objc main.m -o main.cpp <span class="comment">//  -o main.cpp 可以忽略</span></span><br></pre></td></tr></table></figure>
-<p>在 main.cpp 中我们发现了下边的结构体，从名字推断，应该是 NSObject 的底层实现：</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="built_in">NSObject_IMPL</span> &#123; <span class="comment">// NSObject_IMPL &lt;=&gt; NSObject implementation</span></span><br><span class="line">	Class isa;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>而我们直接查看 NSobject 的声明：</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSObject</span> &lt;<span class="title">NSObject</span>&gt; </span>&#123; <span class="comment">// 移除了用于消除警告的代码</span></span><br><span class="line">    Class isa  OBJC_ISA_AVAILABILITY;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>与 <code>NSObject_IMPL</code> 对比后，进一步印证了 NSObject_IMPL 是 NSObject 的底层结构的推断。这里有一个 <code>Class</code> 类型的 <code>isa</code>，下面是 Class 的定义：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// An opaque type that represents an Objective-C class. 表示 OC 中的 class。</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">objc_class</span> *<span class="title">Class</span>;</span></span><br></pre></td></tr></table></figure>
-<p>也就是说，isa 实际是一个指向 <code>struct objc_class</code> 的指针，而且 <code>objc_class</code> 就是 Class 的底层结构。</p>
-<h3 id="2-2-稍微复杂点的例子"><a href="#2-2-稍微复杂点的例子" class="headerlink" title="2.2 稍微复杂点的例子"></a>2.2 稍微复杂点的例子</h3><p>现在来看一种更加复杂的情况：依次创建 HHStaff 和 HHManager 这 2 个类，其中，后者继承自前者，然后在 main() 函数中创建一个 HHManager 的实例。</p>
-<p>HHStaff</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">HHStaff</span> : <span class="title">NSObject</span> </span>&#123;</span><br><span class="line">    <span class="built_in">NSString</span> *name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)doInstanceStaffWork; <span class="comment">// 对象方法</span></span><br><span class="line">+ (<span class="keyword">void</span>)doClassStaffWork;    <span class="comment">// 类方法</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
-<p>HHManager</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">HHManager</span> : <span class="title">HHStaff</span> </span>&#123;</span><br><span class="line">    <span class="built_in">NSInteger</span> officeNum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)doInstanceManagerWork; <span class="comment">// 对象方法</span></span><br><span class="line">+ (<span class="keyword">void</span>)doClassManagerWork;    <span class="comment">// 类方法</span></span><br></pre></td></tr></table></figure>
-<p>main.m 文件</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="comment">// 创建实例对象</span></span><br><span class="line">        HHManager *mgr = [[HHManager alloc] init];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>终端执行 <code>clang -rewrite-objc main.m</code> 将其转成 C/C++ 代码，整理相关代码后，我们可以得出下图的关系：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2208988-10de322b1bc6a905.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="稍微复杂的情况.png"></p>
-<p>其中，HHManager_IMPL 是 HHManager 的底层结构，而 HHStaff_IMPL 是其父类 HHStaff 的底层结构，即子类中包含一个父类类型的变量，而父类结构中又包含一个父类的父类(此处是基类)类型变量，而基类中包含一个名为 isa 的指针变量，据此，可以认为子类 HHManger 经编译后的结构是这样的：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">HHManager_IMPL</span> &#123;</span></span><br><span class="line">    Class isa;</span><br><span class="line">    NSString *name;</span><br><span class="line">	NSInteger officeNum;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>我们发现，这里包含了一个 isa 指针，而 isa 来自 NSObject，因为大部分类都是直接或间接继承自 NSObject 的，所以可以认为每一个对象都包含了一个 isa 指针，至于这个 isa 指针到底是干什么用的，下一小节就会讲到。</p>
-<h2 id="3-OC-的-3-种对象间的关系"><a href="#3-OC-的-3-种对象间的关系" class="headerlink" title="3.OC 的 3 种对象间的关系"></a>3.OC 的 3 种对象间的关系</h2><h3 id="3-1-OC-中的-3-种对象"><a href="#3-1-OC-中的-3-种对象" class="headerlink" title="3.1 OC 中的 3 种对象"></a>3.1 OC 中的 3 种对象</h3><p>为了搞清楚 isa 指针的作用，有必要先了解一下 OC 的对象，总共有以下 3 种：</p>
-<ul>
-<li>实例对象(instance)，通过 <code>+alloc</code> 方法创建出来的，如下边的 <code>staffA</code>、<code>staffB</code>:</li>
-</ul>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HHStaff *staffA = [[HHStaff alloc] init];</span><br><span class="line">HHStaff *staffB = [[HHStaff alloc] init];</span><br><span class="line"></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"实例对象：%p - %p"</span>, staffA, staffB);</span><br></pre></td></tr></table></figure>
-<p>实例对象在内存中存储的信息包括：isa 指针 和 其他成员变量。</p>
-<ul>
-<li>类对象(class)，如下边的 <code>staffClassA</code>、<code>staffClassB</code>:</li>
-</ul>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Class staffClassA = [staffA <span class="keyword">class</span>]; <span class="comment">// &lt;==&gt; Class staffClassA = [[staffA class] class];</span></span><br><span class="line">Class staffClassB = object_getClass(staffB);</span><br><span class="line">Class staffClassC = [HHStaff <span class="keyword">class</span>]; <span class="comment">// &lt;==&gt; Class staffClassC = [[HHStaff class] class];</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"类对象： %p - %p - %p"</span>, staffClassA, staffClassB, staffClassC);</span><br></pre></td></tr></table></figure>
-<p>类对象中包含的信息如下图所示，其中，成员变量信息指的是成员变量的描述信息，而非成员变量的值(在实例对象里边)。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2208988-f6110ba68a3f5417.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<ul>
-<li>元类对象(meta-class)，如下边的 <code>staffMetaClassA</code>、<code>staffMetaClassB</code>:</li>
-</ul>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Class staffMetaClassA = object_getClass(staffClassA);</span><br><span class="line">Class staffMetaClassB = object_getClass(staffClassB);</span><br><span class="line"></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"元类对象：%p - %p"</span>, staffMetaClassA, staffMetaClassB);</span><br></pre></td></tr></table></figure>
-<p>元类对象的存储结构与类对象相似，只不过只有 isa、superclass 和 类方法有值，其它均为空。</p>
-<p>运行上边的程序后，控制台的输出如下：</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2019</span><span class="number">-01</span><span class="number">-28</span> <span class="number">17</span>:<span class="number">36</span>:<span class="number">33.990939</span>+<span class="number">0800</span> TTTTT[<span class="number">10186</span>:<span class="number">1017842</span>] 实例对象：<span class="number">0x100605920</span> - <span class="number">0x100606060</span></span><br><span class="line"><span class="number">2019</span><span class="number">-01</span><span class="number">-28</span> <span class="number">17</span>:<span class="number">36</span>:<span class="number">33.991128</span>+<span class="number">0800</span> TTTTT[<span class="number">10186</span>:<span class="number">1017842</span>] 类对象：  <span class="number">0x100001260</span> - <span class="number">0x100001260</span> - <span class="number">0x100001260</span></span><br><span class="line"><span class="number">2019</span><span class="number">-01</span><span class="number">-28</span> <span class="number">17</span>:<span class="number">36</span>:<span class="number">33.991180</span>+<span class="number">0800</span> TTTTT[<span class="number">10186</span>:<span class="number">1017842</span>] 元类对象：<span class="number">0x100001238</span> - <span class="number">0x100001238</span></span><br><span class="line">Program ended with exit code: <span class="number">0</span></span><br></pre></td></tr></table></figure>
-<p>从上述打印结果可以看出，一个类的实例对象可以有多个，但是类对象和元类对象各自只有一个。</p>
-<h3 id="3-2-isa-和-superclass"><a href="#3-2-isa-和-superclass" class="headerlink" title="3.2 isa 和 superclass"></a>3.2 isa 和 superclass</h3><p>通过上一小节，我们知道类里边的信息并不是存在一个地方，而是分开存放在实例对象、类对象和元类对象里边。而将这些对象联系起来的纽带就是本小节要重点讨论的 isa 和 superclass 指针。</p>
-<h4 id="isa"><a href="#isa" class="headerlink" title="isa"></a>isa</h4><p><img src="https://upload-images.jianshu.io/upload_images/2208988-cca4dd41c7778c8b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="isa.png"></p>
-<p>isa 指针是用来联系同一个类的实例对象、类对象和元类对象的，如上图所示，通过实例对象里边的 isa 指针可以找到类对象，根据类对象里边的 isa 指针可以找到元类对象。</p>
-<p>注意，这里并没有说 isa 指向哪里，而是说通过 isa 可以找到哪里，这是因为从 64bit 架构开始，isa 里边存储的不再是类对象或者元类对象的地址，而是需要进行一次位运算（ <code>isa &amp; ISA_MASK</code> ）才能得到相应的地址，其中 <code>ISA_MASK</code> 的定义如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">if</span> __arm64__	    <span class="comment">// 64位 真机</span></span></span><br><span class="line"><span class="meta">#   <span class="meta-keyword">define</span> ISA_MASK        0x0000000ffffffff8ULL</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">elif</span> __x86_64__   <span class="comment">// 64位 模拟器</span></span></span><br><span class="line"><span class="meta">#   <span class="meta-keyword">define</span> ISA_MASK        0x00007ffffffffff8ULL</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#   <span class="meta-keyword">error</span> unknown architecture for packed isa</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
-<p>注意到 <code>ISA_MASK</code> 中有些位是 0，而和 0 与的话，结果会被置为 0，所以可以推测，64bit 架构下，isa 里边可能还存储了其它信息。</p>
-<h4 id="superclass"><a href="#superclass" class="headerlink" title="superclass"></a>superclass</h4><p>superclass 是用来在继承体系中搜寻父类的，如下图所示：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2208988-2fa389e7d9b2a956.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="superclass.png"></p>
-<ul>
-<li>对于类对象：子类（HHManager）的类对象的 superclass 指向父类（HHStaff）的类对象，父类的类对象的 superclass 指向它的父类的类对象；</li>
-<li>对于元类对象：子类（HHManager）的元类对象的 superclass 指向父类（HHStaff）的元类对象，父类的元类对象的 superclass 指向它的父类的元类对象；</li>
-</ul>
-<h3 id="3-3-应用"><a href="#3-3-应用" class="headerlink" title="3.3 应用"></a>3.3 应用</h3><p>下面我们来看看在消息发送过程中，这 3 种对象之间是如何亲密协作的。</p>
-<p>先贴一张经典的关系图，实际就是将上一节中的 isa 和 superclass 指针放到了一起：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2208988-7aa27c1426269365.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>现在以 2.2 节中的例子为基础，执行下边的操作，即子类执行父类的对象方法。</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="comment">// 创建实例对象</span></span><br><span class="line">        HHManager *mgr = [[HHManager alloc] init];</span><br><span class="line">        <span class="comment">// 执行父类的方法</span></span><br><span class="line">        [mgr doInstanceStaffWork];</span><br><span class="line">        <span class="comment">// =&gt; objc_msgSend(mgr, @selector(doInstanceStaffWork));</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>由于对象方法存放在类对象里边，所以首先根据 mgr 的 isa 指针找到它的类对象，然后在类对象的方法列表里边查找这个方法，发现找不到，接着再根据类对象的 superclass 指针找到父类的类对象，然后在父类的类对象里边查找该方法，如果还找不到，就根据父类的 superclass 指针沿着继承体系继续往上找，直到根类，如果还是找不到，就会执行消息转发的流程（详见 <a href="https://www.jianshu.com/p/03f4a95e43d8" target="_blank" rel="noopener">Objective-C 的消息转发机制</a>）。不过，本例中父类的类对象里有这个方法，就不用再往上找了O(∩_∩)O。</p>
-<p>如果是类方法，则通过类对象的 isa 指针找到元类对象，然后就依照类似查找对象方法的方式查找类方法，只不过这次是在元类对象的继承体系里边查找。</p>
-<p>其实，上边的逻辑省略了一个非常重要的缓存问题，即在每一级查找时，都会先查找缓存，然后才去查找方法列表。找到之后，也会在缓存里边存一份（即使是在父类的类对象或元类对象里边找到的，也要始终缓存在当前类对象或元类对象里），以便提高查找效率。</p>
-<h4 id="特例"><a href="#特例" class="headerlink" title="特例"></a>特例</h4><p>注意观察上边那张关系图的右上角，就会发现，基类的元类对象的 superclass 指针指向了自己的类对象，真实情况是这样的吗？我们来做一个实验：给 NSObject 添加一个对象方法，代码如下：</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSObject</span> (<span class="title">Extern</span>)</span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)doInstanceWork;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">NSObject</span> (<span class="title">Extern</span>)</span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)doInstanceWork &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"这是 NSObject 的对象方法"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
-<p>然后，在 main.m 中这样调用：</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        [HHStaff doInstanceWork];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>即调用 HHStaff 的类方法 <code>+doInstanceWork</code>，不过 HHStaff 里边并没有这个类方法，但是运行时并没有报错，控制台输出如下：</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2019</span><span class="number">-02</span><span class="number">-03</span> <span class="number">16</span>:<span class="number">09</span>:<span class="number">38.454099</span>+<span class="number">0800</span> HHH[<span class="number">2667</span>:<span class="number">925051</span>] 这是 <span class="built_in">NSObject</span> 的对象方法</span><br></pre></td></tr></table></figure>
-<p>也就是说，确实如关系图所示，执行了基类的类对象里边存储的<code>对象方法</code>。可以这么来理解，OC 的方法调用，实际都是在发送消息，即 <code>objc_msgSend(object, @selector(methodName))</code> ，这里并不关心是对象方法还是类方法，如果 object 是实例对象，就会去类对象里查找方法，如果 object 是类对象，就会去元类对象里边查找。</p>
-<h2 id="4-Class-的结构"><a href="#4-Class-的结构" class="headerlink" title="4.Class 的结构"></a>4.Class 的结构</h2><p>前边我们说过，类中的方法、属性、协议等重要信息都存储在<code>类对象</code>和<code>元类对象</code>里边，这两者的结构相同，都是 Class 类型的，而 Class 的结构实际就是 <code>struct objc_class</code>，因此我们的目的就是要弄清楚 <code>struct objc_class</code> 的结构。</p>
-<p>在 objc 源码的 <code>objc-runtime-new.h</code> 中找到了 <code>objc_class</code> 的最新定义:</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> objc_class : objc_object &#123;</span><br><span class="line">    <span class="comment">// Class ISA;			   // isa 不再放这里</span></span><br><span class="line">    Class superclass;</span><br><span class="line">    cache_t cache;             <span class="comment">// 1.缓存</span></span><br><span class="line"></span><br><span class="line">    class_data_bits_t bits;    </span><br><span class="line">    class_rw_t *data() &#123; 	   <span class="comment">// 2.class_rw_t</span></span><br><span class="line">        <span class="keyword">return</span> bits.data();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// *** 此处略去好多行 O(∩_∩)O~</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>既然 C++ 的结构体是可以继承的，那么我们来看看它继承的结构体 <code>objc_object</code> 里边都有什么：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">objc_object</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">isa_t</span> isa;				  <span class="comment">// 3.isa</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// *** 此处又略去好多行 O(∩_∩)O~</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>以上就是 objc_class 的表层结构，下面针对其中的 3 各主要部分做一个相对深入点的讨论。</p>
-<h3 id="4-1-cache-t"><a href="#4-1-cache-t" class="headerlink" title="4.1 cache_t"></a>4.1 cache_t</h3><p><code>cache_t</code> 就是前文提到的方法缓存，其结构如下所示（做了适当精简）：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">cache_t</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">bucket_t</span> *_<span class="title">buckets</span>;</span> 	<span class="comment">// 散列表</span></span><br><span class="line">    <span class="keyword">mask_t</span> _mask;				<span class="comment">// 散列表的长度 - 1</span></span><br><span class="line">    <span class="keyword">mask_t</span> _occupied;			<span class="comment">// 已经缓存的方法数量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">struct bucket_t *<span class="title">buckets</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="keyword">mask_t</span> mask();</span><br><span class="line">    <span class="keyword">mask_t</span> occupied();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// *** 此处又略去好多行 O(∩_∩)O~</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 扩展空间</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">expand</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">reallocate</span><span class="params">(<span class="keyword">mask_t</span> oldCapacity, <span class="keyword">mask_t</span> newCapacity)</span></span>;</span><br><span class="line">    <span class="comment">// 查询缓存</span></span><br><span class="line">    <span class="function">struct bucket_t * <span class="title">find</span><span class="params">(<span class="keyword">cache_key_t</span> key, id receiver)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// *** 此处又略去好多行 O(∩_∩)O~</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p><code>cache_t</code> 里边有一个散列表（哈希表）<code>_buckets</code>，里边是一个个的 <code>struct bucket_t</code>，用于缓存方法。bucket_t 的结构如下所示：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">bucket_t</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">cache_key_t</span> _key; 	<span class="comment">// 用 SEL 做 key</span></span><br><span class="line">    IMP _imp;			<span class="comment">// 函数的内存地址 做 value</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">inline</span> cache_key_t <span class="title">key</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> _key; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">inline</span> IMP <span class="title">imp</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> (IMP)_imp; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">setKey</span><span class="params">(<span class="keyword">cache_key_t</span> newKey)</span> </span>&#123; _key = newKey; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">setImp</span><span class="params">(IMP newImp)</span> </span>&#123; _imp = newImp; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">set</span><span class="params">(<span class="keyword">cache_key_t</span> newKey, IMP newImp)</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>现在，我们看一下如何查询缓存，即 find() 函数的实现：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bucket_t</span> * <span class="keyword">cache_t</span>::find(<span class="keyword">cache_key_t</span> k, id receiver)</span><br><span class="line">&#123;</span><br><span class="line">    assert(k != <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">bucket_t</span> *b = buckets();</span><br><span class="line">    <span class="keyword">mask_t</span> m = mask();</span><br><span class="line">    <span class="keyword">mask_t</span> begin = cache_hash(k, m); 	<span class="comment">// 根据 k 与 m 算出一个下标：begin = k &amp; m</span></span><br><span class="line">    <span class="keyword">mask_t</span> i = begin;</span><br><span class="line">    <span class="keyword">do</span> &#123;								<span class="comment">// 根据下标取值，并验证做了一个异常处理，即不同 key 得到相同下标的问题</span></span><br><span class="line">        <span class="keyword">if</span> (b[i].key() == <span class="number">0</span>  ||  b[i].key() == k) &#123;</span><br><span class="line">            <span class="keyword">return</span> &amp;b[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">while</span> ((i = cache_next(i, m)) != begin);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// hack</span></span><br><span class="line">    Class cls = (Class)((<span class="keyword">uintptr_t</span>)<span class="keyword">this</span> - offsetof(objc_class, cache));</span><br><span class="line">    <span class="keyword">cache_t</span>::bad_cache(receiver, (SEL)k, cls);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>查询的基本逻辑是：</p>
-<ul>
-<li><p>先根据传入的 k(即key) 和 m(即mask) 算出一个下标 <code>begin = k &amp; m</code></p>
-</li>
-<li><p>然后用这个下标 begin 去散列表里取值，用取到的值 (bucket) 里边的 key 与 传入的 k 作比较，</p>
-<ul>
-<li><p>如果相等，就将取到的值 (bucket) 返回；</p>
-</li>
-<li><p>如果不等，利用 <code>cache_next()</code> 函数 (如下) 算出一个新的下标，再去取值比较；</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> __arm__  ||  __x86_64__  ||  __i386__  <span class="comment">// 各种模拟器</span></span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> mask_t <span class="title">cache_next</span><span class="params">(<span class="keyword">mask_t</span> i, <span class="keyword">mask_t</span> mask)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (i+<span class="number">1</span>) &amp; mask;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">elif</span> __arm64__ 							<span class="comment">// 64bits 真机</span></span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> mask_t <span class="title">cache_next</span><span class="params">(<span class="keyword">mask_t</span> i, <span class="keyword">mask_t</span> mask)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 如果 i 不为 0，则返回 i-1；否则返回 mask</span></span><br><span class="line">    <span class="keyword">return</span> i ? i<span class="number">-1</span> : mask;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">error</span> unknown architecture</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>如此循环，最后如果新算出来的下标等于 begin，则退出循环，说明缓存里没有对应的方法。</p>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="4-2-class-rw-t"><a href="#4-2-class-rw-t" class="headerlink" title="4.2 class_rw_t"></a>4.2 class_rw_t</h3><p><code>class_rw_t</code> 是通过 bit 的 data() 函数获取的，从名称可以看出来，它是可读可写的(rw)，其基本结构及说明如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">class_rw_t</span> &#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// *** 此处又略去好多行 O(∩_∩)O~</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">class_ro_t</span> *ro;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">method_array_t</span> methods;			<span class="comment">// 方法列表</span></span><br><span class="line">    <span class="keyword">property_array_t</span> properties;	<span class="comment">// 属性列表</span></span><br><span class="line">    <span class="keyword">protocol_array_t</span> protocols;		<span class="comment">// 协议列表</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// *** 此处又略去好多行 O(∩_∩)O~</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>里边有一个只读(ro)的 <code>class_ro_t *ro</code>，<code>class_ro_t</code> 的结构及各元素的说明如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">class_ro_t</span> &#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// *** 此处又略去好多行 O(∩_∩)O~</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> * name;					<span class="comment">// 类名</span></span><br><span class="line">    <span class="keyword">method_list_t</span> * baseMethodList;		<span class="comment">// 方法列表</span></span><br><span class="line">    <span class="keyword">protocol_list_t</span> * baseProtocols;	<span class="comment">// 协议列表</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">ivar_list_t</span> * ivars;			<span class="comment">// 成员变量列表</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">uint8_t</span> * weakIvarLayout;</span><br><span class="line">    <span class="keyword">property_list_t</span> *baseProperties;	<span class="comment">// 属性列表</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">method_list_t</span> *baseMethods() <span class="keyword">const</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> baseMethodList;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p><code>class_ro_t</code>里边存放的是编译完成时类结构里边的方法、属性、协议等信息。<code>class_rw_t</code> 里边是在运行时给扩展了累的方法、属性等信息以后的结构，比如在分类中添加的方法就是加到了这个结构里，前者里边有成员变量，而且是只读的，但后者没有，这也就解释了为什么不能通过分类添加成员变量，当然分类里是可以添加属性的，只不过需要自己借助关联对象实现 setter 和 getter，这个<a href="">下一篇</a>会讲到。</p>
-<h3 id="4-3-isa-t"><a href="#4-3-isa-t" class="headerlink" title="4.3 isa_t"></a>4.3 isa_t</h3><p><code>objc_object</code> 这个结构体里边 isa 的类型是个共用体 <code>union isa_t</code> ，其结构如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">union</span> <span class="keyword">isa_t</span> &#123;</span><br><span class="line">    <span class="keyword">isa_t</span>() &#123; &#125;</span><br><span class="line">    <span class="keyword">isa_t</span>(<span class="keyword">uintptr_t</span> value) : bits(value) &#123; &#125;</span><br><span class="line">    Class cls;</span><br><span class="line">    <span class="keyword">uintptr_t</span> bits;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> defined(ISA_BITFIELD) 	<span class="comment">// 位域</span></span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">        ISA_BITFIELD;  		<span class="comment">// defined in isa.h</span></span><br><span class="line">    &#125;;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>从 64 位架构开始引入了位域，可以在isa 中存储更多信息，上边结构体中的 ISA_BITFIELD 定义如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// isa.h</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">if</span> __arm64__ 		<span class="comment">// 64位真机</span></span></span><br><span class="line"><span class="meta">#   <span class="meta-keyword">define</span> ISA_BITFIELD                                                      \</span></span><br><span class="line">      <span class="keyword">uintptr_t</span> nonpointer        : <span class="number">1</span>;                                       \</span><br><span class="line">      <span class="keyword">uintptr_t</span> has_assoc         : <span class="number">1</span>;                                       \</span><br><span class="line">      <span class="keyword">uintptr_t</span> has_cxx_dtor      : <span class="number">1</span>;                                       \</span><br><span class="line">      <span class="keyword">uintptr_t</span> shiftcls          : <span class="number">33</span>; <span class="comment">/*MACH_VM_MAX_ADDRESS 0x1000000000*/</span> \</span><br><span class="line">      <span class="keyword">uintptr_t</span> magic             : <span class="number">6</span>;                                       \</span><br><span class="line">      <span class="keyword">uintptr_t</span> weakly_referenced : <span class="number">1</span>;                                       \</span><br><span class="line">      <span class="keyword">uintptr_t</span> deallocating      : <span class="number">1</span>;                                       \</span><br><span class="line">      <span class="keyword">uintptr_t</span> has_sidetable_rc  : <span class="number">1</span>;                                       \</span><br><span class="line">      <span class="keyword">uintptr_t</span> extra_rc          : <span class="number">19</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">elif</span> __x86_64__ 	<span class="comment">// 64位模拟器·</span></span></span><br><span class="line"><span class="meta">#   <span class="meta-keyword">define</span> ISA_BITFIELD                                                        \</span></span><br><span class="line">      <span class="keyword">uintptr_t</span> nonpointer        : <span class="number">1</span>;                                         \</span><br><span class="line">      <span class="keyword">uintptr_t</span> has_assoc         : <span class="number">1</span>;                                         \</span><br><span class="line">      <span class="keyword">uintptr_t</span> has_cxx_dtor      : <span class="number">1</span>;                                         \</span><br><span class="line">      <span class="keyword">uintptr_t</span> shiftcls          : <span class="number">44</span>; <span class="comment">/*MACH_VM_MAX_ADDRESS 0x7fffffe00000*/</span> \</span><br><span class="line">      <span class="keyword">uintptr_t</span> magic             : <span class="number">6</span>;                                         \</span><br><span class="line">      <span class="keyword">uintptr_t</span> weakly_referenced : <span class="number">1</span>;                                         \</span><br><span class="line">      <span class="keyword">uintptr_t</span> deallocating      : <span class="number">1</span>;                                         \</span><br><span class="line">      <span class="keyword">uintptr_t</span> has_sidetable_rc  : <span class="number">1</span>;                                         \</span><br><span class="line">      <span class="keyword">uintptr_t</span> extra_rc          : <span class="number">8</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#   <span class="meta-keyword">error</span> unknown architecture for packed isa</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
-<p>下面这张图以 64 位真机为例，详细说明了各位的作用：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2208988-119840e350b6904f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="isa位域.png"></p>
-<p>前边 3.2 说过，从 64 位架构开始，需要通过 <code>isa &amp; ISA_MASK</code> 才能得到对应类对象或元类对象的地址，其实就是为了取出 shiftcls 部分。</p>
-<h2 id="5-小结"><a href="#5-小结" class="headerlink" title="5.小结"></a>5.小结</h2><p>关于 Class 的讨论就先讨论到这里，可能有些地方理解的还不是很到位，后边会及时更新的 O(∩_∩)O~</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="# 参考"></a># 参考</h2><ul>
-<li><a href="https://opensource.apple.com/tarballs/objc4/" target="_blank" rel="noopener">objc 苹果官方源码</a></li>
-<li><a href="http://blog.devtang.com/2014/05/30/understand-tagged-pointer/" title="深入理解Tagged Pointer" target="_blank" rel="noopener">深入理解 Tagged Pointer</a></li>
-</ul>
-
-          
+<p><img src="https://upload-images.jianshu.io/upload_images/2208988-e81ccd1ac4d30246.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/04/深入理解-Objective-C-☞-Class/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1996,182 +2063,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://devhe.com/2018/12/16/SDWebImage源码学习笔记-☞-SDImageCache/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="He Hai">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/riversea2015.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="riversea2015's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/16/SDWebImage源码学习笔记-☞-SDImageCache/" itemprop="url">SDWebImage源码学习笔记 ☞ SDImageCache</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-16T14:41:33+08:00">
-                2018-12-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/源码学习笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">源码学习笔记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/12/16/SDWebImage源码学习笔记-☞-SDImageCache/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/12/16/SDWebImage源码学习笔记-☞-SDImageCache/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  2.4k 字
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><img src="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="SDWebImage-源码学习笔记.png"></p>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>这是本系列的第 5 篇，也是最后一篇，主要讨论处理缓存的类 <code>SDImageCache</code> 及相关类 <code>SDMemoryCache</code> 、<code>SDImageCacheConfig</code> 等。<br></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/12/16/SDWebImage源码学习笔记-☞-SDImageCache/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2224,7 +2115,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2246,7 +2137,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
