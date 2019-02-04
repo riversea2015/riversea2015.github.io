@@ -3,7 +3,14 @@
   <entry>
     <title><![CDATA[深入理解 Objective-C ☞ Block]]></title>
     <url>%2F2019%2F02%2F04%2F%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-Objective-C-%E2%98%9E-Block%2F</url>
-    <content type="text"></content>
+    <content type="text"><![CDATA[]]></content>
+      <categories>
+        <category>深入理解 Objective-C</category>
+      </categories>
+      <tags>
+        <tag>iOS</tag>
+        <tag>Block</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[深入理解 Objective-C ☞ Class]]></title>
