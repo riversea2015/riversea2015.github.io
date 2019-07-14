@@ -171,7 +171,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">StayHungry, Stay Foolish.</p>
+        <p class="site-subtitle">Stay Hungry, Stay Foolish.</p>
       
   </div>
 
@@ -426,8 +426,7 @@
 
       
         
-          <p><img src="https://upload-images.jianshu.io/upload_images/2208988-192717719a2421f0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Category.png"></p>
-<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><p>日常开发中经常会用到 Category，对于其使用方法就不多做说明了，本篇主要介绍其底层实现原理。</p>
+          <h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><p>日常开发中经常会用到 Category，对于其使用方法就不多做说明了，本篇主要介绍其底层实现原理。</p>
 <h2 id="1-底层结构"><a href="#1-底层结构" class="headerlink" title="1.底层结构"></a>1.底层结构</h2><h3 id="1-1-编译后的结构"><a href="#1-1-编译后的结构" class="headerlink" title="1.1 编译后的结构"></a>1.1 编译后的结构</h3><p>依然从一个例子开始，给 <code>HHStaff</code> 这个类创建一个分类 <code>HHStaff+CateA</code>，如下所示：<br></p>
           <!--noindex-->
           <div class="post-button text-center">
@@ -603,8 +602,7 @@
 
       
         
-          <p><img src="https://upload-images.jianshu.io/upload_images/2208988-95e16fa598771e27.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><p>日常开发中经常会用到 Block，也熟悉各种注意事项，不过对于它的底层实现并没有特别深入地挖掘过，还不能算是真正掌握了，本篇就来探究一下 Block 的底层实现原理。</p>
+          <h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><p>日常开发中经常会用到 Block，也熟悉各种注意事项，不过对于它的底层实现并没有特别深入地挖掘过，还不能算是真正掌握了，本篇就来探究一下 Block 的底层实现原理。</p>
 <h2 id="1-举个-🌰"><a href="#1-举个-🌰" class="headerlink" title="1.举个 🌰"></a>1.举个 🌰</h2><p>先来看一个例子，下边是一种简单的 block 使用场景: 无参数、无返回值的 block。</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">void</span>(^MyBlock)(<span class="keyword">void</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="keyword">int</span> age = <span class="number">30</span>;</span><br><span class="line">        <span class="comment">// 创建</span></span><br><span class="line">        MyBlock blk = ^&#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"My age is %d ."</span>, age);</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">// 执行</span></span><br><span class="line">        blk();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
@@ -781,8 +779,7 @@
 
       
         
-          <p><img src="https://upload-images.jianshu.io/upload_images/2208988-56f3d6347575d6ec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><p>从事 iOS 开发已有 3 年多时间，大部分时间都是在用 Objective-C 开发 App（最近也在做 OC 与 Swift 的混编实践），虽然对 OC 底层知识有一定的了解，不过都是零散的片段，计划趁着过年的时间将这些片段梳理串联起来，于是便有了这个系列。</p>
+          <h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><p>从事 iOS 开发已有 3 年多时间，大部分时间都是在用 Objective-C 开发 App（最近也在做 OC 与 Swift 的混编实践），虽然对 OC 底层知识有一定的了解，不过都是零散的片段，计划趁着过年的时间将这些片段梳理串联起来，于是便有了这个系列。</p>
 <p>本文是第 1 篇，从我们平常用的最多的<code>类</code>和<code>对象</code>开始，深入探究他们的实现机理。</p>
 <h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h2><p>我们平常编写的 <code>OC</code> 代码都会先编译成 <code>C/C++代码</code>，然后再依次翻译成 <code>汇编代码</code> 、<code>机器码(01代码)</code>，最后，机器会自动运行该机器语言程序，并将计算结果输出。为了探究 <code>OC</code> 的本质，通过 <code>C/C++</code> 是比较合适的方式，因为之后的汇编和01代码看着太费劲(主要是自己只了解点皮毛(⊙﹏⊙)b)，而 OC 本身又不是开源的。</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/2208988-e81ccd1ac4d30246.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br></p>
