@@ -90,22 +90,22 @@
 
 
 
-<meta name="description" content="前言前段时间对项目中使用的 SDWebImage 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：  SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.0 后适配 WebP/GIF SDWebImage源码学习笔记 ☞ 结构及基本流程 SDWebImage源码学习笔记 ☞ SDWebImageMana">
+<meta name="description" content="一、前言前段时间对项目中使用的 SDWebImage 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：  SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.0 后适配 WebP/GIF SDWebImage源码学习笔记 ☞ 结构及基本流程 SDWebImage源码学习笔记 ☞ SDWebImageMa">
 <meta name="keywords" content="iOS,源码学习笔记,SDWebImage">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SDWebImage 源码学习笔记·前传 ☞ 升级 4.0&#x2F;5.0 后适配 WebP&#x2F;GIF">
 <meta property="og:url" content="https://devhe.com/2018/12/16/SDWebImage-源码学习笔记·前传-☞-升级-4-x-x-后适配-WebP-GIF/index.html">
 <meta property="og:site_name" content="riversea2015">
-<meta property="og:description" content="前言前段时间对项目中使用的 SDWebImage 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：  SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.0 后适配 WebP/GIF SDWebImage源码学习笔记 ☞ 结构及基本流程 SDWebImage源码学习笔记 ☞ SDWebImageMana">
+<meta property="og:description" content="一、前言前段时间对项目中使用的 SDWebImage 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：  SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.0 后适配 WebP/GIF SDWebImage源码学习笔记 ☞ 结构及基本流程 SDWebImage源码学习笔记 ☞ SDWebImageMa">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-f5668b58785e3c8f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-f92abbb71d3ce91e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-89f6ed8da3d73c10.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2019-12-28T06:30:33.617Z">
+<meta property="og:updated_time" content="2019-12-28T06:36:15.175Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SDWebImage 源码学习笔记·前传 ☞ 升级 4.0&#x2F;5.0 后适配 WebP&#x2F;GIF">
-<meta name="twitter:description" content="前言前段时间对项目中使用的 SDWebImage 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：  SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.0 后适配 WebP/GIF SDWebImage源码学习笔记 ☞ 结构及基本流程 SDWebImage源码学习笔记 ☞ SDWebImageMana">
+<meta name="twitter:description" content="一、前言前段时间对项目中使用的 SDWebImage 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：  SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.0 后适配 WebP/GIF SDWebImage源码学习笔记 ☞ 结构及基本流程 SDWebImage源码学习笔记 ☞ SDWebImageMa">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
@@ -430,7 +430,7 @@
 
       
         <p><img src="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="SDWebImage-源码学习笔记.png"></p>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>前段时间对项目中使用的 <a href="https://github.com/SDWebImage/SDWebImage" target="_blank" rel="noopener">SDWebImage</a> 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：</p>
+<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>前段时间对项目中使用的 <a href="https://github.com/SDWebImage/SDWebImage" target="_blank" rel="noopener">SDWebImage</a> 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：</p>
 <ul>
 <li><a href="https://www.jianshu.com/p/c3ec50e1942f" target="_blank" rel="noopener">SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.0 后适配 WebP/GIF</a></li>
 <li><a href="https://www.jianshu.com/p/99c9564043d2" target="_blank" rel="noopener">SDWebImage源码学习笔记 ☞ 结构及基本流程</a></li>
@@ -481,7 +481,7 @@
 <p>这种方案对最终的调用方来说，非常简洁，不需要对各种图片区别对待。</p>
 <figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">    HHImageView *customView = [[HHImageView alloc] initWithFrame<span class="function">:CGRectMake</span><span class="params">(125, 70, 160, 160)</span>];</span><br><span class="line">    customView.backgroundColor = [UIColor lightGrayColor];</span><br><span class="line">    [self.view addSubview<span class="function">:customView</span>];</span><br><span class="line">    [customView sd_<span class="keyword">set</span>ShowActivityIndicatorView<span class="function">:YES</span>];</span><br><span class="line">    <span class="string">//</span> 静态图</span><br><span class="line"><span class="string">//</span>    [customView sd_<span class="keyword">set</span>ImageWithURL<span class="function">:URL_Normal</span>];</span><br><span class="line">    <span class="string">//</span> WebP 动图</span><br><span class="line"><span class="string">//</span>    [customView sd_<span class="keyword">set</span>ImageWithURL<span class="function">:URL_WebP_Normal</span>];</span><br><span class="line">    <span class="string">//</span> WebP 静态图</span><br><span class="line"><span class="string">//</span>    [customView sd_<span class="keyword">set</span>ImageWithURL<span class="function">:URL_WebP_Dynamic</span>];</span><br><span class="line">    <span class="string">//</span> GIF</span><br><span class="line">    [customView sd_<span class="keyword">set</span>ImageWithURL<span class="function">:URL_GIF</span>];</span><br></pre></td></tr></table></figure>
 <blockquote>
-<h3 id="2019-12-27-更新："><a href="#2019-12-27-更新：" class="headerlink" title="2019.12.27 更新："></a>2019.12.27 更新：</h3><ul>
+<h3 id="2019-12-27-更新："><a href="#2019-12-27-更新：" class="headerlink" title="# 2019.12.27 更新："></a># 2019.12.27 更新：</h3><ul>
 <li>5.0 之后的版本中，默认添加了对 Gif 的支持，也就是说，需要移除 podfile 中的 <code>pod &#39;SDWebImage/GIF&#39;</code>（不移除的话，pod install/update 会报错），然后直接使用加载 png/jpg 的方法就可以加载 Gif 图了，比如：<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">imageViewA</span><span class="selector-class">.sd_setImage</span>(<span class="attribute">with</span>: URL(<span class="string">string: "http://hbimg.b0.upaiyun.com/43efd35d1e9cadc6d8ff5cdc5faccec06f1082bb4efc4-o8K27E_fw658"</span>), <span class="attribute">completed</span>: nil) <span class="comment">// 皮卡丘揉脸的动画^_^</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
@@ -505,7 +505,7 @@
 <p>然后，就可以使用通用的方法加载 WebP 了，示例代码如下：<br><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="comment">// 静态图</span></span><br><span class="line">&gt; <span class="selector-tag">imageViewA</span><span class="selector-class">.sd_setImage</span>(<span class="attribute">with</span>: URL(<span class="string">string: "https://www.gstatic.com/webp/gallery/2.webp"</span>), <span class="attribute">completed</span>: nil)</span><br><span class="line">&gt; <span class="comment">// 动图</span></span><br><span class="line">&gt; <span class="selector-tag">imageViewB</span><span class="selector-class">.sd_setImage</span>(<span class="attribute">with</span>: URL(<span class="string">string: "http://littlesvr.ca/apng/images/world-cup-2014-42.webp"</span>), <span class="attribute">completed</span>: nil)</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure></p>
 </blockquote>
 <p>本文完整示例代码见: <a href="https://github.com/riversea2015/CodeForBlogs/tree/master/HHSDWebImageStudy" target="_blank" rel="noopener">HHSDWebImageStudy</a></p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="# 参考"></a># 参考</h3><ul>
 <li><a href="https://www.jianshu.com/p/25ff66fd78c2" target="_blank" rel="noopener">Mac 命令行（终端）设置Lantern vpn代理</a></li>
 <li><a href="https://www.jianshu.com/p/4468f03cf606" target="_blank" rel="noopener">iOS SDWebImage加载webP</a></li>
 </ul>
@@ -745,7 +745,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、升级"><span class="nav-text">二、升级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、使用"><span class="nav-text">三、使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一种方案"><span class="nav-text">第一种方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二种方案"><span class="nav-text">第二种方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三种方案"><span class="nav-text">第三种方案</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2019-12-27-更新："><span class="nav-text">2019.12.27 更新：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、前言"><span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、升级"><span class="nav-text">二、升级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、使用"><span class="nav-text">三、使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一种方案"><span class="nav-text">第一种方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二种方案"><span class="nav-text">第二种方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三种方案"><span class="nav-text">第三种方案</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2019-12-27-更新："><span class="nav-text"># 2019.12.27 更新：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-text"># 参考</span></a></li></ol></div>
             
 
           </div>
