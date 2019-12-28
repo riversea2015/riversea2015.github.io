@@ -426,18 +426,18 @@
   </entry>
   
   <entry>
-    <title>SDWebImage 源码学习笔记·前传 ☞ 升级 4.x.x 后适配 WebP/GIF</title>
+    <title>SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.0 后适配 WebP/GIF</title>
     <link href="https://devhe.com/2018/12/16/SDWebImage-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%C2%B7%E5%89%8D%E4%BC%A0-%E2%98%9E-%E5%8D%87%E7%BA%A7-4-x-x-%E5%90%8E%E9%80%82%E9%85%8D-WebP-GIF/"/>
     <id>https://devhe.com/2018/12/16/SDWebImage-源码学习笔记·前传-☞-升级-4-x-x-后适配-WebP-GIF/</id>
     <published>2018-12-16T06:39:48.000Z</published>
-    <updated>2018-12-17T14:27:33.928Z</updated>
+    <updated>2019-12-28T06:30:33.617Z</updated>
     
     <summary type="html">
     
       &lt;p&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;SDWebImage-源码学习笔记.png&quot;&gt;&lt;/p&gt;
 &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;前段时间对项目中使用的 &lt;a href=&quot;https://github.com/SDWebImage/SDWebImage&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SDWebImage&lt;/a&gt; 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/c3ec50e1942f&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SDWebImage 源码学习笔记·前传 ☞ 升级 4.x.x 后适配 WebP/GIF&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/c3ec50e1942f&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.0 后适配 WebP/GIF&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/99c9564043d2&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SDWebImage源码学习笔记 ☞ 结构及基本流程&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/221b335cc760&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SDWebImage源码学习笔记 ☞ SDWebImageManager&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/06071cba3404&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SDWebImage源码学习笔记 ☞ SDWebImageDownloader&lt;/a&gt;&lt;/li&gt;

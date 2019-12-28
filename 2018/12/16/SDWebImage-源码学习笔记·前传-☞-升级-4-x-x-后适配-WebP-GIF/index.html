@@ -90,22 +90,22 @@
 
 
 
-<meta name="description" content="前言前段时间对项目中使用的 SDWebImage 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：  SDWebImage 源码学习笔记·前传 ☞ 升级 4.x.x 后适配 WebP/GIF SDWebImage源码学习笔记 ☞ 结构及基本流程 SDWebImage源码学习笔记 ☞ SDWebImageManage">
+<meta name="description" content="前言前段时间对项目中使用的 SDWebImage 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：  SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.0 后适配 WebP/GIF SDWebImage源码学习笔记 ☞ 结构及基本流程 SDWebImage源码学习笔记 ☞ SDWebImageMana">
 <meta name="keywords" content="iOS,源码学习笔记,SDWebImage">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SDWebImage 源码学习笔记·前传 ☞ 升级 4.x.x 后适配 WebP&#x2F;GIF">
+<meta property="og:title" content="SDWebImage 源码学习笔记·前传 ☞ 升级 4.0&#x2F;5.0 后适配 WebP&#x2F;GIF">
 <meta property="og:url" content="https://devhe.com/2018/12/16/SDWebImage-源码学习笔记·前传-☞-升级-4-x-x-后适配-WebP-GIF/index.html">
 <meta property="og:site_name" content="riversea2015">
-<meta property="og:description" content="前言前段时间对项目中使用的 SDWebImage 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：  SDWebImage 源码学习笔记·前传 ☞ 升级 4.x.x 后适配 WebP/GIF SDWebImage源码学习笔记 ☞ 结构及基本流程 SDWebImage源码学习笔记 ☞ SDWebImageManage">
+<meta property="og:description" content="前言前段时间对项目中使用的 SDWebImage 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：  SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.0 后适配 WebP/GIF SDWebImage源码学习笔记 ☞ 结构及基本流程 SDWebImage源码学习笔记 ☞ SDWebImageMana">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-f5668b58785e3c8f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-f92abbb71d3ce91e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-89f6ed8da3d73c10.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-12-17T14:27:33.928Z">
+<meta property="og:updated_time" content="2019-12-28T06:30:33.617Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SDWebImage 源码学习笔记·前传 ☞ 升级 4.x.x 后适配 WebP&#x2F;GIF">
-<meta name="twitter:description" content="前言前段时间对项目中使用的 SDWebImage 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：  SDWebImage 源码学习笔记·前传 ☞ 升级 4.x.x 后适配 WebP/GIF SDWebImage源码学习笔记 ☞ 结构及基本流程 SDWebImage源码学习笔记 ☞ SDWebImageManage">
+<meta name="twitter:title" content="SDWebImage 源码学习笔记·前传 ☞ 升级 4.0&#x2F;5.0 后适配 WebP&#x2F;GIF">
+<meta name="twitter:description" content="前言前段时间对项目中使用的 SDWebImage 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：  SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.0 后适配 WebP/GIF SDWebImage源码学习笔记 ☞ 结构及基本流程 SDWebImage源码学习笔记 ☞ SDWebImageMana">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
@@ -142,7 +142,7 @@
 
 
 
-  <title>SDWebImage 源码学习笔记·前传 ☞ 升级 4.x.x 后适配 WebP/GIF | riversea2015</title>
+  <title>SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.0 后适配 WebP/GIF | riversea2015</title>
   
 
 
@@ -328,7 +328,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">SDWebImage 源码学习笔记·前传 ☞ 升级 4.x.x 后适配 WebP/GIF</h1>
+          <h1 class="post-title" itemprop="name headline">SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.0 后适配 WebP/GIF</h1>
         
 
         <div class="post-meta">
@@ -404,7 +404,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.4k 字
+                  1.7k 字
                 </span>
               
 
@@ -432,14 +432,14 @@
         <p><img src="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="SDWebImage-源码学习笔记.png"></p>
 <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>前段时间对项目中使用的 <a href="https://github.com/SDWebImage/SDWebImage" target="_blank" rel="noopener">SDWebImage</a> 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：</p>
 <ul>
-<li><a href="https://www.jianshu.com/p/c3ec50e1942f" target="_blank" rel="noopener">SDWebImage 源码学习笔记·前传 ☞ 升级 4.x.x 后适配 WebP/GIF</a></li>
+<li><a href="https://www.jianshu.com/p/c3ec50e1942f" target="_blank" rel="noopener">SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.0 后适配 WebP/GIF</a></li>
 <li><a href="https://www.jianshu.com/p/99c9564043d2" target="_blank" rel="noopener">SDWebImage源码学习笔记 ☞ 结构及基本流程</a></li>
 <li><a href="https://www.jianshu.com/p/221b335cc760" target="_blank" rel="noopener">SDWebImage源码学习笔记 ☞ SDWebImageManager</a></li>
 <li><a href="https://www.jianshu.com/p/06071cba3404" target="_blank" rel="noopener">SDWebImage源码学习笔记 ☞ SDWebImageDownloader</a></li>
 <li><a href="https://www.jianshu.com/p/e3f4a7f57899" target="_blank" rel="noopener">SDWebImage源码学习笔记 ☞ SDImageCache</a><a id="more"></a>
 本篇是第 1 篇，主要记述了升级过程中的遇到的问题及处理方案。</li>
 </ul>
-<h3 id="升级"><a href="#升级" class="headerlink" title="升级"></a>升级</h3><p>现在转回到本篇的主要内容，首先当然是升级了，不过最新版的 SDWebImage 里边分了几个子 pod ，默认下载不全。为了满足我们的日常使用要求，还需要加上 WebP 和 GIF 这两个子 pod：</p>
+<h3 id="二、升级"><a href="#二、升级" class="headerlink" title="二、升级"></a>二、升级</h3><p>现在转回到本篇的主要内容，首先当然是升级了，不过最新版的 SDWebImage 里边分了几个子 pod ，默认下载不全。为了满足我们的日常使用要求，还需要加上 WebP 和 GIF 这两个子 pod：</p>
 <figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">platform</span> :ios, <span class="string">'7.0'</span></span><br><span class="line"></span><br><span class="line">pod <span class="string">'SDWebImage'</span>, <span class="string">'~&gt; 4.0'</span></span><br><span class="line">pod <span class="string">'SDWebImage/WebP'</span></span><br><span class="line">pod <span class="string">'SDWebImage/GIF'</span></span><br></pre></td></tr></table></figure>
 <p>不过，在执行 <code>pod install</code> 的时候，发现 <code>pod &#39;SDWebImage/WebP&#39;</code> 卡在了 <code>Installing libwebp (0.6.0)</code> 的地方。</p>
 <p>据说 WebP 的解析库是 Google 的开源库，所以需要使用 VPN。笔者使用了蓝灯 Lantern，然后发现 浏览器可以正常访问 Google 网站，可是命令行 <code>pod install</code> 依然会卡住，可以通过下边两条命令检测命令行是否已添加 VPN：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl www<span class="selector-class">.google</span><span class="selector-class">.com</span></span><br></pre></td></tr></table></figure></p>
@@ -460,7 +460,7 @@
 <p>B、设置系统全局变量 http/https 代理<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">切换到etc目录下     cd /etc            </span><br><span class="line"></span><br><span class="line">以管理员身份编辑   sudo vim bashrc </span><br><span class="line"></span><br><span class="line">输入密码进入后,  G $ 定位到文件末尾 按下键盘字母 i 开始输入，在最下面位置粘贴下面两句</span><br><span class="line"></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">http_proxy</span>=127.0.0.1:52425</span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">https_proxy</span>=127.0.0.1:52427 </span><br><span class="line"></span><br><span class="line">然后退出保存  按Esc  :wq</span><br><span class="line"></span><br><span class="line">接下来让修改文件生效  source bashrc</span><br><span class="line"></span><br><span class="line">最后一步 验证成功:  curl www.google.com  如果收到 google 的 html 数据代表已通。</span><br></pre></td></tr></table></figure></p>
 <p>完成后 pod 内部的结构如下：</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/2208988-89f6ed8da3d73c10.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="SDWebImage4.0.png"></p>
-<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>为叙述方便，此处将图片的 URL 定义成了宏：</p>
+<h3 id="三、使用"><a href="#三、使用" class="headerlink" title="三、使用"></a>三、使用</h3><p>为叙述方便，此处将图片的 URL 定义成了宏：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> URL_Normal          [NSURL URLWithString:@<span class="meta-string">"此处是 普通静态图 地址"</span>]</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> URL_WebP_Normal     [NSURL URLWithString:@<span class="meta-string">"此处是 静态 WebP 地址"</span>]</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> URL_WebP_Dynamic    [NSURL URLWithString:@<span class="meta-string">"此处是 动态 WebP 地址"</span>]</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> URL_GIF             [NSURL URLWithString:@<span class="meta-string">"此处是 GIF 地址"</span>]</span></span><br></pre></td></tr></table></figure>
 <h4 id="第一种方案"><a href="#第一种方案" class="headerlink" title="第一种方案"></a>第一种方案</h4><ul>
 <li>png/jpg，直接使用 SDWebImage 提供的普通方法即可。</li>
@@ -480,6 +480,30 @@
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">[[SDWebImageCodersManager sharedInstance] addCoder:[SDWebImageGIFCoder sharedCoder]]</span>;</span><br></pre></td></tr></table></figure>
 <p>这种方案对最终的调用方来说，非常简洁，不需要对各种图片区别对待。</p>
 <figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">    HHImageView *customView = [[HHImageView alloc] initWithFrame<span class="function">:CGRectMake</span><span class="params">(125, 70, 160, 160)</span>];</span><br><span class="line">    customView.backgroundColor = [UIColor lightGrayColor];</span><br><span class="line">    [self.view addSubview<span class="function">:customView</span>];</span><br><span class="line">    [customView sd_<span class="keyword">set</span>ShowActivityIndicatorView<span class="function">:YES</span>];</span><br><span class="line">    <span class="string">//</span> 静态图</span><br><span class="line"><span class="string">//</span>    [customView sd_<span class="keyword">set</span>ImageWithURL<span class="function">:URL_Normal</span>];</span><br><span class="line">    <span class="string">//</span> WebP 动图</span><br><span class="line"><span class="string">//</span>    [customView sd_<span class="keyword">set</span>ImageWithURL<span class="function">:URL_WebP_Normal</span>];</span><br><span class="line">    <span class="string">//</span> WebP 静态图</span><br><span class="line"><span class="string">//</span>    [customView sd_<span class="keyword">set</span>ImageWithURL<span class="function">:URL_WebP_Dynamic</span>];</span><br><span class="line">    <span class="string">//</span> GIF</span><br><span class="line">    [customView sd_<span class="keyword">set</span>ImageWithURL<span class="function">:URL_GIF</span>];</span><br></pre></td></tr></table></figure>
+<blockquote>
+<h3 id="2019-12-27-更新："><a href="#2019-12-27-更新：" class="headerlink" title="2019.12.27 更新："></a>2019.12.27 更新：</h3><ul>
+<li>5.0 之后的版本中，默认添加了对 Gif 的支持，也就是说，需要移除 podfile 中的 <code>pod &#39;SDWebImage/GIF&#39;</code>（不移除的话，pod install/update 会报错），然后直接使用加载 png/jpg 的方法就可以加载 Gif 图了，比如：<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">imageViewA</span><span class="selector-class">.sd_setImage</span>(<span class="attribute">with</span>: URL(<span class="string">string: "http://hbimg.b0.upaiyun.com/43efd35d1e9cadc6d8ff5cdc5faccec06f1082bb4efc4-o8K27E_fw658"</span>), <span class="attribute">completed</span>: nil) <span class="comment">// 皮卡丘揉脸的动画^_^</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>对于 WebP，将之前的 subspec 抽出来，创建了一个单独的库 <code>SDImageWebPCoder</code>，使用时需要两步操作：<ul>
+<li>在 podfile 文件中用下边的内容替换之前的 <code>pod &#39;SDWebImage/GIF&#39;</code><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">   pod <span class="string">'SDImageWebPCoder'</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>使用前，先给 <code>SDImageCodersManager</code> 添加一个 coder：<code>WebPCoder</code>，如下：<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;   let WebPCoder = SDImageWebPCoder.shared</span><br><span class="line">&gt;   SDImageCodersManager<span class="selector-class">.shared</span><span class="selector-class">.addCoder</span>(WebPCoder)</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>然后，就可以使用通用的方法加载 WebP 了，示例代码如下：<br><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="comment">// 静态图</span></span><br><span class="line">&gt; <span class="selector-tag">imageViewA</span><span class="selector-class">.sd_setImage</span>(<span class="attribute">with</span>: URL(<span class="string">string: "https://www.gstatic.com/webp/gallery/2.webp"</span>), <span class="attribute">completed</span>: nil)</span><br><span class="line">&gt; <span class="comment">// 动图</span></span><br><span class="line">&gt; <span class="selector-tag">imageViewB</span><span class="selector-class">.sd_setImage</span>(<span class="attribute">with</span>: URL(<span class="string">string: "http://littlesvr.ca/apng/images/world-cup-2014-42.webp"</span>), <span class="attribute">completed</span>: nil)</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
 <p>本文完整示例代码见: <a href="https://github.com/riversea2015/CodeForBlogs/tree/master/HHSDWebImageStudy" target="_blank" rel="noopener">HHSDWebImageStudy</a></p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
 <li><a href="https://www.jianshu.com/p/25ff66fd78c2" target="_blank" rel="noopener">Mac 命令行（终端）设置Lantern vpn代理</a></li>
@@ -505,7 +529,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://devhe.com/2018/12/16/SDWebImage-源码学习笔记·前传-☞-升级-4-x-x-后适配-WebP-GIF/" title="SDWebImage 源码学习笔记·前传 ☞ 升级 4.x.x 后适配 WebP/GIF">https://devhe.com/2018/12/16/SDWebImage-源码学习笔记·前传-☞-升级-4-x-x-后适配-WebP-GIF/</a>
+    <a href="https://devhe.com/2018/12/16/SDWebImage-源码学习笔记·前传-☞-升级-4-x-x-后适配-WebP-GIF/" title="SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.0 后适配 WebP/GIF">https://devhe.com/2018/12/16/SDWebImage-源码学习笔记·前传-☞-升级-4-x-x-后适配-WebP-GIF/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -721,7 +745,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#升级"><span class="nav-text">升级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一种方案"><span class="nav-text">第一种方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二种方案"><span class="nav-text">第二种方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三种方案"><span class="nav-text">第三种方案</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、升级"><span class="nav-text">二、升级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、使用"><span class="nav-text">三、使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一种方案"><span class="nav-text">第一种方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二种方案"><span class="nav-text">第二种方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三种方案"><span class="nav-text">第三种方案</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2019-12-27-更新："><span class="nav-text">2019.12.27 更新：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
