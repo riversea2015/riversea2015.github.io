@@ -102,7 +102,7 @@
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-f5668b58785e3c8f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-f92abbb71d3ce91e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-89f6ed8da3d73c10.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2019-12-28T06:40:49.661Z">
+<meta property="og:updated_time" content="2019-12-28T06:49:58.045Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SDWebImage 源码学习笔记·前传 ☞ 升级 4.0&#x2F;5.0 后适配 WebP&#x2F;GIF">
 <meta name="twitter:description" content="2019.12.27 更新：最近发现 SDWebImage  升级到 5.0 以后加载 WebP 和 Gif 的方式也发生了改变，详见文末。  一、前言前段时间对项目中使用的 SDWebImage 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：  SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.">
@@ -505,7 +505,10 @@
 </ul>
 </blockquote>
 <blockquote>
-<p>然后，就可以使用通用的方法加载 WebP 了，示例代码如下：<br><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="comment">// 静态图</span></span><br><span class="line">&gt; <span class="selector-tag">imageViewA</span><span class="selector-class">.sd_setImage</span>(<span class="attribute">with</span>: URL(<span class="string">string: "https://www.gstatic.com/webp/gallery/2.webp"</span>), <span class="attribute">completed</span>: nil)</span><br><span class="line">&gt; <span class="comment">// 动图</span></span><br><span class="line">&gt; <span class="selector-tag">imageViewB</span><span class="selector-class">.sd_setImage</span>(<span class="attribute">with</span>: URL(<span class="string">string: "http://littlesvr.ca/apng/images/world-cup-2014-42.webp"</span>), <span class="attribute">completed</span>: nil)</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>最后，直接使用通用的方法加载 WebP，示例代码如下：<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;   <span class="comment">// 静态图</span></span><br><span class="line">&gt;   <span class="selector-tag">imageViewA</span><span class="selector-class">.sd_setImage</span>(<span class="attribute">with</span>: URL(<span class="string">string: "https://www.gstatic.com/webp/gallery/2.webp"</span>), <span class="attribute">completed</span>: nil)</span><br><span class="line">&gt;   <span class="comment">// 动图</span></span><br><span class="line">&gt;   <span class="selector-tag">imageViewB</span><span class="selector-class">.sd_setImage</span>(<span class="attribute">with</span>: URL(<span class="string">string: "http://littlesvr.ca/apng/images/world-cup-2014-42.webp"</span>), <span class="attribute">completed</span>: nil)</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
 </blockquote>
 <p>本文完整示例代码见: <a href="https://github.com/riversea2015/CodeForBlogs/tree/master/HHSDWebImageStudy" target="_blank" rel="noopener">HHSDWebImageStudy</a></p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="# 参考"></a># 参考</h3><ul>
