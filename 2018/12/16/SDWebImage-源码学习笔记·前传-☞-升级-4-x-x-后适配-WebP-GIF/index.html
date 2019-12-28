@@ -90,22 +90,22 @@
 
 
 
-<meta name="description" content="一、前言前段时间对项目中使用的 SDWebImage 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：  SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.0 后适配 WebP/GIF SDWebImage源码学习笔记 ☞ 结构及基本流程 SDWebImage源码学习笔记 ☞ SDWebImageMa">
+<meta name="description" content="2019.12.27 更新：最近发现 SDWebImage  升级到 5.0 以后加载 WebP 和 Gif 的方式也发生了改变，详见文末。  一、前言前段时间对项目中使用的 SDWebImage 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：  SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.">
 <meta name="keywords" content="iOS,源码学习笔记,SDWebImage">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SDWebImage 源码学习笔记·前传 ☞ 升级 4.0&#x2F;5.0 后适配 WebP&#x2F;GIF">
 <meta property="og:url" content="https://devhe.com/2018/12/16/SDWebImage-源码学习笔记·前传-☞-升级-4-x-x-后适配-WebP-GIF/index.html">
 <meta property="og:site_name" content="riversea2015">
-<meta property="og:description" content="一、前言前段时间对项目中使用的 SDWebImage 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：  SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.0 后适配 WebP/GIF SDWebImage源码学习笔记 ☞ 结构及基本流程 SDWebImage源码学习笔记 ☞ SDWebImageMa">
+<meta property="og:description" content="2019.12.27 更新：最近发现 SDWebImage  升级到 5.0 以后加载 WebP 和 Gif 的方式也发生了改变，详见文末。  一、前言前段时间对项目中使用的 SDWebImage 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：  SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-f5668b58785e3c8f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-f92abbb71d3ce91e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-89f6ed8da3d73c10.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2019-12-28T06:36:15.175Z">
+<meta property="og:updated_time" content="2019-12-28T06:40:49.661Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SDWebImage 源码学习笔记·前传 ☞ 升级 4.0&#x2F;5.0 后适配 WebP&#x2F;GIF">
-<meta name="twitter:description" content="一、前言前段时间对项目中使用的 SDWebImage 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：  SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.0 后适配 WebP/GIF SDWebImage源码学习笔记 ☞ 结构及基本流程 SDWebImage源码学习笔记 ☞ SDWebImageMa">
+<meta name="twitter:description" content="2019.12.27 更新：最近发现 SDWebImage  升级到 5.0 以后加载 WebP 和 Gif 的方式也发生了改变，详见文末。  一、前言前段时间对项目中使用的 SDWebImage 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：  SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
@@ -430,6 +430,9 @@
 
       
         <p><img src="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="SDWebImage-源码学习笔记.png"></p>
+<blockquote>
+<p>2019.12.27 更新：最近发现 <a href="https://github.com/SDWebImage/SDWebImage" target="_blank" rel="noopener">SDWebImage</a>  升级到 5.0 以后加载 WebP 和 Gif 的方式也发生了改变，详见文末。</p>
+</blockquote>
 <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>前段时间对项目中使用的 <a href="https://github.com/SDWebImage/SDWebImage" target="_blank" rel="noopener">SDWebImage</a> 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：</p>
 <ul>
 <li><a href="https://www.jianshu.com/p/c3ec50e1942f" target="_blank" rel="noopener">SDWebImage 源码学习笔记·前传 ☞ 升级 4.0/5.0 后适配 WebP/GIF</a></li>
