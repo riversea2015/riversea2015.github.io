@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://devhe.com/"/>
-  <updated>2020-07-05T13:28:45.330Z</updated>
+  <updated>2020-07-05T14:33:27.653Z</updated>
   <id>https://devhe.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://devhe.com/2020/07/05/%E5%BE%AE%E4%BF%A1OpenSDK1-8-6%E5%8D%87%E7%BA%A7%E4%B9%8B%E8%B7%AF/"/>
     <id>https://devhe.com/2020/07/05/微信OpenSDK1-8-6升级之路/</id>
     <published>2020-07-05T13:24:37.000Z</published>
-    <updated>2020-07-05T13:28:45.330Z</updated>
+    <updated>2020-07-05T14:33:27.653Z</updated>
     
     <summary type="html">
     
@@ -35,6 +35,8 @@
 &lt;p&gt;既然如此，那就抓紧升级吧！&lt;/p&gt;
     
     </summary>
+    
+      <category term="微信" scheme="https://devhe.com/categories/%E5%BE%AE%E4%BF%A1/"/>
     
     
   </entry>
