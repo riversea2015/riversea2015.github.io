@@ -90,19 +90,19 @@
 
 
 
-<meta name="description" content="0.前言3月份的时候看到 微信开发者 发布的公告：“微信开放平台移动应用SDK更新提醒”。       要求开发者将微信 SDK 升级到 1.8.6.1 或更高版本，后期将逐步对 iOS 旧版本 SDK（版本号低于1.8.6.1）的能力进行阶梯式调整：  2020年3月20日起对旧版本 SDK 发起的分享增加 “未验证应用” 安全提示 2020年6月1日起限制旧版本 SDK 使用微信分享、微信登录">
+<meta name="description" content="0.前言3月份的时候看到 微信开发者 发布的公告：“微信开放平台移动应用SDK更新提醒”。  要求开发者将微信 SDK 升级到 1.8.6.1 或更高版本，后期将逐步对 iOS 旧版本 SDK（版本号低于1.8.6.1）的能力进行阶梯式调整：  2020年3月20日起对旧版本 SDK 发起的分享增加 “未验证应用” 安全提示 2020年6月1日起限制旧版本 SDK 使用微信分享、微信登录、打开小程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微信OpenSDK1.8.6升级之路">
 <meta property="og:url" content="https://devhe.com/2020/07/05/微信OpenSDK1-8-6升级之路/index.html">
 <meta property="og:site_name" content="riversea2015">
-<meta property="og:description" content="0.前言3月份的时候看到 微信开发者 发布的公告：“微信开放平台移动应用SDK更新提醒”。       要求开发者将微信 SDK 升级到 1.8.6.1 或更高版本，后期将逐步对 iOS 旧版本 SDK（版本号低于1.8.6.1）的能力进行阶梯式调整：  2020年3月20日起对旧版本 SDK 发起的分享增加 “未验证应用” 安全提示 2020年6月1日起限制旧版本 SDK 使用微信分享、微信登录">
+<meta property="og:description" content="0.前言3月份的时候看到 微信开发者 发布的公告：“微信开放平台移动应用SDK更新提醒”。  要求开发者将微信 SDK 升级到 1.8.6.1 或更高版本，后期将逐步对 iOS 旧版本 SDK（版本号低于1.8.6.1）的能力进行阶梯式调整：  2020年3月20日起对旧版本 SDK 发起的分享增加 “未验证应用” 安全提示 2020年6月1日起限制旧版本 SDK 使用微信分享、微信登录、打开小程">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://devhe.com/2020/07/05/微信OpenSDK1-8-6升级之路/微信OpenSDK1-8-6升级之路/WechatIMG89.png">
-<meta property="og:updated_time" content="2020-07-06T13:16:58.454Z">
+<meta property="og:image" content="https://devhe.com/2020/07/05/微信OpenSDK1-8-6升级之路/WechatIMG89.png">
+<meta property="og:updated_time" content="2020-07-06T13:39:07.489Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微信OpenSDK1.8.6升级之路">
-<meta name="twitter:description" content="0.前言3月份的时候看到 微信开发者 发布的公告：“微信开放平台移动应用SDK更新提醒”。       要求开发者将微信 SDK 升级到 1.8.6.1 或更高版本，后期将逐步对 iOS 旧版本 SDK（版本号低于1.8.6.1）的能力进行阶梯式调整：  2020年3月20日起对旧版本 SDK 发起的分享增加 “未验证应用” 安全提示 2020年6月1日起限制旧版本 SDK 使用微信分享、微信登录">
-<meta name="twitter:image" content="https://devhe.com/2020/07/05/微信OpenSDK1-8-6升级之路/微信OpenSDK1-8-6升级之路/WechatIMG89.png">
+<meta name="twitter:description" content="0.前言3月份的时候看到 微信开发者 发布的公告：“微信开放平台移动应用SDK更新提醒”。  要求开发者将微信 SDK 升级到 1.8.6.1 或更高版本，后期将逐步对 iOS 旧版本 SDK（版本号低于1.8.6.1）的能力进行阶梯式调整：  2020年3月20日起对旧版本 SDK 发起的分享增加 “未验证应用” 安全提示 2020年6月1日起限制旧版本 SDK 使用微信分享、微信登录、打开小程">
+<meta name="twitter:image" content="https://devhe.com/2020/07/05/微信OpenSDK1-8-6升级之路/WechatIMG89.png">
 
 
 
@@ -406,8 +406,7 @@
 
       
         <h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h2><p>3月份的时候看到 <code>微信开发者</code> 发布的公告：<a href="https://mp.weixin.qq.com/s/R5lUNDDbghGfnwBir8srJw" target="_blank" rel="noopener">“微信开放平台移动应用SDK更新提醒”</a>。</p>
-<div align="center"><br>    <img src="/2020/07/05/微信OpenSDK1-8-6升级之路/./微信OpenSDK1-8-6升级之路/WechatIMG89.png" width="200" height="400" alt="编译后的结构" align="center"><br></div>
-
+<p><img src="/2020/07/05/微信OpenSDK1-8-6升级之路/WechatIMG89.png" alt="编译后的结构.png"></p>
 <p>要求开发者将微信 SDK 升级到 1.8.6.1 或更高版本，后期将逐步对 iOS 旧版本 SDK（版本号低于1.8.6.1）的能力进行阶梯式调整：</p>
 <ul>
 <li>2020年3月20日起对旧版本 SDK 发起的分享增加 <code>“未验证应用”</code> 安全提示</li>
