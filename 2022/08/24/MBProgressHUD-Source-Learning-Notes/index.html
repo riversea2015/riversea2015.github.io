@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>MBProgressHUD 源码学习笔记 | riversea2015</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="1.前言MBProgressHUD 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MBProgressHUD 源码学习笔记">
+<meta property="og:url" content="https://devhe.com/2022/08/24/MBProgressHUD-Source-Learning-Notes/index.html">
+<meta property="og:site_name" content="riversea2015">
+<meta property="og:description" content="1.前言MBProgressHUD 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。">
+<meta property="og:locale">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-91ab1cfdab440c59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-c8735aee9340c963.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-953d9e9aa2b0558a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-918632801ae88997.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="article:published_time" content="2022-08-24T09:07:23.000Z">
+<meta property="article:modified_time" content="2022-08-24T09:10:07.934Z">
+<meta property="article:author" content="He Hai">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2208988-91ab1cfdab440c59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+    <link rel="alternate" href="/atom.xml" title="riversea2015" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">riversea2015</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Stay Hungry, Stay Young.</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Buscar"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Buscar"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://devhe.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-MBProgressHUD-Source-Learning-Notes" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/08/24/MBProgressHUD-Source-Learning-Notes/" class="article-date">
+  <time class="dt-published" datetime="2022-08-24T09:07:23.000Z" itemprop="datePublished">2022-08-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      MBProgressHUD 源码学习笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="https://upload-images.jianshu.io/upload_images/2208988-91ab1cfdab440c59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="MBProgressHUD 源码学习笔记.png"></p>
+<h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p><a target="_blank" rel="noopener" href="https://github.com/jdg/MBProgressHUD">MBProgressHUD</a> 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。</p>
+<span id="more"></span>
+
+<h3 id="2-视图层级"><a href="#2-视图层级" class="headerlink" title="2.视图层级"></a>2.视图层级</h3><p>在开始学习源码之前，先大概了解一下整个视图的层级结构吧，主要分这几个视图：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2208988-c8735aee9340c963.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="视图层级.png"></p>
+<ul>
+<li><code>backgroundView</code>，位于最底层，是一个遮罩层，在 HUD 显示时，我们之所以无法点击后边的视图，都是因为它。</li>
+<li><code>bezelView</code>，位于 backgroundView 之上，承载着下边要说的几个视图，下边 4 个视图位于同一层级。</li>
+<li><code>indicator</code>，是 bezelView 的子视图，类型不定，他自己提供了 2 种类型 <code>MBRoundProgressView</code> 和 <code>MBBarProgressView</code>，不过也可以使用用户自定义视图 <code>customView</code>。</li>
+<li><code>label</code>，indicator 下方的提示标签。</li>
+<li><code>detailLabel</code>，label 下方的补充提示标签。</li>
+<li><code>button</code>，最底部的按钮，可以响应点击事件。</li>
+</ul>
+<p>当然，以上这些视图不一定要全部显示，可以由用户（我们自己 O(∩_∩)O ）自由选择。</p>
+<h3 id="3-源码"><a href="#3-源码" class="headerlink" title="3.源码"></a>3.源码</h3><p>言归正传，现在开始读源码。</p>
+<h6 id="3-1-类结构"><a href="#3-1-类结构" class="headerlink" title="3.1 类结构"></a>3.1 类结构</h6><p>虽然 MBProgressHUD 的文件数量非常少，只有 2 个：MBProgressHUD.h 和 MBProgressHUD.m，但还有几个相关的类和协议：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2208988-953d9e9aa2b0558a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="类之间的相互关系.png"></p>
+<h6 id="3-2-MBProgressHUD"><a href="#3-2-MBProgressHUD" class="headerlink" title="3.2 MBProgressHUD"></a>3.2 MBProgressHUD</h6><p>我们主要研究主类 <code>MBProgressHUD</code>，首先看几个重要的属性：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@property (assign, nonatomic) NSTimeInterval graceTime;   // 显示的宽限时间，即从显示方法被调用到真正显示之间的时间差</span><br><span class="line">@property (assign, nonatomic) NSTimeInterval minShowTime;  // HUD 最小的展示时间  </span><br><span class="line"></span><br><span class="line">@property (nonatomic, weak) NSTimer *graceTimer;        // 延迟显示的 timer</span><br><span class="line">@property (nonatomic, weak) NSTimer *minShowTimer;      // 保证 HUD 最短显示维持时间 的timer</span><br><span class="line">@property (nonatomic, weak) NSTimer *hideDelayTimer;    // 延迟隐藏的 timer</span><br></pre></td></tr></table></figure>
+
+<p>接下来看看 <code>MBProgressHUD</code> 为我们提供的 3 个类方法用于展示和隐藏 HUD 的方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 展示 HUD</span><br><span class="line">+ (instancetype)showHUDAddedTo:(UIView *)view animated:(BOOL)animated;</span><br><span class="line">// 隐藏 HUD</span><br><span class="line">+ (BOOL)hideHUDForView:(UIView *)view animated:(BOOL)animated;</span><br><span class="line">// 返回最顶层未结束的 HUD</span><br><span class="line">+ (nullable MBProgressHUD *)HUDForView:(UIView *)view;</span><br></pre></td></tr></table></figure>
+
+<p>我们从展示的方法实现开始探究，实现代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">+ (instancetype)showHUDAddedTo:(UIView *)view animated:(BOOL)animated &#123;</span><br><span class="line">    MBProgressHUD *hud = [[self alloc] initWithView:view];</span><br><span class="line">    hud.removeFromSuperViewOnHide = YES;</span><br><span class="line">    [view addSubview:hud];</span><br><span class="line">    [hud showAnimated:animated];</span><br><span class="line">    return hud;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们发现，在 <code>initWithView:</code> 方法中对入参 view 做了空判断，这里使用了 NSAsset，如果为空，会报错：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (id)initWithView:(UIView *)view &#123;</span><br><span class="line">    NSAssert(view, @&quot;View must not be nil.&quot;);</span><br><span class="line">    return [self initWithFrame:view.bounds];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接着看 <code>showAnimated:</code> 的方法实现。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">- (void)showAnimated:(BOOL)animated &#123;</span><br><span class="line">    </span><br><span class="line">    // 1.确保在主线程执行</span><br><span class="line">    MBMainThreadAssert();</span><br><span class="line">    </span><br><span class="line">    // 2.关闭之前可能存在的 minShowTimer</span><br><span class="line">    [self.minShowTimer invalidate];</span><br><span class="line">    </span><br><span class="line">    self.useAnimation = animated;</span><br><span class="line">    self.finished = NO;</span><br><span class="line">    </span><br><span class="line">    // 3.是否延缓 HUD 的展示</span><br><span class="line">    // 如果设置了 graceTime，则延缓 HUD 的展示</span><br><span class="line">    if (self.graceTime &gt; 0.0) &#123;</span><br><span class="line">        </span><br><span class="line">        NSTimer *timer = [NSTimer timerWithTimeInterval:self.graceTime target:self selector:@selector(handleGraceTimer:) userInfo:nil repeats:NO];</span><br><span class="line">        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];</span><br><span class="line">        self.graceTimer = timer;</span><br><span class="line">        </span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        </span><br><span class="line">        // 如果没设置 graceTime，则立即展示 HUD</span><br><span class="line">        [self showUsingAnimation:self.useAnimation];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 定时器 graceTimer 的响应方法</span><br><span class="line">- (void)handleGraceTimer:(NSTimer *)theTimer &#123;</span><br><span class="line">    // 只有当任务还在进行的时候才会显示 HUD，否则什么也不做</span><br><span class="line">    if (!self.hasFinished) &#123;</span><br><span class="line">        [self showUsingAnimation:self.useAnimation];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此处做了 3 件事：</p>
+<p>① 首先，为了确保在主线程执行，能够及时更新 UI ，这里使用了 <code>NSAsset</code>，如果当前线程不是主线程，就会报错，<code>MBMainThreadAssert()</code>  的定义如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#define MBMainThreadAssert() NSAssert([NSThread isMainThread], @&quot;MBProgressHUD needs to be accessed on the main thread.&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>② 然后，移除了可能存在的 minShowTimer。</p>
+<p>③ 最后，根据 graceTime 有无值来决定是否需要延缓 HUD 的显示，如果有值，则启动 graceTimer，待时间到时再执行显示的操作；如果无值，则直接去显示 HUD。</p>
+<p>graceTime 应该是针对耗时比较少的操作准备的，定时器 graceTimer 时间到的时候，操作有可能已经完成了 (self.hasFinished &#x3D;&#x3D; YES)，这时就不需要展示 HUD 了，以免影响用户体验。</p>
+<p>另外，minShowTime 是在隐藏的时候使用的，通过 minShowTimer 保证 HUD 展示时间 &gt;&#x3D; minShowTime 从而避免 HUD 显示时间过短的问题，也是为了提升用户体验。</p>
+<p>做完 ③ 的判断就该去显示了，即 <code>showUsingAnimation:</code> 的实现，它主要也做了 3 件事：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">- (void)showUsingAnimation:(BOOL)animated &#123;</span><br><span class="line"></span><br><span class="line">    [self.bezelView.layer removeAllAnimations];</span><br><span class="line">    [self.backgroundView.layer removeAllAnimations];</span><br><span class="line">    [self.hideDelayTimer invalidate];</span><br><span class="line"></span><br><span class="line">    self.showStarted = [NSDate date];</span><br><span class="line">    self.alpha = 1.f;</span><br><span class="line"></span><br><span class="line">    [self setNSProgressDisplayLinkEnabled:YES];</span><br><span class="line"></span><br><span class="line">    if (animated) &#123;</span><br><span class="line">        [self animateIn:YES withType:self.animationType completion:NULL];</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">#pragma clang diagnostic push</span><br><span class="line">#pragma clang diagnostic ignored &quot;-Wdeprecated-declarations&quot;</span><br><span class="line">        self.bezelView.alpha = self.opacity;</span><br><span class="line">#pragma clang diagnostic pop</span><br><span class="line">        self.backgroundView.alpha = 1.f;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>① 取消之前可能存在的 animations 并停止 ‘延缓隐藏’ 的 timer。</p>
+<p>② 根据是否需要展示进度做相应的处理。此处传的是 YES，即需要展示：创建一个 <code>CADisplayLink </code>对象并启动（启动的代码写在了 progressObjectDisplayLink 的 setter 里边），在响应方法里将外界传入的 <code>progressObject（NSProgress）</code>的值 <code>progressObject.fractionCompleted</code> 赋给 <code>progress（CGFloat）</code>，然后在 progress 的 setter 里更新控件的值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">// 创建 CADisplayLink 对象，用于更新</span><br><span class="line">- (void)setNSProgressDisplayLinkEnabled:(BOOL)enabled &#123;</span><br><span class="line">    if (enabled &amp;&amp; self.progressObject) &#123;</span><br><span class="line">        if (!self.progressObjectDisplayLink) &#123;</span><br><span class="line">            self.progressObjectDisplayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateProgressFromProgressObject)];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        self.progressObjectDisplayLink = nil;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 为 progressObjectDisplayLink 赋值，并启动 CADisplayLink</span><br><span class="line">- (void)setProgressObjectDisplayLink:(CADisplayLink *)progressObjectDisplayLink &#123;</span><br><span class="line">    if (progressObjectDisplayLink != _progressObjectDisplayLink) &#123;</span><br><span class="line">        [_progressObjectDisplayLink invalidate];</span><br><span class="line">        </span><br><span class="line">        _progressObjectDisplayLink = progressObjectDisplayLink;</span><br><span class="line">        </span><br><span class="line">        [_progressObjectDisplayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 给 progress 赋值</span><br><span class="line">- (void)updateProgressFromProgressObject &#123;</span><br><span class="line">    self.progress = self.progressObject.fractionCompleted;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// progress 的 setter，并给展示进度的控件赋值</span><br><span class="line">- (void)setProgress:(float)progress &#123;</span><br><span class="line">    if (progress != _progress) &#123;</span><br><span class="line">        _progress = progress;</span><br><span class="line">        UIView *indicator = self.indicator;</span><br><span class="line">        if ([indicator respondsToSelector:@selector(setProgress:)]) &#123;</span><br><span class="line">            [(id)indicator setValue:@(self.progress) forKey:@&quot;progress&quot;];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>外界给 <code>_progressObject </code> 赋值的方法实现如下。这里加了 <code>if (progressObject != _progressObject)</code> 的判断，避免了重复赋值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (void)setProgressObject:(NSProgress *)progressObject &#123;</span><br><span class="line">    if (progressObject != _progressObject) &#123;</span><br><span class="line">        _progressObject = progressObject;</span><br><span class="line">        [self setNSProgressDisplayLinkEnabled:YES];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>③ 如果需要过渡动画，无论是 show 还是 hide 都会调用 <code>animateIn: withType: completion:</code> 这个方法，代码实现如下，详见注释。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">- (void)animateIn:(BOOL)animatingIn withType:(MBProgressHUDAnimation)type completion:(void(^)(BOOL finished))completion &#123;</span><br><span class="line">    </span><br><span class="line">    // 确定缩放动画的类型</span><br><span class="line">    if (type == MBProgressHUDAnimationZoom) &#123;</span><br><span class="line">        type = animatingIn ? MBProgressHUDAnimationZoomIn : MBProgressHUDAnimationZoomOut;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    CGAffineTransform small = CGAffineTransformMakeScale(0.5f, 0.5f); // x、y 方向的缩放倍数均为 0.5</span><br><span class="line">    CGAffineTransform large = CGAffineTransformMakeScale(1.5f, 1.5f); // x、y 方向的缩放倍数均为 1.5</span><br><span class="line">    </span><br><span class="line">    UIView *bezelView = self.bezelView;</span><br><span class="line">    </span><br><span class="line">// * 设置初始状态的值（show 的 过渡动画 的初值，hide 的初值就不用设置了）</span><br><span class="line">    if (animatingIn &amp;&amp; bezelView.alpha == 0.f &amp;&amp; type == MBProgressHUDAnimationZoomIn) &#123;</span><br><span class="line">        bezelView.transform = small;</span><br><span class="line">    &#125; else if (animatingIn &amp;&amp; bezelView.alpha == 0.f &amp;&amp; type == MBProgressHUDAnimationZoomOut) &#123;</span><br><span class="line">        bezelView.transform = large;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 执行动画的 block，作为后边方法的参数</span><br><span class="line">    dispatch_block_t animations = ^&#123;</span><br><span class="line">        </span><br><span class="line">// * show 的过渡动画 的 终值</span><br><span class="line">        if (animatingIn) &#123;</span><br><span class="line">            bezelView.transform = CGAffineTransformIdentity;</span><br><span class="line">            </span><br><span class="line">// * 下边 2 个 if 均为 hide 的过渡动画 的 终值</span><br><span class="line">        &#125; else if (!animatingIn &amp;&amp; type == MBProgressHUDAnimationZoomIn) &#123;</span><br><span class="line">            bezelView.transform = large;</span><br><span class="line">        &#125; else if (!animatingIn &amp;&amp; type == MBProgressHUDAnimationZoomOut) &#123;</span><br><span class="line">            bezelView.transform = small;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">#pragma clang diagnostic push</span><br><span class="line">#pragma clang diagnostic ignored &quot;-Wdeprecated-declarations&quot;</span><br><span class="line">        bezelView.alpha = animatingIn ? self.opacity : 0.f;</span><br><span class="line">#pragma clang diagnostic pop</span><br><span class="line">        self.backgroundView.alpha = animatingIn ? 1.f : 0.f;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    // 此方法 iOS 7.0 之后才支持</span><br><span class="line">#if __IPHONE_OS_VERSION_MAX_ALLOWED &gt;= 70000 || TARGET_OS_TV</span><br><span class="line">    if (kCFCoreFoundationVersionNumber &gt;= kCFCoreFoundationVersionNumber_iOS_7_0) &#123;</span><br><span class="line">        [UIView animateWithDuration:0.3</span><br><span class="line">                              delay:0.</span><br><span class="line">             usingSpringWithDamping:1.f</span><br><span class="line">              initialSpringVelocity:0.f</span><br><span class="line">                            options:UIViewAnimationOptionBeginFromCurrentState</span><br><span class="line">                         animations:animations</span><br><span class="line">                         completion:completion];</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">#endif</span><br><span class="line">    </span><br><span class="line">    // iOS 4.0 就开始支持</span><br><span class="line">    [UIView animateWithDuration:0.3</span><br><span class="line">                          delay:0.</span><br><span class="line">                        options:UIViewAnimationOptionBeginFromCurrentState</span><br><span class="line">                     animations:animations</span><br><span class="line">                     completion:completion];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>隐藏的逻辑与此类似，可自行参看代码，这里简单绘制了一张方法调用流程图作为小结，如下所示：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2208988-918632801ae88997.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="show-hide.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://devhe.com/2022/08/24/MBProgressHUD-Source-Learning-Notes/" data-id="cl77ebd5100003jfy2u33cwny" data-title="MBProgressHUD 源码学习笔记" class="article-share-link">Compartir</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/08/24/MJRefresh-Source-Learning-Notes/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Viejo</strong>
+      <div class="article-nav-title">MJRefresh 源码学习笔记</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archivos</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Posts recientes</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/08/24/MBProgressHUD-Source-Learning-Notes/">MBProgressHUD 源码学习笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/24/MJRefresh-Source-Learning-Notes/">MJRefresh 源码学习笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/24/ijkplayer-Compilation-and-Packaging/">ijkplayer 编译-打包-Pod支持</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/23/Topics-and-mentions-similar-to-Weibo/">iOS UITextView 实现类似微博的话题、提及功能</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/03/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 He Hai<br>
+      Construido por <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
