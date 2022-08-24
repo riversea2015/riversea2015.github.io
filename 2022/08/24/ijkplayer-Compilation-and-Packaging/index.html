@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>ijkplayer 编译-打包-Pod支持 | riversea2015</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="ijkplayer 是 bilibili 开源的一款优秀的视频播放器，基于 ffplay，支持 iOS&#x2F;Android，点播&#x2F;直播，以及多种编解码方式。官方虽不提供现成的 framework，但大家可以根据需要自定义配置后，自己打包。本文仅对自己之前编译打包的过程做一简要记录。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ijkplayer 编译-打包-Pod支持">
+<meta property="og:url" content="https://devhe.com/2022/08/24/ijkplayer-Compilation-and-Packaging/index.html">
+<meta property="og:site_name" content="riversea2015">
+<meta property="og:description" content="ijkplayer 是 bilibili 开源的一款优秀的视频播放器，基于 ffplay，支持 iOS&#x2F;Android，点播&#x2F;直播，以及多种编解码方式。官方虽不提供现成的 framework，但大家可以根据需要自定义配置后，自己打包。本文仅对自己之前编译打包的过程做一简要记录。">
+<meta property="og:locale">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/54224b90fb104c4e95bdda292c826c78~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f5452b1fa8c247a1ba8ee889dc4ddd70~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3075efd22692457490d5b481d753d549~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2d121d09348b48209cbcc23c281b8d39~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4737c799b8e54a7f9a74127b6249679d~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/cdb0f6e9842b40f1aaa690b624c15dd9~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/cee796275fa14e449e200aafb0ed47df~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/40dd8dc55d7c4a98b8e18572e4e44dbb~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7fe7648124f44eb3b261e59593e6e6c5~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4eca3f98a9ef4ba9a7cfff29fb456547~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e486eb30fcda4e7f9214ae9496381d85~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ef95d4c8d8c0410aa1d3912ae4ecf662~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b89615e1d7eb4673a34ac73425c04426~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/70566a2e24244415bab56b8e314ec3da~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/101d3c5ca23e4b55b44e1a132a9476cb~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/06856674def34d70a79e541809510ef7~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/33150410e4c54227a92d429b9f4ecf25~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/bd01777d380b4b5cb55cd0f911f7d1e0~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/652f7c6e011e4e029569951fe31c71eb~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f557bf6d48a4424daf917d3472f3aaf0~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7862b4d2d9dd411785482b4059fb43f8~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/962f38c462784da197d0cc682f585a90~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4aa1d4ecf3d040aa80ce2a8f1520f0f1~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/081a3af71817423eb0caa286422b5c11~tplv-k3u1fbpfcp-watermark.image">
+<meta property="article:published_time" content="2022-08-24T06:16:06.000Z">
+<meta property="article:modified_time" content="2022-08-24T06:18:10.311Z">
+<meta property="article:author" content="He Hai">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/54224b90fb104c4e95bdda292c826c78~tplv-k3u1fbpfcp-watermark.image">
+  
+    <link rel="alternate" href="/atom.xml" title="riversea2015" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">riversea2015</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Stay Hungry, Stay Young.</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://devhe.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-ijkplayer-Compilation-and-Packaging" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/08/24/ijkplayer-Compilation-and-Packaging/" class="article-date">
+  <time class="dt-published" datetime="2022-08-24T06:16:06.000Z" itemprop="datePublished">2022-08-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      ijkplayer 编译-打包-Pod支持
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://github.com/Bilibili/ijkplayer">ijkplayer</a> 是 <a target="_blank" rel="noopener" href="https://github.com/Bilibili">bilibili</a> 开源的一款优秀的视频播放器，基于 <code>ffplay</code>，支持 <code>iOS/Android</code>，点播&#x2F;直播，以及多种编解码方式。官方虽不提供现成的 framework，但大家可以根据需要自定义配置后，自己打包。本文仅对自己之前编译打包的过程做一简要记录。 </p>
+<span id="more"></span>
+
+<p>⭐️ 文中部分图片摘自文末 <a href="#%E5%8F%82%E8%80%83">参考</a>，在此表示感谢！</p>
+<p>本文为 <code>iOS</code> 的编译打包过程，环境为 <code>Mac</code> + <code>Xcode</code>。</p>
+<h2 id="0、准备工作"><a href="#0、准备工作" class="headerlink" title="0、准备工作"></a>0、准备工作</h2><p>依次安装<code>homebrew</code>，<code>git</code>，<code>yasm</code>，前两个自不必说，最后一个<code>yasm</code>是一个汇编器。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span><br><span class="line">brew install git</span><br><span class="line">brew install yasm</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ol>
+<li>若要检测以上 3 项是否已安装，可使用对应的 <code>--version</code> 命令。   </li>
+<li>如果嫌弃 homebrew 安装太慢，可以参考这份提速方案：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/mjios/p/14497925.html">Mac安装Homebrew</a>。</li>
+</ol>
+</blockquote>
+<h2 id="一、获取-ijkplayer-源码"><a href="#一、获取-ijkplayer-源码" class="headerlink" title="一、获取 ijkplayer 源码"></a>一、获取 ijkplayer 源码</h2><p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/54224b90fb104c4e95bdda292c826c78~tplv-k3u1fbpfcp-watermark.image" alt="ijkplayer.png"></p>
+<p>在一个合适的位置新建一个文件夹，比如 Desktop，文件夹名为 ijkplayer</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ~/Desktop</span><br><span class="line">mkdir ijkplayer</span><br><span class="line">cd ~/Desktop/ijkplayer/</span><br></pre></td></tr></table></figure>
+
+<p>获取 ijkplayer 源码</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取 ijkplayer 源码</span></span><br><span class="line">git clone https://github.com/Bilibili/ijkplayer.git ijkplayer-ios</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">进入源码目录</span></span><br><span class="line">cd ijkplayer-ios</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">切换分支 (目前最新版本为 k0.8.8，可以自行去 GitHub 查看最新版本号)</span></span><br><span class="line">git checkout -B latest k0.8.8</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、选择需要的编解码器或支持的格式（此步骤可选）"><a href="#二、选择需要的编解码器或支持的格式（此步骤可选）" class="headerlink" title="二、选择需要的编解码器或支持的格式（此步骤可选）"></a>二、选择需要的编解码器或支持的格式（此步骤可选）</h2><p>默认支持编解码器&#x2F;格式 <code>module-lite.sh</code>，若需修改，可以选择以下 3 种配置之一，反之可以跳过此步骤。</p>
+<ul>
+<li><code>module-default.sh</code>: 更多的编解码器&#x2F;格式</li>
+<li><code>module-lite-hevc.sh</code>: 较少的编解码器&#x2F;格式(包括 hevc)</li>
+<li><code>module-lite.sh</code>: 较少的编解码器&#x2F;格式<code>(默认)</code></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 进入 config 目录</span><br><span class="line">cd config</span><br><span class="line"></span><br><span class="line"># 删除当前的 module.sh 文件</span><br><span class="line">rm module.sh</span><br><span class="line"></span><br><span class="line"># 可根据需要替换为 `module-default.sh`, `module-lite-hevc.sh`, `module-lite.sh` 之一</span><br><span class="line"># 创建软链接 module.sh 指向 module-lite-hevc.sh</span><br><span class="line">ln -s module-lite-hevc.sh module.sh</span><br><span class="line"></span><br><span class="line">cd ..</span><br><span class="line">cd ios</span><br><span class="line">sh compile-ffmpeg.sh clean</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f5452b1fa8c247a1ba8ee889dc4ddd70~tplv-k3u1fbpfcp-watermark.image" alt="module.png"></p>
+<blockquote>
+<p>说明1：对于 iOS 而言，module.sh 这些配置脚本是在编译 ffmpeg（即执行 .&#x2F;compile-ffmpeg.sh）的时候用的。</p>
+</blockquote>
+<blockquote>
+<p>说明2：<code>HEVC</code> 是 High Efficiency Video Coding 的缩写，别称 <code>H.265</code>，是一种新的视频压缩标准，用来以替代 H.264&#x2F;AVC 编码标准，2013年1月26号，HEVC 正式成为国际标准。</p>
+</blockquote>
+<h2 id="三、获取-ffmpeg-并初始化"><a href="#三、获取-ffmpeg-并初始化" class="headerlink" title="三、获取 ffmpeg 并初始化"></a>三、获取 ffmpeg 并初始化</h2><p>有两种方案可供选择：</p>
+<ul>
+<li>精简版本：不修改脚本，直接执行，则会缺少 armv7s，需要配合步骤 <code>七（A）</code> 执行；</li>
+<li>全版本：自己修改脚本，加上 armv7s 的支持，需要配合步骤 <code>七（B）</code> 执行。</li>
+</ul>
+<h3 id="A-精简版本（缺少-armv7s）"><a href="#A-精简版本（缺少-armv7s）" class="headerlink" title="A.精简版本（缺少 armv7s）"></a>A.精简版本（缺少 armv7s）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ..</span><br><span class="line">./init-ios.sh</span><br></pre></td></tr></table></figure>
+
+<p>注意执行此命令前后，<code>ios</code> 目录的变化:</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3075efd22692457490d5b481d753d549~tplv-k3u1fbpfcp-watermark.image" alt="init-ios-before.png"></p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2d121d09348b48209cbcc23c281b8d39~tplv-k3u1fbpfcp-watermark.image" alt="init-ios-after.png"></p>
+<h3 id="B-全版本（含-armv7s）"><a href="#B-全版本（含-armv7s）" class="headerlink" title="B.全版本（含 armv7s）"></a>B.全版本（含 armv7s）</h3><p>修改 <code>init-ios.sh</code> 脚本，加上 <code>armv7s</code> 环境</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 修改前</span><br><span class="line">FF_ALL_ARCHS_IOS8_SDK=&quot;armv7 arm64 i386 x86_64&quot;</span><br><span class="line"></span><br><span class="line"># 修改后</span><br><span class="line">FF_ALL_ARCHS_IOS8_SDK=&quot;armv7 armv7s arm64 i386 x86_64&quot;</span><br></pre></td></tr></table></figure>
+
+<p>修改后执行脚本，下载各种环境（armv7、armv7s、arm64、i386、x86_64）下的 ffmpeg：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./init-ios.sh</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>说明：这里支持的架构种类、数量可以根据需要增减，可以不局限于上文 A、B 这两种方案。</p>
+</blockquote>
+<h2 id="四、自定义音视频文件处理方式（可选）"><a href="#四、自定义音视频文件处理方式（可选）" class="headerlink" title="四、自定义音视频文件处理方式（可选）"></a>四、自定义音视频文件处理方式（可选）</h2><p>在真正开始编译之前，可以对代码进行修改，以满足自己不同的需求，比如添加 DRM 相关逻辑，达到音视频资源的可控访问，如 只能使用自己 App 内的播放器播放等，因暂未得到公司批准，故此处不便展开讲解，见谅。</p>
+<h2 id="五、打开-OpenSSL-开关"><a href="#五、打开-OpenSSL-开关" class="headerlink" title="五、打开 OpenSSL 开关"></a>五、打开 OpenSSL 开关</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ./config</span><br></pre></td></tr></table></figure>
+
+<p>打开其中的 <code>module.sh</code>，作如下修改：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 修改前</span><br><span class="line">`export COMMON_FF_CFG_FLAGS=&quot;$COMMON_FF_CFG_FLAGS --disable-protocol=crypto&quot;` </span><br><span class="line"></span><br><span class="line"># 修改后（即将 `disable` 改成 `enable`）</span><br><span class="line">`export COMMON_FF_CFG_FLAGS=&quot;$COMMON_FF_CFG_FLAGS --enable-protocol=crypto&quot;`</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>对于 iOS，module.sh 这些配置脚本是在编译 ffmpeg（即执行 .&#x2F;compile-ffmpeg.sh）的时候用的。</p>
+</blockquote>
+<h2 id="六、添加-https-支持（可选）"><a href="#六、添加-https-支持（可选）" class="headerlink" title="六、添加 https 支持（可选）"></a>六、添加 https 支持（可选）</h2><p>如果执行了此步骤，那么经过第七步编译后，会生成支持 <code>https</code> 的静态文件 <code>libcrypto.a</code> 和 <code>libssl.a</code>，如果不需要支持 https，可以跳过这一步。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 获取 openssl 并初始化</span><br><span class="line">./init-ios-openssl.sh</span><br><span class="line"></span><br><span class="line">cd ios</span><br><span class="line"></span><br><span class="line"># 在 module.sh 中添加一行配置 以启用 openssl 组件</span><br><span class="line">echo &#x27;export COMMON_FF_CFG_FLAGS=&quot;$COMMON_FF_CFG_FLAGS --enable-openssl&quot;&#x27; &gt;&gt; ../config/module.sh</span><br></pre></td></tr></table></figure>
+
+<p>注意执行 <code>./init-ios-openssl.sh</code> 后，<code>ios</code> 目录下多了什么。</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4737c799b8e54a7f9a74127b6249679d~tplv-k3u1fbpfcp-watermark.image" alt="init-ios-openssl.png"></p>
+<h2 id="七、编译-OpenSSL-可选-和-FFmpeg"><a href="#七、编译-OpenSSL-可选-和-FFmpeg" class="headerlink" title="七、编译 OpenSSL(可选) 和 FFmpeg"></a>七、编译 OpenSSL(可选) 和 FFmpeg</h2><blockquote>
+<p>位置：~&#x2F;Desktop&#x2F;ijkplayer&#x2F;ijkplayer-ios&#x2F;ios&#x2F;</p>
+</blockquote>
+<p>这里也是分为<code>精简版本</code>（对应步骤：<code>三(A)</code>）和<code>全版本</code>（对应步骤：<code>三(B)</code>）两种方案，差别就是有没有 <code>armv7s</code>，另外，openssl 的编译不需要修改，默认是全版本。</p>
+<h3 id="A-精简版本"><a href="#A-精简版本" class="headerlink" title="A.精简版本"></a>A.精简版本</h3><h4 id="A-1-编译-openssl（如果不需要支持-https，可以跳过这一步）"><a href="#A-1-编译-openssl（如果不需要支持-https，可以跳过这一步）" class="headerlink" title="A-1.编译 openssl（如果不需要支持 https，可以跳过这一步）"></a>A-1.编译 openssl（如果不需要支持 https，可以跳过这一步）</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./compile-ffmpeg.sh clean</span><br><span class="line"></span><br><span class="line">./compile-openssl.sh all</span><br></pre></td></tr></table></figure>
+
+<p>编译结束，输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Architectures in the fat file: /Users/haihe/Desktop/ijkplayer/ijkplayer-ios/ios/build/universal/lib/libssl.a are: armv7 i386 x86_64 arm64</span><br><span class="line">Architectures in the fat file: /Users/haihe/Desktop/ijkplayer/ijkplayer-ios/ios/build/universal/lib/libcrypto.a are: armv7 i386 x86_64 arm64</span><br></pre></td></tr></table></figure>
+
+<h4 id="A-2-编译ffmpeg"><a href="#A-2-编译ffmpeg" class="headerlink" title="A-2.编译ffmpeg"></a>A-2.编译ffmpeg</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./compile-ffmpeg.sh all</span><br></pre></td></tr></table></figure>
+
+<p>编译结束，输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Architectures in the fat file: /Users/haihe/Desktop/ijkplayer/ijkplayer-ios/ios/build/universal/lib/libavcodec.a are: i386 x86_64 arm64</span><br><span class="line">Architectures in the fat file: /Users/haihe/Desktop/ijkplayer/ijkplayer-ios/ios/build/universal/lib/libavfilter.a are: i386 x86_64 arm64</span><br><span class="line">Architectures in the fat file: /Users/haihe/Desktop/ijkplayer/ijkplayer-ios/ios/build/universal/lib/libavformat.a are: i386 x86_64 arm64</span><br><span class="line">Architectures in the fat file: /Users/haihe/Desktop/ijkplayer/ijkplayer-ios/ios/build/universal/lib/libavutil.a are: i386 x86_64 arm64</span><br><span class="line">Architectures in the fat file: /Users/haihe/Desktop/ijkplayer/ijkplayer-ios/ios/build/universal/lib/libswscale.a are: i386 x86_64 arm64</span><br><span class="line">Architectures in the fat file: /Users/haihe/Desktop/ijkplayer/ijkplayer-ios/ios/build/universal/lib/libswresample.a are: i386 x86_64 arm64</span><br><span class="line">Architectures in the fat file: /Users/haihe/Desktop/ijkplayer/ijkplayer-ios/ios/build/universal/lib/libcrypto.a are: i386 x86_64 arm64</span><br><span class="line">Architectures in the fat file: /Users/haihe/Desktop/ijkplayer/ijkplayer-ios/ios/build/universal/lib/libssl.a are: i386 x86_64 arm64</span><br></pre></td></tr></table></figure>
+
+<p>最终生成的文件位置见下图：</p>
+<p><code>.h</code> 文件：<br><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/cdb0f6e9842b40f1aaa690b624c15dd9~tplv-k3u1fbpfcp-watermark.image" alt="FFMPEG-compiled-h.png"></p>
+<p><code>.a</code> 文件：<br><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/cee796275fa14e449e200aafb0ed47df~tplv-k3u1fbpfcp-watermark.image" alt="FFMPEG-compiled-a.png"></p>
+<h4 id="A-3-可能遇到的错误"><a href="#A-3-可能遇到的错误" class="headerlink" title="A-3.可能遇到的错误"></a>A-3.可能遇到的错误</h4><ul>
+<li>error-1：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`xcrun: error: SDK &quot;iphoneos&quot; cannot be located`</span><br></pre></td></tr></table></figure>
+
+<p>如果提示以上错误，请执行下方命令，然后重新执行报错的命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer/</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>error-2：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">./libavutil/arm/asm.S:50:9: error: unknown directive</span><br><span class="line">        .arch armv7-a</span><br><span class="line">        ^</span><br><span class="line">make: *** [libavcodec/arm/aacpsdsp_neon.o] Error 1</span><br></pre></td></tr></table></figure>
+
+<p>这是因为在 <code>Xcode 9.1</code> 之后(不含) 已经弱化了对 32 位架构的支持, 有2种解决方法：</p>
+<p>第一种：在 <code>compile-ffmpeg.sh</code> 中删除 <code>armv7</code>（共3处）, 修改后的代码如下，然后重新执行报错的命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 第24行改为：</span><br><span class="line">FF_ALL_ARCHS_IOS8_SDK=&quot;arm64 i386 x86_64&quot;</span><br><span class="line"></span><br><span class="line"># 第120行改为：</span><br><span class="line">if [ &quot;$FF_TARGET&quot; = &quot;armv7s&quot; -o &quot;$FF_TARGET&quot; = &quot;arm64&quot; ]; then</span><br><span class="line"></span><br><span class="line"># 第159行改为：</span><br><span class="line">echo &quot; compile-ffmpeg.sh arm64|i386|x86_64&quot;</span><br></pre></td></tr></table></figure>
+<p>第二种：按照 <a target="_blank" rel="noopener" href="https://github.com/bilibili/ijkplayer/issues/4494">issue #4494</a> 中 <code>befovy</code> 的方案处理</p>
+<p>当然，如果只需要支持64位架构，这里就只保留 arm64 和 x86_64，也可以加上 arm64e。</p>
+<blockquote>
+<p><code>arm64e</code> 是苹果在 Xcode 10.1 中偷偷添加的新的系统架构，使用 Apple A12 或更高版本 A 系列处理器（如 iPhone XS、iPhone XS Max 和 iPhone XR ）的设备支持 <code>arm64e</code> 体系结构。</p>
+</blockquote>
+<h3 id="B-全版本"><a href="#B-全版本" class="headerlink" title="B.全版本"></a>B.全版本</h3><h4 id="B-1-下载安装指定版本的-Xcode"><a href="#B-1-下载安装指定版本的-Xcode" class="headerlink" title="B-1.下载安装指定版本的 Xcode"></a>B-1.下载安装指定版本的 Xcode</h4><ul>
+<li><p>下载 <code>9.1</code> 或更早版本的 Xcode（<a target="_blank" rel="noopener" href="https://developer.apple.com/download/more/">下载地址</a>），如下：</p>
+<p>  <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/40dd8dc55d7c4a98b8e18572e4e44dbb~tplv-k3u1fbpfcp-watermark.image" alt="Xcode9_1_download.png"></p>
+</li>
+<li><p>下载的文件 <code>Xcode 9.1.xip</code> 文件无法直接打开，需满足两个条件：</p>
+<ul>
+<li>磁盘剩余空间必须大于 <code>20G</code></li>
+<li>移除解压验证，切到需要解压的 <code>Xcode 9.1.xip</code> 文件所在目录，然后终端执行：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xattr -d com.apple.quarantine Xcode 9.1.xip </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>直接双击即可解压，解压完成最好改个名字，比如我这里改成了 <code>Xcode_9_1.app</code>，以便区分不同版本。</p>
+<p>  <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7fe7648124f44eb3b261e59593e6e6c5~tplv-k3u1fbpfcp-watermark.image" alt="Xcode_old_edition.png"></p>
+</li>
+</ul>
+<h4 id="B-2-编译openssl（如果不需要支持-https，可以跳过这一步）"><a href="#B-2-编译openssl（如果不需要支持-https，可以跳过这一步）" class="headerlink" title="B-2.编译openssl（如果不需要支持 https，可以跳过这一步）"></a>B-2.编译openssl（如果不需要支持 https，可以跳过这一步）</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./compile-ffmpeg.sh clean</span><br><span class="line"></span><br><span class="line">./compile-openssl.sh all</span><br></pre></td></tr></table></figure>
+
+<h4 id="B-3-编译ffmpeg"><a href="#B-3-编译ffmpeg" class="headerlink" title="B-3.编译ffmpeg"></a>B-3.编译ffmpeg</h4><ul>
+<li><p>修改 <code>compile-ffmpeg.sh</code> 脚本，在下面 2 个地方加上 <code>armv7s</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FF_ALL_ARCHS_IOS8_SDK=&quot;armv7 armv7s arm64 i386 x86_64&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;  compile-ffmpeg.sh armv7|armv7s|arm64|i386|x86_64&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>指定 Xcode 为 9.1 版本</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo xcode-select --switch /Applications/Xcode_9_1.app/Contents/Developer/</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>执行脚本，编译 ffmpeg</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./compile-ffmpeg.sh all</span><br></pre></td></tr></table></figure></li>
+</ul>
+<blockquote>
+<p>clean 操作执行时机：如果之前执行过 all 操作，再次执行时需要先执行一次 clean 进行清理。</p>
+</blockquote>
+<h2 id="八、打开-IJKMediaPlayer-项目"><a href="#八、打开-IJKMediaPlayer-项目" class="headerlink" title="八、打开 IJKMediaPlayer 项目"></a>八、打开 IJKMediaPlayer 项目</h2><p>使用下方命令或直接双击 <code>IJKMediaPlayer.xcodeproj</code> 打开 ios 目录下的 <code>IJKMediaPlayer</code> 项目</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open IJKMediaPlayer/IJKMediaPlayer.xcodeproj</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4eca3f98a9ef4ba9a7cfff29fb456547~tplv-k3u1fbpfcp-watermark.image" alt="open-IJKMediaFramework.png"></p>
+<h2 id="九、添加-OpenSSL-相关包以支持-https（可选）"><a href="#九、添加-OpenSSL-相关包以支持-https（可选）" class="headerlink" title="九、添加 OpenSSL 相关包以支持 https（可选）"></a>九、添加 OpenSSL 相关包以支持 https（可选）</h2><ul>
+<li><p>如果不需要支持 https, 可以跳过此步, 直接开始打包 framework</p>
+</li>
+<li><p>如果需要支持 https, 就要手动给 <code>IJKMediaFramework</code> 添加 <code>libcrypto.a</code> 和 <code>libssl.a</code> 文件， 默认不会添加</p>
+</li>
+</ul>
+<blockquote>
+<p>这两个依赖库的目录为 <code>ijkplayer-ios/ios/build/universal/lib</code>, 只有执行了上面跟 OpenSSL 相关的操作, 才会在这个目录下生成 libcrypto.a 和 libssl.a</p>
+</blockquote>
+<p>如下图，TARGETS -&gt; IJKMediaFramework -&gt; General -&gt; Frameworks and Libraries -&gt; + 找到 <code>libcrypto.a</code> 和 <code>libssl.a</code> 并添加。</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e486eb30fcda4e7f9214ae9496381d85~tplv-k3u1fbpfcp-watermark.image" alt="framework-openssl.png"></p>
+<h2 id="十、打包静态-framework"><a href="#十、打包静态-framework" class="headerlink" title="十、打包静态 framework"></a>十、打包静态 framework</h2><p>大家会发现，这里除了 <code>IJKMediaFramework</code>, 还有一个 target 叫 <code>IJKMediaFrameworkWithSSL</code>, 但是不推荐使用这个, 因为大部分基于 ijkplayer 的第三方框架都是使用的前者, 如果将后者导入项目还是会报找不到包的错误, 即使要支持 https 也推荐使用前者, 然后按照上一步添加 OpenSSL 即可。</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ef95d4c8d8c0410aa1d3912ae4ecf662~tplv-k3u1fbpfcp-watermark.image" alt="ijkmediaframework.png"></p>
+<blockquote>
+<p>不过，有时可能由于种种原因，导致上边 <code>scheme</code> 的位置只能看到 <code>IJKMediaFrameworkWithSSL</code> ，没有 <code>IJKMediaFramework</code> (如下图)，但是，<code>targets</code> 的位置又是有的，此时只需要新建 scheme 就可以了。</p>
+</blockquote>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b89615e1d7eb4673a34ac73425c04426~tplv-k3u1fbpfcp-watermark.image" alt="No-IJKMediaFramework.png"></p>
+<h3 id="1-配置-Release-模式"><a href="#1-配置-Release-模式" class="headerlink" title="1. 配置 Release 模式"></a>1. 配置 Release 模式</h3><p>打开 <code>Edit Scheme...</code></p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/70566a2e24244415bab56b8e314ec3da~tplv-k3u1fbpfcp-watermark.image" alt="framework-release1.png"></p>
+<p><code>Run</code> -&gt; <code>Info</code> -&gt; <code>Build Configuration</code> -&gt; 选择 <code>Release</code></p>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/101d3c5ca23e4b55b44e1a132a9476cb~tplv-k3u1fbpfcp-watermark.image" alt="framework-release2.png"></p>
+<h3 id="2-打包真机-framework"><a href="#2-打包真机-framework" class="headerlink" title="2. 打包真机 framework"></a>2. 打包真机 framework</h3><p>如图，切换到 <code>Generic iOS Device</code> 或者自己的手机，执行 <code>command + B</code> 编译。</p>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/06856674def34d70a79e541809510ef7~tplv-k3u1fbpfcp-watermark.image" alt="device.png"></p>
+<p>如果第七步删除了 <code>compile-ffmpeg.sh</code> 中 <code>armv7</code>, 此处就会报下边 2 个错误, 直接注释掉即可。</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/33150410e4c54227a92d429b9f4ecf25~tplv-k3u1fbpfcp-watermark.image" alt="framework-build-error1.png"></p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/bd01777d380b4b5cb55cd0f911f7d1e0~tplv-k3u1fbpfcp-watermark.image" alt="framework-build-error2.png"></p>
+<p>可以在左侧的报错信息上右击选择 <code>Review in Log</code>, 就会在右侧打印需要修改的文件的路径，打开对应文件，注掉对应代码，保存即可。</p>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/652f7c6e011e4e029569951fe31c71eb~tplv-k3u1fbpfcp-watermark.image" alt="Review-in-Log.png"></p>
+<h3 id="3-打包模拟器-framework"><a href="#3-打包模拟器-framework" class="headerlink" title="3. 打包模拟器 framework"></a>3. 打包模拟器 framework</h3><p>如图，切换到任一模拟器，执行 <code>command + B</code> 编译。</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f557bf6d48a4424daf917d3472f3aaf0~tplv-k3u1fbpfcp-watermark.image" alt="simulator.png"></p>
+<h3 id="4-合并-framework"><a href="#4-合并-framework" class="headerlink" title="4. 合并 framework"></a>4. 合并 framework</h3><p>如下图所示，IJKMediaFramework.framework 上右击选中 <code>Show in Finder</code> 进入 <code>Products</code> 目录。</p>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7862b4d2d9dd411785482b4059fb43f8~tplv-k3u1fbpfcp-watermark.image" alt="framework-position.png"><br>其中，<code>Release-iphoneos</code> 对应真机 framework，  <code>Release-iphonesimulator</code> 对应模拟器 framework (如下图所示)。</p>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/962f38c462784da197d0cc682f585a90~tplv-k3u1fbpfcp-watermark.image" alt="framework-build.png"></p>
+<p>终端切换到 <code>Products</code> 目录后，执行下面的合并和替换操作：</p>
+<h4 id="合并"><a href="#合并" class="headerlink" title="合并"></a>合并</h4><p>将真机和模拟器的framework合并成一个，注意，合并的是 IJKMediaFramework 不是 IJKMediaFramework.framework。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// lipo -create &lt;真机framework路径&gt; &lt;模拟器framework路径&gt; -output &lt;合并得到的文件路径&gt;</span><br><span class="line">lipo -create Release-iphoneos/IJKMediaFramework.framework/IJKMediaFramework Release-iphonesimulator/IJKMediaFramework.framework/IJKMediaFramework -output IJKMediaFramework</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4aa1d4ecf3d040aa80ce2a8f1520f0f1~tplv-k3u1fbpfcp-watermark.image" alt="framework-combine.png"></p>
+<h4 id="替换"><a href="#替换" class="headerlink" title="替换"></a>替换</h4><p>将合并后的 <code>IJKMediaFramework</code> 拷贝到 <code>iphoneos/IJKMediaFramework.framework</code> 中替换文件，注意点同 <code>合并</code> 操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// cp &lt;被拷贝的文件&gt; &lt;目标文件夹&gt;</span><br><span class="line">cp IJKMediaFramework Release-iphoneos/IJKMediaFramework.framework/</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/081a3af71817423eb0caa286422b5c11~tplv-k3u1fbpfcp-watermark.image" alt="framework-replace.png"></p>
+<h2 id="十一、CocoaPods-支持"><a href="#十一、CocoaPods-支持" class="headerlink" title="十一、CocoaPods 支持"></a>十一、CocoaPods 支持</h2><p>为了使用方便，省去手动添加依赖库的麻烦，可以让其支持 CocoaPods。</p>
+<p>至于如何创建私有库，详见 <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9841e2f73cf4">CocoaPods ☞ 使用: 创建并管理私有仓库
+</a>。</p>
+<h2 id="十二、⚠️-注意事项"><a href="#十二、⚠️-注意事项" class="headerlink" title="十二、⚠️ 注意事项"></a>十二、⚠️ 注意事项</h2><ul>
+<li>MPEG4 格式支持</li>
+</ul>
+<p>测试过程中发现，使用默认配置 <code>module-lite.sh</code> 编译出来的 IJKMediaFramework 播放 <code>MPEG4</code> 格式的视频时，只有声音没有画面。这是因为<br><code>module-lite.sh</code> 默认并不包含对 <code>MPEG4</code> 的支持，需要做如下修改：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// module-lite.sh 文件中增加：</span><br><span class="line"></span><br><span class="line">export COMMON_FF_CFG_FLAGS=&quot;$COMMON_FF_CFG_FLAGS --enable-decoder=mpeg4&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改源码</li>
+</ul>
+<p>对与 <code>ffmpeg</code> 相关的文件修改之后，需要重新执行 <code>compile-ffmpeg.sh</code> 脚本编译 <code>.a</code> 文件，然后再打包 framework；如果仅仅修改了 ijkplayer 的代码，则直接打包 framework 即可。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/read/cv3901523/">ijkplayer 的前世今生</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9743a68c2939">ijkplayer 的编译、打包 framework 和 https 支持</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/security/preparing_your_app_to_work_with_pointer_authentication">arm64e：Preparing Your App to Work with Pointer Authentication</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43883776/article/details/87879134">armv7、arm64、Valid Architectures是什么东西，有啥区别</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9b0887596826">带你走进脚本世界，ijkplayer之【init-ios.sh】脚本分析</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/download/more/">Xcode 历史版本下载官方地址</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/panfeng1104/p/10039848.html">让 ijkplayer 支持兼容armv7 armv7s</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/38024e69a97c">mac:解压官网下载xip文件</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/bilibili/ijkplayer/issues/134">#134：Cannot play a specific video format with codec MPEG4</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/mjios/p/14497925.html">Mac安装Homebrew</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://devhe.com/2022/08/24/ijkplayer-Compilation-and-Packaging/" data-id="cl77860q50000safyafsld3np" data-title="ijkplayer 编译-打包-Pod支持" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/08/23/Topics-and-mentions-similar-to-Weibo/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">iOS UITextView 实现类似微博的话题、提及功能</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/08/24/ijkplayer-Compilation-and-Packaging/">ijkplayer 编译-打包-Pod支持</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/23/Topics-and-mentions-similar-to-Weibo/">iOS UITextView 实现类似微博的话题、提及功能</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/03/hello-world/">哈喽，世界！</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 He Hai<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
