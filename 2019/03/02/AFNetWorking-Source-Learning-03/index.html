@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>AFNetWorking 源码学习笔记 ☞ Security | riversea2015</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="一、前言本文是 AFNetWorking 源码学习笔记的第三篇，本篇将介绍第二部分 – Security 目录下的类，其实只有一个就是 AFSecurityPolicy。  二、正文依照惯例，先从声明文件开始，打开 AFSecurityPolicy.h 文件，我们发现内容非常少，只有 4 个属性和 5 个方法。 首先来看看这几个属性，各自的作用见代码注释。 1234567891011&#x2F;&#x2F; 根据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AFNetWorking 源码学习笔记 ☞ Security">
+<meta property="og:url" content="https://devhe.com/2019/03/02/AFNetWorking-Source-Learning-03/index.html">
+<meta property="og:site_name" content="riversea2015">
+<meta property="og:description" content="一、前言本文是 AFNetWorking 源码学习笔记的第三篇，本篇将介绍第二部分 – Security 目录下的类，其实只有一个就是 AFSecurityPolicy。  二、正文依照惯例，先从声明文件开始，打开 AFSecurityPolicy.h 文件，我们发现内容非常少，只有 4 个属性和 5 个方法。 首先来看看这几个属性，各自的作用见代码注释。 1234567891011&#x2F;&#x2F; 根据">
+<meta property="og:locale">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-309ecb42b9c3870d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="article:published_time" content="2019-03-02T13:32:01.000Z">
+<meta property="article:modified_time" content="2022-08-27T15:38:13.132Z">
+<meta property="article:author" content="He Hai">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+    <link rel="alternate" href="/atom.xml" title="riversea2015" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">riversea2015</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Stay Hungry, Stay Young.</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://devhe.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-AFNetWorking-Source-Learning-03" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/03/02/AFNetWorking-Source-Learning-03/" class="article-date">
+  <time class="dt-published" datetime="2019-03-02T13:32:01.000Z" itemprop="datePublished">2019-03-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      AFNetWorking 源码学习笔记 ☞ Security
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="AFNetWorking 源码学习笔记.png"></p>
+<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>本文是 AFNetWorking 源码学习笔记的第三篇，本篇将介绍第二部分 – Security 目录下的类，其实只有一个就是 AFSecurityPolicy。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2208988-309ecb42b9c3870d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="AFNetWorking-Security.png"></p>
+<h3 id="二、正文"><a href="#二、正文" class="headerlink" title="二、正文"></a>二、正文</h3><p>依照惯例，先从声明文件开始，打开 AFSecurityPolicy.h 文件，我们发现内容非常少，只有 4 个属性和 5 个方法。</p>
+<p>首先来看看这几个属性，各自的作用见代码注释。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 根据 SSL 证书验证 server trust 的标准，默认为不验证。</span><br><span class="line">@property (readonly, nonatomic, assign) AFSSLPinningMode SSLPinningMode;</span><br><span class="line"></span><br><span class="line">// 根据 SSL pinning mode 验证 server trust  的证书</span><br><span class="line">@property (nonatomic, strong, nullable) NSSet &lt;NSData *&gt; *pinnedCertificates;</span><br><span class="line"></span><br><span class="line">// 是否允许无效或已经过期的 SSL 证书。</span><br><span class="line">@property (nonatomic, assign) BOOL allowInvalidCertificates;</span><br><span class="line"></span><br><span class="line">// 是否验证证书中的域名，默认为 YES。</span><br><span class="line">@property (nonatomic, assign) BOOL validatesDomainName;</span><br></pre></td></tr></table></figure>
+
+<p>然后再来看看它提供的 5 个代理方法，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ (NSSet &lt;NSData *&gt; *)certificatesInBundle:(NSBundle *)bundle;</span><br></pre></td></tr></table></figure>
+<p>此类方法的作用是获取 Bundle 中的所有证书文件（xxx.cer）存放在 set 里边。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+ (instancetype)defaultPolicy;</span><br><span class="line">+ (instancetype)policyWithPinningMode:(AFSSLPinningMode)pinningMode；</span><br><span class="line">+ (instancetype)policyWithPinningMode:(AFSSLPinningMode)pinningMode withPinnedCertificates:(NSSet *)pinnedCertificates;</span><br></pre></td></tr></table></figure>
+<p>这 3 个方法都在创建 AFSecurityPolicy 对象，第一个默认将属性 SSLPinningMode 设置为 AFSSLPinningModeNone，即不做验证；第二个可以指定 SSLPinningMode，最后一个还可以指定 pinnedCertificates。</p>
+<p>下边这个实例方法负责基于当前安全策略评估传入的 serverTrust 是否可以接受，也就是我们在上一篇中接受认证挑战时掉那个的方法。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)evaluateServerTrust:(SecTrustRef)serverTrust</span><br><span class="line">                  forDomain:(nullable NSString *)domain;</span><br></pre></td></tr></table></figure>
+
+<p>接下来，我们看看 .m 文件，这里就只介绍其中的两个主要方法实现。第一个是 <code>- (void)setPinnedCertificates:(NSSet *)pinnedCertificates</code>，这里不仅给 _pinnedCertificates 赋值，而且取出了所有证书中的公钥（public key），存放到集合 self.pinnedPublicKeys 里边。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">- (void)setPinnedCertificates:(NSSet *)pinnedCertificates &#123;</span><br><span class="line">    // 1.给 _pinnedCertificates 赋值</span><br><span class="line">    _pinnedCertificates = pinnedCertificates;</span><br><span class="line"></span><br><span class="line">    // 2.给 self.pinnedPublicKeys 赋值，值是从 Certificates 中提取的 publicKeys</span><br><span class="line">    if (self.pinnedCertificates) &#123;</span><br><span class="line">        </span><br><span class="line">        NSMutableSet *mutablePinnedPublicKeys = [NSMutableSet setWithCapacity:[self.pinnedCertificates count]];</span><br><span class="line">        for (NSData *certificate in self.pinnedCertificates) &#123;</span><br><span class="line">            id publicKey = AFPublicKeyForCertificate(certificate);</span><br><span class="line">            if (!publicKey) &#123;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            [mutablePinnedPublicKeys addObject:publicKey];</span><br><span class="line">        &#125;</span><br><span class="line">        self.pinnedPublicKeys = [NSSet setWithSet:mutablePinnedPublicKeys];</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        self.pinnedPublicKeys = nil;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>提取 Certificate 中的 public key 时，利用了 <code>AFPublicKeyForCertificate()</code> 这个静态函数，下面来看看它的具体实现。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">static id AFPublicKeyForCertificate(NSData *certificate) &#123;</span><br><span class="line">    // 1.初始化会用到的局部变量</span><br><span class="line">    id allowedPublicKey = nil;</span><br><span class="line">    SecCertificateRef allowedCertificate;</span><br><span class="line">    SecPolicyRef policy = nil;</span><br><span class="line">    SecTrustRef allowedTrust = nil;</span><br><span class="line">    SecTrustResultType result;</span><br><span class="line"></span><br><span class="line">    // 2.提取公钥</span><br><span class="line">    // ① 根据传入的二进制证书数据生成一个 SecCertificateRef 类型的证书，并验证结果</span><br><span class="line">    allowedCertificate = SecCertificateCreateWithData(NULL, (__bridge CFDataRef)certificate);</span><br><span class="line">    __Require_Quiet(allowedCertificate != NULL, _out);</span><br><span class="line"></span><br><span class="line">    // ② 生成一个默认 X.509 policy 的实例</span><br><span class="line">    policy = SecPolicyCreateBasicX509();</span><br><span class="line">    </span><br><span class="line">    // ③ 基于证书 (allowedCertificate) 和安全策略 (policy) 创建一个信任管理对象 (a trust management object)</span><br><span class="line">    __Require_noErr_Quiet(SecTrustCreateWithCertificates(allowedCertificate, policy, &amp;allowedTrust), _out);</span><br><span class="line">    // ④ 利用步骤 ③ 创建的 allowedTrust 校验证书，并将结果写入 result，不过后边好像没有用到它</span><br><span class="line">    __Require_noErr_Quiet(SecTrustEvaluate(allowedTrust, &amp;result), _out);</span><br><span class="line"></span><br><span class="line">    // ⑤ 验证通过后，从 allowedTrust 中获取公钥</span><br><span class="line">    allowedPublicKey = (__bridge_transfer id)SecTrustCopyPublicKey(allowedTrust);</span><br><span class="line"></span><br><span class="line">_out:</span><br><span class="line">    // 3.释放内存</span><br><span class="line">    if (allowedTrust) &#123;</span><br><span class="line">        CFRelease(allowedTrust);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (policy) &#123;</span><br><span class="line">        CFRelease(policy);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (allowedCertificate) &#123;</span><br><span class="line">        CFRelease(allowedCertificate);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return allowedPublicKey;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上边的代码中我们发现，重点在第 2 步获取公钥的代码，具体内容建代码注释，这里就不啰嗦了。其中用到了系统提供的 2 个宏：<code>__Require_Quiet</code> 和 <code>__Require_noErr_Quiet</code>，下边来看看他们的定义：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#ifndef __Require_Quiet</span><br><span class="line">	#define __Require_Quiet(assertion, exceptionLabel)                            \</span><br><span class="line">	  do                                                                          \</span><br><span class="line">	  &#123;                                                                           \</span><br><span class="line">		  if ( __builtin_expect(!(assertion), 0) )                                \</span><br><span class="line">		  &#123;                                                                       \</span><br><span class="line">			  goto exceptionLabel;                                                \</span><br><span class="line">		  &#125;                                                                       \</span><br><span class="line">	  &#125; while ( 0 )</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#ifndef __Require_noErr_Quiet</span><br><span class="line">	#define __Require_noErr_Quiet(errorCode, exceptionLabel)                      \</span><br><span class="line">	  do                                                                          \</span><br><span class="line">	  &#123;                                                                           \</span><br><span class="line">		  if ( __builtin_expect(0 != (errorCode), 0) )                            \</span><br><span class="line">		  &#123;                                                                       \</span><br><span class="line">			  goto exceptionLabel;                                                \</span><br><span class="line">		  &#125;                                                                       \</span><br><span class="line">	  &#125; while ( 0 )</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+
+<p>从定义可以看出，对于 __Require_Quiet，当入参 assertion 为空的时候，会跳转到 exceptionLabel 所在位置去继续执行；而 __Require_noErr_Quiet，是当入参 errorCode !&#x3D; 0 即出错的时候会跳转至 exceptionLabel 所在行继续执行。</p>
+<h5 id="核心方法"><a href="#核心方法" class="headerlink" title="核心方法"></a>核心方法</h5><p>下边我们来看看 <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/569e184cc9aa">上一篇</a> 提到过的方法 <code>evaluateServerTrust: forDomain:</code>，该方法是 AFNetWorking 自己提前做的一次 HTTPS 认证，用于验证服务器是否合法，如果验证不通过就不再继续调用系统方法验证了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)evaluateServerTrust:(SecTrustRef)serverTrust</span><br><span class="line">                  forDomain:(NSString *)domain</span><br><span class="line">&#123;</span><br><span class="line">    // 1.过滤</span><br><span class="line">    // 域名存在 &amp;&amp; 允许自签名证书 &amp;&amp; 需要验证域名 &amp;&amp; (要求不做验证 || 没有证书)</span><br><span class="line">    if (domain &amp;&amp; self.allowInvalidCertificates &amp;&amp; self.validatesDomainName &amp;&amp; (self.SSLPinningMode == AFSSLPinningModeNone || [self.pinnedCertificates count] == 0)) &#123;</span><br><span class="line">        NSLog(@&quot;In order to validate a domain name for self signed certificates, you MUST use pinning.&quot;);</span><br><span class="line">        return NO;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 2.准备安全策略，并将其设置到 serverTrust 里边，以备后边验证使用</span><br><span class="line">    NSMutableArray *policies = [NSMutableArray array];</span><br><span class="line">    if (self.validatesDomainName) &#123;</span><br><span class="line">        [policies addObject:(__bridge_transfer id)SecPolicyCreateSSL(true, (__bridge CFStringRef)domain)];</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        [policies addObject:(__bridge_transfer id)SecPolicyCreateBasicX509()];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Sets the policies to use in an evaluation.</span><br><span class="line">    SecTrustSetPolicies(serverTrust, (__bridge CFArrayRef)policies);</span><br><span class="line"></span><br><span class="line">    // 3.再次过滤</span><br><span class="line">    if (self.SSLPinningMode == AFSSLPinningModeNone) &#123;</span><br><span class="line">        // 不验证的情况下</span><br><span class="line">        // 如果允许自签名证书或者 serverTrust 验证成功时，返回 YES</span><br><span class="line">        return self.allowInvalidCertificates || AFServerTrustIsValid(serverTrust);</span><br><span class="line">    &#125; else if (!AFServerTrustIsValid(serverTrust) &amp;&amp; !self.allowInvalidCertificates) &#123;</span><br><span class="line">        // 如果 serverTrust 验证失败 &amp;&amp; 不允许自签名证书，则返回 NO</span><br><span class="line">        return NO;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 4.验证</span><br><span class="line">    switch (self.SSLPinningMode) &#123;</span><br><span class="line">        case AFSSLPinningModeNone:</span><br><span class="line">            /**</span><br><span class="line">             *  1.不验证</span><br><span class="line">             *</span><br><span class="line">             *  但 紧上边的那个 if-else 语句已经处理了 AFSSLPinningModeNone 的情况，这里还做这个判断有意义吗？难道是是为了看起来完整。</span><br><span class="line">             */</span><br><span class="line">        default:</span><br><span class="line">            return NO;</span><br><span class="line">        case AFSSLPinningModeCertificate: &#123;</span><br><span class="line">            </span><br><span class="line">            /**</span><br><span class="line">             *  2.验证证书</span><br><span class="line">             *</span><br><span class="line">             *  从serverTrust中去获取证书链，然后和我们一开始初始化设置的证书集合self.pinnedCertificates去匹配，如果有一对能匹配成功的，就返回YES，否则NO。</span><br><span class="line">             */</span><br><span class="line">            NSMutableArray *pinnedCertificates = [NSMutableArray array];</span><br><span class="line">            for (NSData *certificateData in self.pinnedCertificates) &#123;</span><br><span class="line">                [pinnedCertificates addObject:(__bridge_transfer id)SecCertificateCreateWithData(NULL, (__bridge CFDataRef)certificateData)];</span><br><span class="line">            &#125;</span><br><span class="line">            SecTrustSetAnchorCertificates(serverTrust, (__bridge CFArrayRef)pinnedCertificates);</span><br><span class="line"></span><br><span class="line">            if (!AFServerTrustIsValid(serverTrust)) &#123;</span><br><span class="line">                return NO;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // obtain the chain after being validated, which *should* contain the pinned certificate in the last position (if it&#x27;s the Root CA)</span><br><span class="line">            NSArray *serverCertificates = AFCertificateTrustChainForServerTrust(serverTrust);</span><br><span class="line">            </span><br><span class="line">            for (NSData *trustChainCertificate in [serverCertificates reverseObjectEnumerator]) &#123;</span><br><span class="line">                if ([self.pinnedCertificates containsObject:trustChainCertificate]) &#123;</span><br><span class="line">                    return YES;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            return NO;</span><br><span class="line">        &#125;</span><br><span class="line">        case AFSSLPinningModePublicKey: &#123;</span><br><span class="line">            </span><br><span class="line">            /**</span><br><span class="line">             *  3.验证公钥</span><br><span class="line">             *</span><br><span class="line">             *  从serverTrust，获取证书链每一个证书的公钥，放到数组中。和我们的self.pinnedPublicKeys，去配对，如果有一个相同的，就返回YES，否则NO。</span><br><span class="line">             */</span><br><span class="line">            NSUInteger trustedPublicKeyCount = 0;</span><br><span class="line">            NSArray *publicKeys = AFPublicKeyTrustChainForServerTrust(serverTrust);</span><br><span class="line"></span><br><span class="line">            for (id trustChainPublicKey in publicKeys) &#123;</span><br><span class="line">                for (id pinnedPublicKey in self.pinnedPublicKeys) &#123;</span><br><span class="line">                    if (AFSecKeyIsEqualToKey((__bridge SecKeyRef)trustChainPublicKey, (__bridge SecKeyRef)pinnedPublicKey)) &#123;</span><br><span class="line">                        trustedPublicKeyCount += 1;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            return trustedPublicKeyCount &gt; 0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return NO;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码稍微有点长，不过主要做了这些事：</p>
+<ul>
+<li>过滤一些特殊情况：域名存在 &amp;&amp; 允许自签名证书 &amp;&amp; 需要验证域名 &amp;&amp; (要求不做验证 || 没有证书)；</li>
+<li>准备安全策略，并将其设置到 serverTrust 里边，以备后边验证使用；</li>
+<li>再次过滤：不验证、serverTrust 验证失败 &amp;&amp; 不允许自签名证书 的情况；</li>
+<li>开始验证，根据 self.SSLPinningMode 分成了几种情况分别验证：<ul>
+<li>1.不验证</li>
+<li>2.验证证书</li>
+<li>3.验证公钥</li>
+</ul>
+</li>
+</ul>
+<p>这一步的验证中又用到了几个静态函数，下边来简单看一下。</p>
+<ul>
+<li>验证serverTrust 是否有效，调用了系统方法 SecTrustEvaluate() 进行校验。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">static BOOL AFServerTrustIsValid(SecTrustRef serverTrust) &#123;</span><br><span class="line">    BOOL isValid = NO;</span><br><span class="line">    SecTrustResultType result;</span><br><span class="line">    __Require_noErr_Quiet(SecTrustEvaluate(serverTrust, &amp;result), _out);</span><br><span class="line"></span><br><span class="line">    // 只有当 &quot;用户未指定验证的策略，即使用系统提供的默认策略&quot; 或者 &quot;要求永远信任&quot; 的时候，才会返回 YES，其他时候都是 NO。</span><br><span class="line">    isValid = (result == kSecTrustResultUnspecified || result == kSecTrustResultProceed);</span><br><span class="line"></span><br><span class="line">_out:</span><br><span class="line">    return isValid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>取出 serverTrust 里边的所有证书，将其二进制文件组成的数组返回。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">static NSArray * AFCertificateTrustChainForServerTrust(SecTrustRef serverTrust) &#123;</span><br><span class="line">    CFIndex certificateCount = SecTrustGetCertificateCount(serverTrust);</span><br><span class="line">    NSMutableArray *trustChain = [NSMutableArray arrayWithCapacity:(NSUInteger)certificateCount];</span><br><span class="line"></span><br><span class="line">    for (CFIndex i = 0; i &lt; certificateCount; i++) &#123;</span><br><span class="line">        SecCertificateRef certificate = SecTrustGetCertificateAtIndex(serverTrust, i);</span><br><span class="line">        [trustChain addObject:(__bridge_transfer NSData *)SecCertificateCopyData(certificate)];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return [NSArray arrayWithArray:trustChain];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>取出 serverTrust 里边的所有证书，然后遍历证书取出其中的 public key，将公钥组成的数组返回。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">static NSArray * AFPublicKeyTrustChainForServerTrust(SecTrustRef serverTrust) &#123;</span><br><span class="line">    SecPolicyRef policy = SecPolicyCreateBasicX509();</span><br><span class="line">    CFIndex certificateCount = SecTrustGetCertificateCount(serverTrust);</span><br><span class="line">    NSMutableArray *trustChain = [NSMutableArray arrayWithCapacity:(NSUInteger)certificateCount];</span><br><span class="line">    for (CFIndex i = 0; i &lt; certificateCount; i++) &#123;</span><br><span class="line">        SecCertificateRef certificate = SecTrustGetCertificateAtIndex(serverTrust, i);</span><br><span class="line"></span><br><span class="line">        SecCertificateRef someCertificates[] = &#123;certificate&#125;;</span><br><span class="line">        CFArrayRef certificates = CFArrayCreate(NULL, (const void **)someCertificates, 1, NULL);</span><br><span class="line"></span><br><span class="line">        SecTrustRef trust;</span><br><span class="line">        __Require_noErr_Quiet(SecTrustCreateWithCertificates(certificates, policy, &amp;trust), _out);</span><br><span class="line"></span><br><span class="line">        SecTrustResultType result;</span><br><span class="line">        __Require_noErr_Quiet(SecTrustEvaluate(trust, &amp;result), _out);</span><br><span class="line"></span><br><span class="line">        [trustChain addObject:(__bridge_transfer id)SecTrustCopyPublicKey(trust)];</span><br><span class="line"></span><br><span class="line">    _out:</span><br><span class="line">        if (trust) &#123;</span><br><span class="line">            CFRelease(trust);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (certificates) &#123;</span><br><span class="line">            CFRelease(certificates);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        continue;</span><br><span class="line">    &#125;</span><br><span class="line">    CFRelease(policy);</span><br><span class="line"></span><br><span class="line">    return [NSArray arrayWithArray:trustChain];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>以上就是安全验证过程中会使用到的类 AFSecurityPolicy 中的主要内容，其他部分本文暂不做过多讨论，以后有时间再更新吧。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://devhe.com/2019/03/02/AFNetWorking-Source-Learning-03/" data-id="cl7c2jebx0000lzfya1ic82qv" data-title="AFNetWorking 源码学习笔记 ☞ Security" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/03/10/AFNetWorking-Source-Learning-04/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          AFNetWorking 源码学习笔记 ☞ Serialization
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/02/23/AFNetWorking-Source-Learning-02/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">AFNetWorking 源码学习笔记 ☞ NSURLSession</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/08/24/ijkplayer-Compilation-and-Packaging/">ijkplayer 编译-打包-Pod支持</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/23/Topics-and-mentions-similar-to-Weibo/">iOS UITextView 实现类似微博的话题、提及功能</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/17/AFNetWorking-Source-Learning-05/">AFNetWorking 源码学习笔记 ☞ Reachability</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/10/AFNetWorking-Source-Learning-04/">AFNetWorking 源码学习笔记 ☞ Serialization</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/02/AFNetWorking-Source-Learning-03/">AFNetWorking 源码学习笔记 ☞ Security</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 He Hai<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
