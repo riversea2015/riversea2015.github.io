@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>SDWebImage 源码学习笔记 ☞ SDImageCache | riversea2015</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="前言这是本系列的第 5 篇，也是最后一篇，主要讨论处理缓存的类 SDImageCache 及相关类 SDMemoryCache 、SDImageCacheConfig 等。 正文先介绍 SDImageCache.h 中定义的 2 个枚举：SDImageCacheType 和 SDImageCacheOptions。 1234567891011121314151617typedef NS_ENUM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SDWebImage 源码学习笔记 ☞ SDImageCache">
+<meta property="og:url" content="https://devhe.com/2019/02/03/SDWebImage-Source-Learning-05/index.html">
+<meta property="og:site_name" content="riversea2015">
+<meta property="og:description" content="前言这是本系列的第 5 篇，也是最后一篇，主要讨论处理缓存的类 SDImageCache 及相关类 SDMemoryCache 、SDImageCacheConfig 等。 正文先介绍 SDImageCache.h 中定义的 2 个枚举：SDImageCacheType 和 SDImageCacheOptions。 1234567891011121314151617typedef NS_ENUM">
+<meta property="og:locale">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="article:published_time" content="2019-02-03T11:39:30.000Z">
+<meta property="article:modified_time" content="2022-08-27T15:29:57.289Z">
+<meta property="article:author" content="He Hai">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+    <link rel="alternate" href="/atom.xml" title="riversea2015" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">riversea2015</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Stay Hungry, Stay Young.</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://devhe.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-SDWebImage-Source-Learning-05" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/02/03/SDWebImage-Source-Learning-05/" class="article-date">
+  <time class="dt-published" datetime="2019-02-03T11:39:30.000Z" itemprop="datePublished">2019-02-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      SDWebImage 源码学习笔记 ☞ SDImageCache
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="SDWebImage-源码学习笔记.png"></p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>这是本系列的第 5 篇，也是最后一篇，主要讨论处理缓存的类 <code>SDImageCache</code> 及相关类 <code>SDMemoryCache</code> 、<code>SDImageCacheConfig</code> 等。</p>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><p>先介绍 SDImageCache.h 中定义的 2 个枚举：<code>SDImageCacheType</code> 和 <code>SDImageCacheOptions</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, SDImageCacheType) &#123;</span><br><span class="line">    // 不缓存，从网络下载数据</span><br><span class="line">    SDImageCacheTypeNone,</span><br><span class="line">    // 磁盘缓存</span><br><span class="line">    SDImageCacheTypeDisk,</span><br><span class="line">    // 内存缓存</span><br><span class="line">    SDImageCacheTypeMemory</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">typedef NS_OPTIONS(NSUInteger, SDImageCacheOptions) &#123;</span><br><span class="line">    // 即使内存中有缓存，也要强制查询磁盘缓存</span><br><span class="line">    SDImageCacheQueryDataWhenInMemory = 1 &lt;&lt; 0,</span><br><span class="line">    // 强制同步查询磁盘缓存</span><br><span class="line">    SDImageCacheQueryDiskSync = 1 &lt;&lt; 1,</span><br><span class="line">    // 压缩大图</span><br><span class="line">    SDImageCacheScaleDownLargeImages = 1 &lt;&lt; 2</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>包含几个重要属性：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/// *** 缓存配置信息 ***</span><br><span class="line">@property (nonatomic, nonnull, readonly) SDImageCacheConfig *config;</span><br><span class="line">/// 内存缓存的最大消耗</span><br><span class="line">@property (assign, nonatomic) NSUInteger maxMemoryCost;</span><br><span class="line">/// 内存缓存的最大缓存数量</span><br><span class="line">@property (assign, nonatomic) NSUInteger maxMemoryCountLimit;</span><br><span class="line"></span><br><span class="line">/// *** 内存缓存 ***</span><br><span class="line">@property (strong, nonatomic, nonnull) SDMemoryCache *memCache;</span><br><span class="line">/// 磁盘缓存路径</span><br><span class="line">@property (strong, nonatomic, nonnull) NSString *diskCachePath;</span><br><span class="line">/// </span><br><span class="line">@property (strong, nonatomic, nullable) NSMutableArray&lt;NSString *&gt; *customPaths;</span><br><span class="line">/// 读写操作的串行队列</span><br><span class="line">@property (strong, nonatomic, nullable) dispatch_queue_t ioQueue;</span><br><span class="line">/// 用于操作文件的 fileManager</span><br><span class="line">@property (strong, nonatomic, nonnull) NSFileManager *fileManager;</span><br></pre></td></tr></table></figure>
+
+<p>其中 2 个属性需要重点关注一下：</p>
+<p>① <code>config</code> 所属类 <code>SDImageCacheConfig</code> 定义了很短属性，只提供了一个init方法，在里边给所有属性付了初值，详见下方法代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">static const NSInteger kDefaultCacheMaxCacheAge = 60 * 60 * 24 * 7; // 1 week</span><br><span class="line"></span><br><span class="line">@implementation SDImageCacheConfig</span><br><span class="line"></span><br><span class="line">- (instancetype)init &#123;</span><br><span class="line">    if (self = [super init]) &#123;</span><br><span class="line">        _shouldDecompressImages = YES;</span><br><span class="line">        _shouldDisableiCloud = YES;</span><br><span class="line">        _shouldCacheImagesInMemory = YES;</span><br><span class="line">        _shouldUseWeakMemoryCache = YES;</span><br><span class="line">        _diskCacheReadingOptions = 0;</span><br><span class="line">        _diskCacheWritingOptions = NSDataWritingAtomic;</span><br><span class="line">        _maxCacheAge = kDefaultCacheMaxCacheAge;</span><br><span class="line">        _maxCacheSize = 0;</span><br><span class="line">        _diskCacheExpireType = SDImageCacheConfigExpireTypeModificationDate;</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>② <code>memCache</code> 它属于一个继承自 NSCache 的缓存类 <code>SDMemoryCache</code>， 他有一个关键属性：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// weakCache 是 NSMapTable 类型</span><br><span class="line">@property (nonatomic, strong, nonnull) NSMapTable&lt;KeyType, ObjectType&gt; *weakCache; </span><br></pre></td></tr></table></figure>
+
+<p>下面观察一下 SDMemoryCache 的初始化及相关代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">- (instancetype)initWithConfig:(SDImageCacheConfig *)config &#123;</span><br><span class="line">    self = [super init];</span><br><span class="line">    if (self) &#123;</span><br><span class="line"></span><br><span class="line">        self.weakCache = [[NSMapTable alloc] initWithKeyOptions:NSPointerFunctionsStrongMemory valueOptions:NSPointerFunctionsWeakMemory capacity:0];</span><br><span class="line"></span><br><span class="line">        // 其他省略 ...</span><br><span class="line"></span><br><span class="line">        [[NSNotificationCenter defaultCenter] addObserver:self</span><br><span class="line">                                                 selector:@selector(didReceiveMemoryWarning:)</span><br><span class="line">                                                     name:UIApplicationDidReceiveMemoryWarningNotification</span><br><span class="line">                                                   object:nil];</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)didReceiveMemoryWarning:(NSNotification *)notification &#123;</span><br><span class="line">    // 注意：此处是调用的 suoper 方法，所以并没有移除 weak cache，如果是调用 self 重写的 removeAllObjects 方法，就会移除 weak cache。</span><br><span class="line">    [super removeAllObjects];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)dealloc &#123;</span><br><span class="line">    [[NSNotificationCenter defaultCenter] removeObserver:self</span><br><span class="line">                                                    name:UIApplicationDidReceiveMemoryWarningNotification</span><br><span class="line">                                                  object:nil];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当遇到内存警告的时候，缓存会被清除，但 weak cache 并不会被移除，如果手动清除的话，weak cache 当然会被移除。</p>
+<p>这里 value 设置成 weak 可以避免可能的循环引用，虽然是 weak，不过，image 实例可以被其他对象持有，像 imageView，这种情况下，value 就不是 nil。</p>
+<h6 id="似乎扯远了O-∩-∩-O哈哈-，好了，我们还是切回来继续讨论-SDImageCache-提供的方法吧！"><a href="#似乎扯远了O-∩-∩-O哈哈-，好了，我们还是切回来继续讨论-SDImageCache-提供的方法吧！" class="headerlink" title="似乎扯远了O(∩_∩)O哈哈~，好了，我们还是切回来继续讨论 SDImageCache 提供的方法吧！"></a>似乎扯远了O(∩_∩)O哈哈~，好了，我们还是切回来继续讨论 SDImageCache 提供的方法吧！</h6><p>首先，是 <code>SDImageCache</code> 的创建方法，它给我们提供了一个单例方法 <code>+ (nonnull instancetype)sharedImageCache</code>，下边是他的方法实现：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+ (nonnull instancetype)sharedImageCache &#123;</span><br><span class="line">    static dispatch_once_t once;</span><br><span class="line">    static id instance;</span><br><span class="line">    dispatch_once(&amp;once, ^&#123;</span><br><span class="line">        instance = [self new];</span><br><span class="line">    &#125;);</span><br><span class="line">    return instance;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后，看看初始化方法，我们发现所有初始化方法最后均调用了同一个核心方法 <code>- (nonnull instancetype)initWithNamespace: diskCacheDirectory:</code>，具体作用见下方代码注释。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">- (instancetype)init &#123;</span><br><span class="line">    return [self initWithNamespace:@&quot;default&quot;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (nonnull instancetype)initWithNamespace:(nonnull NSString *)ns &#123;</span><br><span class="line">    NSString *path = [self makeDiskCachePath:ns];</span><br><span class="line">    return [self initWithNamespace:ns diskCacheDirectory:path];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (nonnull instancetype)initWithNamespace:(nonnull NSString *)ns</span><br><span class="line">                       diskCacheDirectory:(nonnull NSString *)directory &#123;</span><br><span class="line">    if ((self = [super init])) &#123;</span><br><span class="line">        NSString *fullNamespace = [@&quot;com.hackemist.SDWebImageCache.&quot; stringByAppendingString:ns];</span><br><span class="line">        </span><br><span class="line">        // 创建一个 IO 串行队列 (依次执行操作)</span><br><span class="line">        _ioQueue = dispatch_queue_create(&quot;com.hackemist.SDWebImageCache&quot;, DISPATCH_QUEUE_SERIAL);</span><br><span class="line">        </span><br><span class="line">        // 初始化内存缓存</span><br><span class="line">        _config = [[SDImageCacheConfig alloc] init];</span><br><span class="line">        _memCache = [[SDMemoryCache alloc] initWithConfig:_config];</span><br><span class="line">        _memCache.name = fullNamespace;</span><br><span class="line"></span><br><span class="line">        // 初始化磁盘缓存路径</span><br><span class="line">        if (directory != nil) &#123;</span><br><span class="line">            _diskCachePath = [directory stringByAppendingPathComponent:fullNamespace]; </span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            NSString *path = [self makeDiskCachePath:ns];</span><br><span class="line">            _diskCachePath = path;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        dispatch_sync(_ioQueue, ^&#123;</span><br><span class="line">            self.fileManager = [NSFileManager new];</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">#if SD_UIKIT</span><br><span class="line">        // App 即将关闭的时候，清除过期缓存</span><br><span class="line">        [[NSNotificationCenter defaultCenter] addObserver:self</span><br><span class="line">                                                 selector:@selector(deleteOldFiles)</span><br><span class="line">                                                     name:UIApplicationWillTerminateNotification</span><br><span class="line">                                                   object:nil];</span><br><span class="line">        // App 即将进入后台的时候，清除过期缓存</span><br><span class="line">        [[NSNotificationCenter defaultCenter] addObserver:self</span><br><span class="line">                                                 selector:@selector(backgroundDeleteOldFiles)</span><br><span class="line">                                                     name:UIApplicationDidEnterBackgroundNotification</span><br><span class="line">                                                   object:nil];</span><br><span class="line">#endif</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>记得 <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/221b335cc760">上一篇</a> 介绍 SDWebImageManager 的时候，是这样使用 imageCache 的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">operation.cacheOperation = [self.imageCache queryCacheOperationForKey:key</span><br><span class="line">                                                              options:cacheOptions</span><br><span class="line">                                                                 done:^(UIImage *cachedImage, NSData *cachedData, SDImageCacheType cacheType)</span><br><span class="line">&#123;</span><br><span class="line">      // 查询完成后的操作在这里，可能查到了，也可能没查到 ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在，我们就来揭开这个方法的什么面纱。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">- (nullable NSOperation *)queryCacheOperationForKey:(nullable NSString *)key</span><br><span class="line">                                            options:(SDImageCacheOptions)options</span><br><span class="line">                                               done:(nullable SDCacheQueryCompletedBlock)doneBlock</span><br><span class="line">&#123;</span><br><span class="line">    // 1.校验参数</span><br><span class="line">    if (!key) &#123;</span><br><span class="line">        if (doneBlock) &#123;</span><br><span class="line">            doneBlock(nil, nil, SDImageCacheTypeNone);</span><br><span class="line">        &#125;</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 2.查询内存缓存 (NSCache)</span><br><span class="line">    UIImage *image = [self imageFromMemoryCacheForKey:key];</span><br><span class="line">    BOOL shouldQueryMemoryOnly = (image &amp;&amp; !(options &amp; SDImageCacheQueryDataWhenInMemory));</span><br><span class="line">    if (shouldQueryMemoryOnly) &#123;</span><br><span class="line">        if (doneBlock) &#123;</span><br><span class="line">            doneBlock(image, nil, SDImageCacheTypeMemory);</span><br><span class="line">        &#125;</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    NSOperation *operation = [NSOperation new];</span><br><span class="line">    </span><br><span class="line">    // 3.将获取缓存及解压的 ‘耗时’ 操作封装成一个 block</span><br><span class="line">    void(^queryDiskBlock)(void) =  ^&#123;</span><br><span class="line">        </span><br><span class="line">        // 如果已经取消，不作任何处理，直接返回。</span><br><span class="line">        if (operation.isCancelled) &#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        @autoreleasepool &#123;</span><br><span class="line">            </span><br><span class="line">            NSData *diskData = [self diskImageDataBySearchingAllPathsForKey:key];</span><br><span class="line">            UIImage *diskImage;</span><br><span class="line">            SDImageCacheType cacheType = SDImageCacheTypeDisk;</span><br><span class="line">            </span><br><span class="line">            if (image) &#123;</span><br><span class="line">                </span><br><span class="line">                // A &gt; 从 memery 取的</span><br><span class="line"></span><br><span class="line">                diskImage = image;</span><br><span class="line">                cacheType = SDImageCacheTypeMemory;</span><br><span class="line">                </span><br><span class="line">            &#125; else if (diskData) &#123;</span><br><span class="line">                </span><br><span class="line">                // B &gt; 如果内存没有，但是从 disc 取到了，需要解压</span><br><span class="line">                </span><br><span class="line">                diskImage = [self diskImageForKey:key data:diskData options:options];</span><br><span class="line">                </span><br><span class="line">                if (diskImage &amp;&amp; self.config.shouldCacheImagesInMemory) &#123; // 缓存到内存</span><br><span class="line">                    NSUInteger cost = SDCacheCostForImage(diskImage); // 计算大小</span><br><span class="line">                    [self.memCache setObject:diskImage forKey:key cost:cost];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            if (doneBlock) &#123;</span><br><span class="line">                if (options &amp; SDImageCacheQueryDiskSync) &#123;  // 同步执行完成回调</span><br><span class="line">                    doneBlock(diskImage, diskData, cacheType);</span><br><span class="line">                &#125; else &#123;                                    // 异步执行完成回调</span><br><span class="line">                    dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">                        doneBlock(diskImage, diskData, cacheType);</span><br><span class="line">                    &#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    // 4.执行查询磁盘缓存的 block</span><br><span class="line">    if (options &amp; SDImageCacheQueryDiskSync) &#123;</span><br><span class="line">        queryDiskBlock();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        dispatch_async(self.ioQueue, queryDiskBlock);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return operation;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如上边的代码所示，主要分了这么 4 步：</p>
+<p>① 校验参数 — 如果 key 不存在，直接 doneBlock，返回 nil。</p>
+<p>② 查询内存缓存 NSCache — 如果内存中有，并且没有强制要求必须查询磁盘，则 执行 doneBlock，将 image 返回。</p>
+<p>③ 将获取缓存及解压的 ‘耗时’ 操作封装成一个 block — 这是为了最后执行异步操作的方便。</p>
+<p>④ 执行查询磁盘缓存的 block — 如果设置了 <code>SDImageCacheQueryDiskSync </code>，则同步执行；否则，默认是异步执行。</p>
+<p>第 ③ 步中查询磁盘缓存的 <code>queryDiskBlock</code> 里边有两个比较重要的方法：<code>- (nullable NSData *)diskImageDataBySearchingAllPathsForKey:</code> 和 <code>- (nullable UIImage *)diskImageForKey: data: options:</code>，下边分别了解一下这两个方法：</p>
+<ul>
+<li>diskImageDataBySearchingAllPathsForKey:  这个方法用于查询磁盘缓存，实现及代码注释如下，拼接缓存路径的方法就不展开了，其中文件名的生成是对传入的 key 执行了一次 MD5。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">- (nullable NSData *)diskImageDataBySearchingAllPathsForKey:(nullable NSString *)key &#123;</span><br><span class="line">    // 1.尝试 通过默认路径查询磁盘缓存</span><br><span class="line">    NSString *defaultPath = [self defaultCachePathForKey:key];</span><br><span class="line">    NSData *data = [NSData dataWithContentsOfFile:defaultPath options:self.config.diskCacheReadingOptions error:nil];</span><br><span class="line">    if (data) &#123;</span><br><span class="line">        return data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 2.异常情况的处理：更换了路径再取一次，新路径是将默认路径的后缀去掉 (如果有的话)</span><br><span class="line">    data = [NSData dataWithContentsOfFile:defaultPath.stringByDeletingPathExtension options:self.config.diskCacheReadingOptions error:nil];</span><br><span class="line">    if (data) &#123;</span><br><span class="line">        return data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 3.遍历所有用户自定义的路径，执行类似 1、2 的操作，查询磁盘缓存</span><br><span class="line">    NSArray&lt;NSString *&gt; *customPaths = [self.customPaths copy];</span><br><span class="line">    for (NSString *path in customPaths) &#123;</span><br><span class="line">        NSString *filePath = [self cachePathForKey:key inPath:path];</span><br><span class="line">        NSData *imageData = [NSData dataWithContentsOfFile:filePath options:self.config.diskCacheReadingOptions error:nil];</span><br><span class="line">        if (imageData) &#123;</span><br><span class="line">            return imageData;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        imageData = [NSData dataWithContentsOfFile:filePath.stringByDeletingPathExtension options:self.config.diskCacheReadingOptions error:nil];</span><br><span class="line">        if (imageData) &#123;</span><br><span class="line">            return imageData;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    // 没查到的话，返回 nil</span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>diskImageForKey: data: options: 此方法的作用是对从 Disc 直接取的 data，进行 解码、解压操作，实现代码如下。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">- (nullable UIImage *)diskImageForKey:(nullable NSString *)key data:(nullable NSData *)data options:(SDImageCacheOptions)options &#123;</span><br><span class="line">    if (data) &#123;</span><br><span class="line">        </span><br><span class="line">        // 1.解码</span><br><span class="line">        UIImage *image = [[SDWebImageCodersManager sharedInstance] decodedImageWithData:data];</span><br><span class="line">        image = [self scaledImageForKey:key image:image];</span><br><span class="line">        </span><br><span class="line">        // 2.解压</span><br><span class="line">        if (self.config.shouldDecompressImages) &#123;</span><br><span class="line">            BOOL shouldScaleDown = options &amp; SDImageCacheScaleDownLargeImages;</span><br><span class="line">            </span><br><span class="line">            image = [[SDWebImageCodersManager sharedInstance] decompressedImageWithImage:image data:&amp;data options:@&#123;SDWebImageCoderScaleDownLargeImagesKey: @(shouldScaleDown)&#125;];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        return image;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此方法分别使用了 SDWebImageCodersManager 的 2 个重要方法：</p>
+<ul>
+<li>解码方法 <code>- (UIImage *)decodedImageWithData:data</code>，其中 coder 可以理解为一个解码器，<code>SDWebImage</code> 提供了多种 coder，如 <code>SDWebImageIOCoder</code>、<code>SDWebImageGIFCoder</code> 分别用于解码某一种类型的图片，如果新增一种图片，可以将对应的 coder（需遵守协议：SDWebImageCoder） 添加到 coders 里即可。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// SDWebImageCodersManager.m</span><br><span class="line"></span><br><span class="line">- (UIImage *)decodedImageWithData:(NSData *)data &#123;</span><br><span class="line">    </span><br><span class="line">    LOCK(self.codersLock);</span><br><span class="line">    NSArray&lt;id&lt;SDWebImageCoder&gt;&gt; *coders = self.coders;</span><br><span class="line">    UNLOCK(self.codersLock);</span><br><span class="line">    </span><br><span class="line">    for (id&lt;SDWebImageCoder&gt; coder in coders.reverseObjectEnumerator) &#123;</span><br><span class="line">        if ([coder canDecodeFromData:data]) &#123;</span><br><span class="line">            return [coder decodedImageWithData:data];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>解压方法 <code>- (UIImage *)decompressedImageWithImage:image data:data options:optionsDict</code>，这个方法和上边的解码方法都属于   <code>SDWebImageCoder</code> 这个协议，与解码方法类似，也是针对不同类型的 image 有不同的 coder。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">// SDWebImageCodersManager.m</span><br><span class="line"></span><br><span class="line">- (UIImage *)decompressedImageWithImage:(UIImage *)image</span><br><span class="line">                                   data:(NSData *__autoreleasing  _Nullable *)data</span><br><span class="line">                                options:(nullable NSDictionary&lt;NSString*, NSObject*&gt;*)optionsDict &#123;</span><br><span class="line">    if (!image) &#123;</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;</span><br><span class="line">    LOCK(self.codersLock);</span><br><span class="line">    NSArray&lt;id&lt;SDWebImageCoder&gt;&gt; *coders = self.coders;</span><br><span class="line">    UNLOCK(self.codersLock);</span><br><span class="line">    for (id&lt;SDWebImageCoder&gt; coder in coders.reverseObjectEnumerator) &#123;</span><br><span class="line">        if ([coder canDecodeFromData:*data]) &#123;</span><br><span class="line">            UIImage *decompressedImage = [coder decompressedImageWithImage:image data:data options:optionsDict];</span><br><span class="line">            decompressedImage.sd_imageFormat = image.sd_imageFormat;</span><br><span class="line">            return decompressedImage;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>那么，这些 coder 是什么时候加进去的，又是怎么添加的呢？其实，这些逻辑都在 SDWebImageCodersManager 的实现代码里。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// SDWebImageCodersManager.m</span><br><span class="line"></span><br><span class="line">- (instancetype)init &#123;</span><br><span class="line">    if (self = [super init]) &#123;</span><br><span class="line">        // 初始化 coders</span><br><span class="line">        NSMutableArray&lt;id&lt;SDWebImageCoder&gt;&gt; *mutableCoders = [@[[SDWebImageImageIOCoder sharedCoder]] mutableCopy];</span><br><span class="line">#ifdef SD_WEBP</span><br><span class="line">        [mutableCoders addObject:[SDWebImageWebPCoder sharedCoder]];</span><br><span class="line">#endif</span><br><span class="line">        _coders = [mutableCoders copy];</span><br><span class="line">        _codersLock = dispatch_semaphore_create(1);</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从初始化方法可以看出来，此时只给 coders 添加了一种 coder，即 SDWebImageImageIOCoder，它是用来对普通的 JPG、PNG 等图片解码的。</p>
+<p>为了支持对其他类型图片（如 GIF）的解码，manager 给我们提供了下边这个添加 coder 的方法，代码逻辑很简单，就不多做解释了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// SDWebImageCodersManager.m</span><br><span class="line"></span><br><span class="line">- (void)addCoder:(nonnull id&lt;SDWebImageCoder&gt;)coder &#123;</span><br><span class="line">    if (![coder conformsToProtocol:@protocol(SDWebImageCoder)]) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    LOCK(self.codersLock);</span><br><span class="line">    NSMutableArray&lt;id&lt;SDWebImageCoder&gt;&gt; *mutableCoders = [self.coders mutableCopy];</span><br><span class="line">    if (!mutableCoders) &#123;</span><br><span class="line">        mutableCoders = [NSMutableArray array];</span><br><span class="line">    &#125;</span><br><span class="line">    [mutableCoders addObject:coder];</span><br><span class="line">    self.coders = [mutableCoders copy];</span><br><span class="line">    UNLOCK(self.codersLock);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>关于缓存相关的类暂时就先介绍到这里，当然还有很多细节没来得及讨论，不过可以查看 demo 中的注释。</p>
+<p>到此，关于 SDWebImage 的源码学习就告一段落了，目前的理解可能有点肤浅，以后随着理解的深入，会不定时的更新。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://devhe.com/2019/02/03/SDWebImage-Source-Learning-05/" data-id="cl7c27fh00004jlfy87pn52xv" data-title="SDWebImage 源码学习笔记 ☞ SDImageCache" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/08/23/Topics-and-mentions-similar-to-Weibo/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          iOS UITextView 实现类似微博的话题、提及功能
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/01/26/SDWebImage-Source-Learning-04/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">SDWebImage 源码学习笔记 ☞ SDWebImageDownloader</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/08/24/ijkplayer-Compilation-and-Packaging/">ijkplayer 编译-打包-Pod支持</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/23/Topics-and-mentions-similar-to-Weibo/">iOS UITextView 实现类似微博的话题、提及功能</a>
+          </li>
+        
+          <li>
+            <a href="/2019/02/03/SDWebImage-Source-Learning-05/">SDWebImage 源码学习笔记 ☞ SDImageCache</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/26/SDWebImage-Source-Learning-04/">SDWebImage 源码学习笔记 ☞ SDWebImageDownloader</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/20/SDWebImage-Source-Learning-03/">SDWebImage 源码学习笔记 ☞ SDWebImageManager</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 He Hai<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

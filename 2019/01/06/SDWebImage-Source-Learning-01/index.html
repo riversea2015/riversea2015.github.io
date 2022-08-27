@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>SDWebImage 源码学习笔记·前传 ☞ 升级 | riversea2015</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="2019.12.27 更新：最近发现 SDWebImage  升级到 5.0 以后加载 WebP 和 Gif 的方式也发生了改变，详见文末。 一、前言前段时间对项目中使用的 SDWebImage 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：  SDWebImage 源码学习笔记·前传 ☞ 升级 4.0 &amp;#x2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SDWebImage 源码学习笔记·前传 ☞ 升级">
+<meta property="og:url" content="https://devhe.com/2019/01/06/SDWebImage-Source-Learning-01/index.html">
+<meta property="og:site_name" content="riversea2015">
+<meta property="og:description" content="2019.12.27 更新：最近发现 SDWebImage  升级到 5.0 以后加载 WebP 和 Gif 的方式也发生了改变，详见文末。 一、前言前段时间对项目中使用的 SDWebImage 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：  SDWebImage 源码学习笔记·前传 ☞ 升级 4.0 &amp;#x2">
+<meta property="og:locale">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-89f6ed8da3d73c10.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="article:published_time" content="2019-01-06T04:19:15.000Z">
+<meta property="article:modified_time" content="2022-08-27T15:26:43.161Z">
+<meta property="article:author" content="He Hai">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+    <link rel="alternate" href="/atom.xml" title="riversea2015" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">riversea2015</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Stay Hungry, Stay Young.</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://devhe.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-SDWebImage-Source-Learning-01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/01/06/SDWebImage-Source-Learning-01/" class="article-date">
+  <time class="dt-published" datetime="2019-01-06T04:19:15.000Z" itemprop="datePublished">2019-01-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      SDWebImage 源码学习笔记·前传 ☞ 升级
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="SDWebImage-源码学习笔记.png"></p>
+<p>2019.12.27 更新：最近发现 <a target="_blank" rel="noopener" href="https://github.com/SDWebImage/SDWebImage">SDWebImage</a>  升级到 5.0 以后加载 WebP 和 Gif 的方式也发生了改变，详见文末。</p>
+<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>前段时间对项目中使用的 <a target="_blank" rel="noopener" href="https://github.com/SDWebImage/SDWebImage">SDWebImage</a> 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c3ec50e1942f">SDWebImage 源码学习笔记·前传 ☞ 升级 4.0 &#x2F; 5.0 后适配 WebP&#x2F;GIF</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/99c9564043d2">SDWebImage源码学习笔记 ☞ 结构及基本流程</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/221b335cc760">SDWebImage源码学习笔记 ☞ SDWebImageManager</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/06071cba3404">SDWebImage源码学习笔记 ☞ SDWebImageDownloader</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/e3f4a7f57899">SDWebImage源码学习笔记 ☞ SDImageCache</a></li>
+</ul>
+<p>本篇是第 1 篇，主要记述了升级过程中的遇到的问题及处理方案。</p>
+<h3 id="二、升级"><a href="#二、升级" class="headerlink" title="二、升级"></a>二、升级</h3><p>现在转回到本篇的主要内容，首先当然是升级了，不过最新版的 SDWebImage 里边分了几个子 pod ，默认下载不全。为了满足我们的日常使用要求，还需要加上 WebP 和 GIF 这两个子 pod：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">platform :ios, &#x27;7.0&#x27;</span><br><span class="line"></span><br><span class="line">pod &#x27;SDWebImage&#x27;, &#x27;~&gt; 4.0&#x27;</span><br><span class="line">pod &#x27;SDWebImage/WebP&#x27;</span><br><span class="line">pod &#x27;SDWebImage/GIF&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>不过，在执行 <code>pod install</code> 的时候，发现 <code>pod &#39;SDWebImage/WebP&#39;</code> 卡在了 <code>Installing libwebp (0.6.0)</code> 的地方。</p>
+<p>据说 WebP 的解析库是 Google 的开源库，目前还无法直接使用，可以使用github上的镜像文件，这个网上很容易搜到，示例见文末参考。</p>
+<p>完成后 pod 内部的结构如下：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2208988-89f6ed8da3d73c10.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="SDWebImage4.0.png"></p>
+<h3 id="三、使用"><a href="#三、使用" class="headerlink" title="三、使用"></a>三、使用</h3><p>为叙述方便，此处将图片的 URL 定义成了宏：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#define URL_Normal          [NSURL URLWithString:@&quot;此处是 普通静态图 地址&quot;]</span><br><span class="line">#define URL_WebP_Normal     [NSURL URLWithString:@&quot;此处是 静态 WebP 地址&quot;]</span><br><span class="line">#define URL_WebP_Dynamic    [NSURL URLWithString:@&quot;此处是 动态 WebP 地址&quot;]</span><br><span class="line">#define URL_GIF             [NSURL URLWithString:@&quot;此处是 GIF 地址&quot;]</span><br></pre></td></tr></table></figure>
+
+<h4 id="第一种方案"><a href="#第一种方案" class="headerlink" title="第一种方案"></a>第一种方案</h4><ul>
+<li>png&#x2F;jpg，直接使用 SDWebImage 提供的普通方法即可。</li>
+<li>WebP，只要导入了 WebP 的子 pod，直接使用普通方法即可正常加载静态、动态的 WebP。</li>
+<li>GIF，此处使用了 FLAnimatedImageView 代替 UIImageView 来展示 GIF。因为 SDWebImage4.0 以后，如果继续 <code>直接</code> 使用 UIImageView 将只展示 GIF 的第一帧，可以使用推荐的 FLAnimatedImageView 替换 UIImageView。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">    // 普通静态图</span><br><span class="line">    UIImageView *imgV = [[UIImageView alloc] initWithFrame:CGRectMake(125, 70, 160, 160)];</span><br><span class="line">    imgV.backgroundColor = [UIColor lightGrayColor];</span><br><span class="line">    [self.view addSubview:imgV];</span><br><span class="line">    [imgV sd_setImageWithURL:URL_Normal];</span><br><span class="line"></span><br><span class="line">    // WebP</span><br><span class="line">    UIImageView *imgVB = [[UIImageView alloc] initWithFrame:CGRectMake(125, 70+160+10, 160, 160)];</span><br><span class="line">    imgVB.backgroundColor = [UIColor lightGrayColor];</span><br><span class="line">    imgVB.contentMode = UIViewContentModeScaleAspectFill;</span><br><span class="line">    [self.view addSubview:imgVB];</span><br><span class="line">    // WebP 静态图</span><br><span class="line">//    [imgVB sd_setImageWithURL:URL_WebP_Normal];</span><br><span class="line">    // WebP 动态图</span><br><span class="line">    [imgVB sd_setImageWithURL:URL_WebP_Dynamic];</span><br><span class="line">    </span><br><span class="line">    // GIF</span><br><span class="line">    FLAnimatedImageView *imgView = [[FLAnimatedImageView alloc] initWithFrame:CGRectMake(125, 70+160+10+160+10, 160, 200)];</span><br><span class="line">    imgView.backgroundColor = [UIColor lightGrayColor];</span><br><span class="line">    imgView.contentMode = UIViewContentModeScaleAspectFill;</span><br><span class="line">    [self.view addSubview:imgView];</span><br><span class="line">    [imgView sd_setShowActivityIndicatorView:YES];</span><br><span class="line">    [imgView sd_setImageWithURL:URL_GIF</span><br><span class="line">             placeholderImage:[UIImage imageNamed:@&quot;placeholder&quot;]</span><br><span class="line">                      options:1];</span><br></pre></td></tr></table></figure>
+<h4 id="第二种方案"><a href="#第二种方案" class="headerlink" title="第二种方案"></a>第二种方案</h4><p>统一都使用 UIImageView 展示图片，不过和上边的第一种方案有以下不同：</p>
+<ul>
+<li>使用 <code>SDWebImageManager</code> 的 <code>loadImageWithURL: options: progress: completed:</code> 方法下载图片；</li>
+<li>根据得到的 data 判断图片类型: <code>SDImageFormat format = [NSData sd_imageFormatForImageData:data];</code>，基本原理是根据 data 的第一个字节来判断；</li>
+<li>WebP 使用专用方法 <code>sd_imageWithWebPData: </code> 解码；</li>
+<li>GIF 也使用专用方法 <code>sd_animatedGIFWithData:</code> 解码。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">UIImageView *gifView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 70+160+10+160+10+200+10, kScreenW-20, 200)];</span><br><span class="line">    gifView.backgroundColor = [UIColor lightGrayColor];</span><br><span class="line">    [self.view addSubview:gifView];</span><br><span class="line">    self.imgView = gifView;</span><br><span class="line">    </span><br><span class="line">    SDWebImageManager *mgr = [SDWebImageManager sharedManager];</span><br><span class="line">    __weak typeof(self) weakSelf = self;</span><br><span class="line">    [mgr loadImageWithURL:URL_GIF // URL_WebP_Dynamic // URL_WebP_Normal // URL_Normal</span><br><span class="line">                  options:1</span><br><span class="line">                 progress:nil</span><br><span class="line">                completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL)</span><br><span class="line">    &#123;</span><br><span class="line">        SDImageFormat format = [NSData sd_imageFormatForImageData:data];</span><br><span class="line">        switch (format) &#123;</span><br><span class="line">            case SDImageFormatGIF:</span><br><span class="line">                weakSelf.imgView.image = [UIImage sd_animatedGIFWithData:data];</span><br><span class="line">                break;</span><br><span class="line">            case SDImageFormatWebP:</span><br><span class="line">                weakSelf.imgView.image = [UIImage sd_imageWithWebPData:data];</span><br><span class="line">                break;</span><br><span class="line">            case SDImageFormatPNG:</span><br><span class="line">            case SDImageFormatJPEG:</span><br><span class="line">                weakSelf.imgView.image = image;</span><br><span class="line">                break;</span><br><span class="line">            default:</span><br><span class="line">                break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure>
+<h4 id="第三种方案"><a href="#第三种方案" class="headerlink" title="第三种方案"></a>第三种方案</h4><p>自定义 HHImageView，在它的 init 系列方法中添加了对 GIF 的解析：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[SDWebImageCodersManager sharedInstance] addCoder:[SDWebImageGIFCoder sharedCoder]];</span><br></pre></td></tr></table></figure>
+
+<p>这种方案对最终的调用方来说，非常简洁，不需要对各种图片区别对待。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">    HHImageView *customView = [[HHImageView alloc] initWithFrame:CGRectMake(125, 70, 160, 160)];</span><br><span class="line">    customView.backgroundColor = [UIColor lightGrayColor];</span><br><span class="line">    [self.view addSubview:customView];</span><br><span class="line">    [customView sd_setShowActivityIndicatorView:YES];</span><br><span class="line">    // 静态图</span><br><span class="line">//    [customView sd_setImageWithURL:URL_Normal];</span><br><span class="line">    // WebP 动图</span><br><span class="line">//    [customView sd_setImageWithURL:URL_WebP_Normal];</span><br><span class="line">    // WebP 静态图</span><br><span class="line">//    [customView sd_setImageWithURL:URL_WebP_Dynamic];</span><br><span class="line">    // GIF</span><br><span class="line">    [customView sd_setImageWithURL:URL_GIF];</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<h3 id="2019-12-27-更新："><a href="#2019-12-27-更新：" class="headerlink" title="2019.12.27 更新："></a>2019.12.27 更新：</h3><ul>
+<li>5.0 之后的版本中，默认添加了对 Gif 的支持，也就是说，需要移除 podfile 中的 <code>pod &#39;SDWebImage/GIF&#39;</code>（不移除的话，pod install&#x2F;update 会报错），然后直接使用加载 png&#x2F;jpg 的方法就可以加载 Gif 图了，比如：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">imageViewA.sd_setImage(with: URL(string: &quot;http://hbimg.b0.upaiyun.com/43efd35d1e9cadc6d8ff5cdc5faccec06f1082bb4efc4-o8K27E_fw658&quot;), completed: nil) // 皮卡丘揉脸的动画^_^</span><br></pre></td></tr></table></figure></li>
+<li>对于 WebP，将之前的 subspec 抽出来，创建了一个单独的库 <code>SDImageWebPCoder</code>，使用时需要两步操作：<ul>
+<li>在 podfile 文件中用下边的内容替换之前的 <code>pod &#39;SDWebImage/GIF&#39;</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod &#x27;SDImageWebPCoder&#x27;</span><br></pre></td></tr></table></figure></li>
+<li>使用前，先给 <code>SDImageCodersManager</code> 添加一个 coder：<code>WebPCoder</code>，如下：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let WebPCoder = SDImageWebPCoder.shared</span><br><span class="line">SDImageCodersManager.shared.addCoder(WebPCoder)</span><br></pre></td></tr></table></figure>
+然后，就可以使用通用的方法加载 WebP 了，示例代码如下：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 静态图</span><br><span class="line">imageViewA.sd_setImage(with: URL(string: &quot;https://www.gstatic.com/webp/gallery/2.webp&quot;), completed: nil)</span><br><span class="line">// 动图</span><br><span class="line">imageViewB.sd_setImage(with: URL(string: &quot;http://littlesvr.ca/apng/images/world-cup-2014-42.webp&quot;), completed: nil) </span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>本文完整示例代码见: <a target="_blank" rel="noopener" href="https://github.com/riversea2015/CodeForBlogs/tree/master/HHSDWebImageStudy">HHSDWebImageStudy</a></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/009caf1df1d5">iOS pod Error installing libwebp错误超详细解决办法</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4468f03cf606">iOS SDWebImage加载webP</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://devhe.com/2019/01/06/SDWebImage-Source-Learning-01/" data-id="cl7c27fgw0001jlfyesys8w9o" data-title="SDWebImage 源码学习笔记·前传 ☞ 升级" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/01/12/SDWebImage-Source-Learning-02/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          SDWebImage 源码学习笔记 ☞ 结构及基本流程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/12/25/MJRefresh-Source-Learning-Notes/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">MJRefresh 源码学习笔记</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/08/24/ijkplayer-Compilation-and-Packaging/">ijkplayer 编译-打包-Pod支持</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/23/Topics-and-mentions-similar-to-Weibo/">iOS UITextView 实现类似微博的话题、提及功能</a>
+          </li>
+        
+          <li>
+            <a href="/2019/02/03/SDWebImage-Source-Learning-05/">SDWebImage 源码学习笔记 ☞ SDImageCache</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/26/SDWebImage-Source-Learning-04/">SDWebImage 源码学习笔记 ☞ SDWebImageDownloader</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/20/SDWebImage-Source-Learning-03/">SDWebImage 源码学习笔记 ☞ SDWebImageManager</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 He Hai<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
