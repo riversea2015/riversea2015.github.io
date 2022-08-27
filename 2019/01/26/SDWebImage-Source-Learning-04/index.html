@@ -6,16 +6,14 @@
   
   <title>SDWebImage 源码学习笔记 ☞ SDWebImageDownloader | riversea2015</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="前言这是本系列的第 4 篇，本篇将主要介绍 SDWebImageDownloader 这个负责下载的类，当然还有一些相关类及协议，如： SDWebImageDownloadToken、SDWebImageDownloaderOperation 和 SDWebImageDownloaderOperationInterface 等。 正文开启正文描述之前，依旧先看 2 个重要的枚举：SDWebIma">
-<meta property="og:type" content="article">
+  <meta property="og:type" content="article">
 <meta property="og:title" content="SDWebImage 源码学习笔记 ☞ SDWebImageDownloader">
 <meta property="og:url" content="https://devhe.com/2019/01/26/SDWebImage-Source-Learning-04/index.html">
 <meta property="og:site_name" content="riversea2015">
-<meta property="og:description" content="前言这是本系列的第 4 篇，本篇将主要介绍 SDWebImageDownloader 这个负责下载的类，当然还有一些相关类及协议，如： SDWebImageDownloadToken、SDWebImageDownloaderOperation 和 SDWebImageDownloaderOperationInterface 等。 正文开启正文描述之前，依旧先看 2 个重要的枚举：SDWebIma">
 <meta property="og:locale">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="article:published_time" content="2019-01-26T12:01:44.000Z">
-<meta property="article:modified_time" content="2022-08-27T15:30:07.155Z">
+<meta property="article:modified_time" content="2022-08-27T15:43:05.356Z">
 <meta property="article:author" content="He Hai">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
@@ -67,12 +65,12 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Buscar"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://devhe.com"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Buscar"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://devhe.com"></form>
       </div>
     </div>
   </div>
@@ -102,6 +100,8 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p><img src="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="SDWebImage-源码学习笔记.png"></p>
+<span id="more"></span>
+
 <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>这是本系列的第 4 篇，本篇将主要介绍 <code>SDWebImageDownloader</code> 这个负责下载的类，当然还有一些相关类及协议，如： <code>SDWebImageDownloadToken</code>、<code>SDWebImageDownloaderOperation</code> 和 <code>SDWebImageDownloaderOperationInterface</code> 等。</p>
 <h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><p>开启正文描述之前，依旧先看 2 个重要的枚举：<code>SDWebImageDownloaderOptions</code> 和 <code>SDWebImageDownloaderExecutionOrder</code>，具体含义见下方代码注释。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">// 控制下载过程的选项</span><br><span class="line">typedef NS_OPTIONS(NSUInteger, SDWebImageDownloaderOptions) &#123;</span><br><span class="line">    // 降低下载任务在队列中的优先级</span><br><span class="line">    SDWebImageDownloaderLowPriority = 1 &lt;&lt; 0,</span><br><span class="line">    // 图片将在下载过程中逐步展示，而不是等下载完成后才一次性展示</span><br><span class="line">    SDWebImageDownloaderProgressiveDownload = 1 &lt;&lt; 1,</span><br><span class="line">    // 使用 NSURLCache，默认是不使用的</span><br><span class="line">    SDWebImageDownloaderUseNSURLCache = 1 &lt;&lt; 2,</span><br><span class="line">    // 如果图片是从 NSURLCache 读取的，那么执行 completionHandler 的时候，回传 nil</span><br><span class="line">    SDWebImageDownloaderIgnoreCachedResponse = 1 &lt;&lt; 3,</span><br><span class="line">    // 后台继续执行任务</span><br><span class="line">    SDWebImageDownloaderContinueInBackground = 1 &lt;&lt; 4,</span><br><span class="line">    // 允许处理存储在 NSHTTPCookieStore 中的 Cookie</span><br><span class="line">    SDWebImageDownloaderHandleCookies = 1 &lt;&lt; 5,</span><br><span class="line">    // 允许不受信任的 SSL 证书，生产环境慎用</span><br><span class="line">    SDWebImageDownloaderAllowInvalidSSLCertificates = 1 &lt;&lt; 6,</span><br><span class="line">    // 提高下载任务在队列中的优先级</span><br><span class="line">    SDWebImageDownloaderHighPriority = 1 &lt;&lt; 7,</span><br><span class="line">    // 缩放大图</span><br><span class="line">    SDWebImageDownloaderScaleDownLargeImages = 1 &lt;&lt; 8,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// 任务的执行顺序</span><br><span class="line">typedef NS_ENUM(NSInteger, SDWebImageDownloaderExecutionOrder) &#123;</span><br><span class="line">    // 先进先出，也是队列的默认执行顺序</span><br><span class="line">    SDWebImageDownloaderFIFOExecutionOrder,</span><br><span class="line">    // 后进先出，栈的执行顺序</span><br><span class="line">    SDWebImageDownloaderLIFOExecutionOrder</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
@@ -171,7 +171,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://devhe.com/2019/01/26/SDWebImage-Source-Learning-04/" data-id="cl7c27fgx0002jlfy9ochh1nh" data-title="SDWebImage 源码学习笔记 ☞ SDWebImageDownloader" class="article-share-link">Teilen</a>
+      <a data-url="https://devhe.com/2019/01/26/SDWebImage-Source-Learning-04/" data-id="cl7c27fgx0002jlfy9ochh1nh" data-title="SDWebImage 源码学习笔记 ☞ SDWebImageDownloader" class="article-share-link">Compartir</a>
       
       
       
@@ -182,7 +182,7 @@
 <nav id="article-nav">
   
     <a href="/2019/02/03/SDWebImage-Source-Learning-05/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Neuer</strong>
+      <strong class="article-nav-caption">Nuevo</strong>
       <div class="article-nav-title">
         
           SDWebImage 源码学习笔记 ☞ SDImageCache
@@ -192,7 +192,7 @@
   
   
     <a href="/2019/01/20/SDWebImage-Source-Learning-03/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Älter</strong>
+      <strong class="article-nav-caption">Viejo</strong>
       <div class="article-nav-title">SDWebImage 源码学习笔记 ☞ SDWebImageManager</div>
     </a>
   
@@ -216,7 +216,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
+    <h3 class="widget-title">Archivos</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
@@ -226,7 +226,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
+    <h3 class="widget-title">Posts recientes</h3>
     <div class="widget">
       <ul>
         
@@ -264,7 +264,7 @@
     <div id="footer-info" class="inner">
       
       &copy; 2022 He Hai<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+      Construido por <a href="https://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>

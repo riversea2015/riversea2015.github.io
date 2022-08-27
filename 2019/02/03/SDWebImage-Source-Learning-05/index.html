@@ -6,16 +6,14 @@
   
   <title>SDWebImage 源码学习笔记 ☞ SDImageCache | riversea2015</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="前言这是本系列的第 5 篇，也是最后一篇，主要讨论处理缓存的类 SDImageCache 及相关类 SDMemoryCache 、SDImageCacheConfig 等。 正文先介绍 SDImageCache.h 中定义的 2 个枚举：SDImageCacheType 和 SDImageCacheOptions。 1234567891011121314151617typedef NS_ENUM">
-<meta property="og:type" content="article">
+  <meta property="og:type" content="article">
 <meta property="og:title" content="SDWebImage 源码学习笔记 ☞ SDImageCache">
 <meta property="og:url" content="https://devhe.com/2019/02/03/SDWebImage-Source-Learning-05/index.html">
 <meta property="og:site_name" content="riversea2015">
-<meta property="og:description" content="前言这是本系列的第 5 篇，也是最后一篇，主要讨论处理缓存的类 SDImageCache 及相关类 SDMemoryCache 、SDImageCacheConfig 等。 正文先介绍 SDImageCache.h 中定义的 2 个枚举：SDImageCacheType 和 SDImageCacheOptions。 1234567891011121314151617typedef NS_ENUM">
 <meta property="og:locale">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="article:published_time" content="2019-02-03T11:39:30.000Z">
-<meta property="article:modified_time" content="2022-08-27T15:29:57.289Z">
+<meta property="article:modified_time" content="2022-08-27T15:42:11.945Z">
 <meta property="article:author" content="He Hai">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
@@ -67,12 +65,12 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Buscar"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://devhe.com"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Buscar"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://devhe.com"></form>
       </div>
     </div>
   </div>
@@ -102,6 +100,8 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p><img src="https://upload-images.jianshu.io/upload_images/2208988-29157f1c1fb6719f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="SDWebImage-源码学习笔记.png"></p>
+<span id="more"></span>
+
 <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>这是本系列的第 5 篇，也是最后一篇，主要讨论处理缓存的类 <code>SDImageCache</code> 及相关类 <code>SDMemoryCache</code> 、<code>SDImageCacheConfig</code> 等。</p>
 <h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><p>先介绍 SDImageCache.h 中定义的 2 个枚举：<code>SDImageCacheType</code> 和 <code>SDImageCacheOptions</code>。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, SDImageCacheType) &#123;</span><br><span class="line">    // 不缓存，从网络下载数据</span><br><span class="line">    SDImageCacheTypeNone,</span><br><span class="line">    // 磁盘缓存</span><br><span class="line">    SDImageCacheTypeDisk,</span><br><span class="line">    // 内存缓存</span><br><span class="line">    SDImageCacheTypeMemory</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">typedef NS_OPTIONS(NSUInteger, SDImageCacheOptions) &#123;</span><br><span class="line">    // 即使内存中有缓存，也要强制查询磁盘缓存</span><br><span class="line">    SDImageCacheQueryDataWhenInMemory = 1 &lt;&lt; 0,</span><br><span class="line">    // 强制同步查询磁盘缓存</span><br><span class="line">    SDImageCacheQueryDiskSync = 1 &lt;&lt; 1,</span><br><span class="line">    // 压缩大图</span><br><span class="line">    SDImageCacheScaleDownLargeImages = 1 &lt;&lt; 2</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
@@ -173,7 +173,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://devhe.com/2019/02/03/SDWebImage-Source-Learning-05/" data-id="cl7c27fh00004jlfy87pn52xv" data-title="SDWebImage 源码学习笔记 ☞ SDImageCache" class="article-share-link">Teilen</a>
+      <a data-url="https://devhe.com/2019/02/03/SDWebImage-Source-Learning-05/" data-id="cl7c27fh00004jlfy87pn52xv" data-title="SDWebImage 源码学习笔记 ☞ SDImageCache" class="article-share-link">Compartir</a>
       
       
       
@@ -184,7 +184,7 @@
 <nav id="article-nav">
   
     <a href="/2019/02/17/AFNetWorking-Source-Learning-01/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Neuer</strong>
+      <strong class="article-nav-caption">Nuevo</strong>
       <div class="article-nav-title">
         
           AFNetWorking 源码学习笔记 ☞ 主体流程
@@ -194,7 +194,7 @@
   
   
     <a href="/2019/01/26/SDWebImage-Source-Learning-04/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Älter</strong>
+      <strong class="article-nav-caption">Viejo</strong>
       <div class="article-nav-title">SDWebImage 源码学习笔记 ☞ SDWebImageDownloader</div>
     </a>
   
@@ -218,7 +218,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
+    <h3 class="widget-title">Archivos</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
@@ -228,7 +228,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
+    <h3 class="widget-title">Posts recientes</h3>
     <div class="widget">
       <ul>
         
@@ -266,7 +266,7 @@
     <div id="footer-info" class="inner">
       
       &copy; 2022 He Hai<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+      Construido por <a href="https://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
