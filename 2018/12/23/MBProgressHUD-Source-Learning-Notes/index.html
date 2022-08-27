@@ -6,22 +6,22 @@
   
   <title>MBProgressHUD 源码学习笔记 | riversea2015</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="1.前言MBProgressHUD 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。">
+  <meta name="description" content="1.前言MBProgressHUD 是 iOS 开发中经常会用到的一个加载动画库，现在就来阅读一下源码。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MBProgressHUD 源码学习笔记">
 <meta property="og:url" content="https://devhe.com/2018/12/23/MBProgressHUD-Source-Learning-Notes/index.html">
 <meta property="og:site_name" content="riversea2015">
-<meta property="og:description" content="1.前言MBProgressHUD 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。">
+<meta property="og:description" content="1.前言MBProgressHUD 是 iOS 开发中经常会用到的一个加载动画库，现在就来阅读一下源码。">
 <meta property="og:locale">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-91ab1cfdab440c59.png">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-c8735aee9340c963.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-953d9e9aa2b0558a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-918632801ae88997.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/98ef95e68aad4ac5899763af97dce85d~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7df10bb6d12442759e5241585d011f16~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/83790074052e4b7980dd866da1aa427a~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9ce63b883fbd4aa99a264ce02f5fdd71~tplv-k3u1fbpfcp-watermark.image">
 <meta property="article:published_time" content="2018-12-23T09:07:23.000Z">
-<meta property="article:modified_time" content="2022-08-27T14:42:41.133Z">
+<meta property="article:modified_time" content="2022-08-27T15:07:16.914Z">
 <meta property="article:author" content="He Hai">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2208988-91ab1cfdab440c59.png">
+<meta name="twitter:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/98ef95e68aad4ac5899763af97dce85d~tplv-k3u1fbpfcp-watermark.image">
   
     <link rel="alternate" href="/atom.xml" title="riversea2015" type="application/atom+xml">
   
@@ -104,12 +104,12 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p><img src="https://upload-images.jianshu.io/upload_images/2208988-91ab1cfdab440c59.png" alt="MBProgressHUD 源码学习笔记.png"></p>
-<h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p><a target="_blank" rel="noopener" href="https://github.com/jdg/MBProgressHUD">MBProgressHUD</a> 是 iOS 开发中经常会用到的一个加载动画库，本文就来简单学习一下源码。</p>
+        <p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/98ef95e68aad4ac5899763af97dce85d~tplv-k3u1fbpfcp-watermark.image" alt="mbprogress_cover.png"></p>
+<h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p><a target="_blank" rel="noopener" href="https://github.com/jdg/MBProgressHUD">MBProgressHUD</a> 是 iOS 开发中经常会用到的一个加载动画库，现在就来阅读一下源码。</p>
 <span id="more"></span>
 
 <h3 id="2-视图层级"><a href="#2-视图层级" class="headerlink" title="2.视图层级"></a>2.视图层级</h3><p>在开始学习源码之前，先大概了解一下整个视图的层级结构吧，主要分这几个视图：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2208988-c8735aee9340c963.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="视图层级.png"></p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7df10bb6d12442759e5241585d011f16~tplv-k3u1fbpfcp-watermark.image" alt="mbprogress_viewlayers.png"></p>
 <ul>
 <li><code>backgroundView</code>，位于最底层，是一个遮罩层，在 HUD 显示时，我们之所以无法点击后边的视图，都是因为它。</li>
 <li><code>bezelView</code>，位于 backgroundView 之上，承载着下边要说的几个视图，下边 4 个视图位于同一层级。</li>
@@ -121,7 +121,7 @@
 <p>当然，以上这些视图不一定要全部显示，可以由用户（我们自己 O(∩_∩)O ）自由选择。</p>
 <h3 id="3-源码"><a href="#3-源码" class="headerlink" title="3.源码"></a>3.源码</h3><p>言归正传，现在开始读源码。</p>
 <h6 id="3-1-类结构"><a href="#3-1-类结构" class="headerlink" title="3.1 类结构"></a>3.1 类结构</h6><p>虽然 MBProgressHUD 的文件数量非常少，只有 2 个：MBProgressHUD.h 和 MBProgressHUD.m，但还有几个相关的类和协议：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2208988-953d9e9aa2b0558a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="类之间的相互关系.png"></p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/83790074052e4b7980dd866da1aa427a~tplv-k3u1fbpfcp-watermark.image" alt="mbprogress_classrelationship.png"></p>
 <h6 id="3-2-MBProgressHUD"><a href="#3-2-MBProgressHUD" class="headerlink" title="3.2 MBProgressHUD"></a>3.2 MBProgressHUD</h6><p>我们主要研究主类 <code>MBProgressHUD</code>，首先看几个重要的属性：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@property (assign, nonatomic) NSTimeInterval graceTime;   // 显示的宽限时间，即从显示方法被调用到真正显示之间的时间差</span><br><span class="line">@property (assign, nonatomic) NSTimeInterval minShowTime;  // HUD 最小的展示时间  </span><br><span class="line"></span><br><span class="line">@property (nonatomic, weak) NSTimer *graceTimer;        // 延迟显示的 timer</span><br><span class="line">@property (nonatomic, weak) NSTimer *minShowTimer;      // 保证 HUD 最短显示维持时间 的timer</span><br><span class="line">@property (nonatomic, weak) NSTimer *hideDelayTimer;    // 延迟隐藏的 timer</span><br></pre></td></tr></table></figure>
 
@@ -159,7 +159,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">- (void)animateIn:(BOOL)animatingIn withType:(MBProgressHUDAnimation)type completion:(void(^)(BOOL finished))completion &#123;</span><br><span class="line">    </span><br><span class="line">    // 确定缩放动画的类型</span><br><span class="line">    if (type == MBProgressHUDAnimationZoom) &#123;</span><br><span class="line">        type = animatingIn ? MBProgressHUDAnimationZoomIn : MBProgressHUDAnimationZoomOut;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    CGAffineTransform small = CGAffineTransformMakeScale(0.5f, 0.5f); // x、y 方向的缩放倍数均为 0.5</span><br><span class="line">    CGAffineTransform large = CGAffineTransformMakeScale(1.5f, 1.5f); // x、y 方向的缩放倍数均为 1.5</span><br><span class="line">    </span><br><span class="line">    UIView *bezelView = self.bezelView;</span><br><span class="line">    </span><br><span class="line">// * 设置初始状态的值（show 的 过渡动画 的初值，hide 的初值就不用设置了）</span><br><span class="line">    if (animatingIn &amp;&amp; bezelView.alpha == 0.f &amp;&amp; type == MBProgressHUDAnimationZoomIn) &#123;</span><br><span class="line">        bezelView.transform = small;</span><br><span class="line">    &#125; else if (animatingIn &amp;&amp; bezelView.alpha == 0.f &amp;&amp; type == MBProgressHUDAnimationZoomOut) &#123;</span><br><span class="line">        bezelView.transform = large;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 执行动画的 block，作为后边方法的参数</span><br><span class="line">    dispatch_block_t animations = ^&#123;</span><br><span class="line">        </span><br><span class="line">// * show 的过渡动画 的 终值</span><br><span class="line">        if (animatingIn) &#123;</span><br><span class="line">            bezelView.transform = CGAffineTransformIdentity;</span><br><span class="line">            </span><br><span class="line">// * 下边 2 个 if 均为 hide 的过渡动画 的 终值</span><br><span class="line">        &#125; else if (!animatingIn &amp;&amp; type == MBProgressHUDAnimationZoomIn) &#123;</span><br><span class="line">            bezelView.transform = large;</span><br><span class="line">        &#125; else if (!animatingIn &amp;&amp; type == MBProgressHUDAnimationZoomOut) &#123;</span><br><span class="line">            bezelView.transform = small;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">#pragma clang diagnostic push</span><br><span class="line">#pragma clang diagnostic ignored &quot;-Wdeprecated-declarations&quot;</span><br><span class="line">        bezelView.alpha = animatingIn ? self.opacity : 0.f;</span><br><span class="line">#pragma clang diagnostic pop</span><br><span class="line">        self.backgroundView.alpha = animatingIn ? 1.f : 0.f;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    // 此方法 iOS 7.0 之后才支持</span><br><span class="line">#if __IPHONE_OS_VERSION_MAX_ALLOWED &gt;= 70000 || TARGET_OS_TV</span><br><span class="line">    if (kCFCoreFoundationVersionNumber &gt;= kCFCoreFoundationVersionNumber_iOS_7_0) &#123;</span><br><span class="line">        [UIView animateWithDuration:0.3</span><br><span class="line">                              delay:0.</span><br><span class="line">             usingSpringWithDamping:1.f</span><br><span class="line">              initialSpringVelocity:0.f</span><br><span class="line">                            options:UIViewAnimationOptionBeginFromCurrentState</span><br><span class="line">                         animations:animations</span><br><span class="line">                         completion:completion];</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">#endif</span><br><span class="line">    </span><br><span class="line">    // iOS 4.0 就开始支持</span><br><span class="line">    [UIView animateWithDuration:0.3</span><br><span class="line">                          delay:0.</span><br><span class="line">                        options:UIViewAnimationOptionBeginFromCurrentState</span><br><span class="line">                     animations:animations</span><br><span class="line">                     completion:completion];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>隐藏的逻辑与此类似，可自行参看代码，这里简单绘制了一张方法调用流程图作为小结，如下所示：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2208988-918632801ae88997.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="show-hide.png"></p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9ce63b883fbd4aa99a264ce02f5fdd71~tplv-k3u1fbpfcp-watermark.image" alt="mbprogress_showorhide.png"></p>
 
       
     </div>
