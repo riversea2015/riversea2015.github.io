@@ -11,14 +11,14 @@
 <meta property="og:url" content="https://devhe.com/2019/03/17/AFNetWorking-Source-Learning-05/index.html">
 <meta property="og:site_name" content="riversea2015">
 <meta property="og:locale">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-840cbc8066feaf52.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2208988-dbe316a603bc81f2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8a08da576d4e4d5ba2f93c517160fc85~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a1325d59f9a74f1380156a1d285ffd17~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/eeca473e52784eb1bb6ef202436b4715~tplv-k3u1fbpfcp-watermark.image">
 <meta property="article:published_time" content="2019-03-16T17:20:40.000Z">
-<meta property="article:modified_time" content="2022-08-27T15:43:16.464Z">
+<meta property="article:modified_time" content="2022-08-28T05:57:16.739Z">
 <meta property="article:author" content="He Hai">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8a08da576d4e4d5ba2f93c517160fc85~tplv-k3u1fbpfcp-watermark.image">
   
     <link rel="alternate" href="/atom.xml" title="riversea2015" type="application/atom+xml">
   
@@ -69,10 +69,10 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://devhe.com"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://devhe.com"></form>
       </div>
     </div>
   </div>
@@ -101,12 +101,12 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p><img src="https://upload-images.jianshu.io/upload_images/2208988-6bf242f27828bbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="AFNetWorking 源码学习笔记.png"></p>
+        <p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8a08da576d4e4d5ba2f93c517160fc85~tplv-k3u1fbpfcp-watermark.image" alt="AFNetWorking_cover.png"></p>
 <span id="more"></span>
 
 <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>本文是 AFNetWorking 源码学习笔记的第五篇，本篇将介绍第四部分 – Reachability 目录下的类，也就是 AFNetworkReachabilityManager。</p>
 <p>虽然之前经历的几个项目里边都是对苹果提供的 <a target="_blank" rel="noopener" href="https://developer.apple.com/library/ios/samplecode/reachability/">Reachability</a> 进行了一次封装，不过，还是有必要学习一下 AFNetWorking 中监听网络状态的类 AFNetworkReachabilityManager，也就是本文的重点。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2208988-840cbc8066feaf52.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="AFNetWorking-Reachability.png"></p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a1325d59f9a74f1380156a1d285ffd17~tplv-k3u1fbpfcp-watermark.image" alt="Reachability.png"></p>
 <h3 id="二、使用示例"><a href="#二、使用示例" class="headerlink" title="二、使用示例"></a>二、使用示例</h3><p>先来看一个使用示例：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager sharedManager];</span><br><span class="line"></span><br><span class="line">[manager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) &#123;</span><br><span class="line">    </span><br><span class="line">    switch (status) &#123;</span><br><span class="line">        case AFNetworkReachabilityStatusUnknown:</span><br><span class="line">            NSLog(@&quot;网络状态未知&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case AFNetworkReachabilityStatusNotReachable:</span><br><span class="line">            NSLog(@&quot;无网络&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case AFNetworkReachabilityStatusReachableViaWWAN:</span><br><span class="line">            NSLog(@&quot;手机自带网络&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case AFNetworkReachabilityStatusReachableViaWiFi:</span><br><span class="line">            NSLog(@&quot;WiFi&quot;);</span><br><span class="line">            break;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">[manager startMonitoring];</span><br></pre></td></tr></table></figure>
 
@@ -134,7 +134,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 开启监听</span><br><span class="line">- (void)startMonitoring; </span><br><span class="line">// 关闭监听</span><br><span class="line">- (void)stopMonitoring;   </span><br><span class="line"></span><br><span class="line">// 返回一个描述网络状态的本地化字符串，即将不同的网络状态转变成对应的文字描述后输出</span><br><span class="line">- (NSString *)localizedNetworkReachabilityStatusString;</span><br><span class="line">// 设置网络状态发生变化时的回调，用户自定义，实际会将这个 block 赋值给内部的一个 block 属性，当状态发生改变时执行这个 block。</span><br><span class="line">- (void)setReachabilityStatusChangeBlock:(nullable void (^)(AFNetworkReachabilityStatus status))block;</span><br></pre></td></tr></table></figure>
 
 <p>接下来，我们重点研究一下 <code>- (void)startMonitoring;</code> 这个方法，先贴上图和代码，然后我们按照图示顺序依次讨论各个环节。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2208988-dbe316a603bc81f2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="AFNetWorking-Reachability.png"></p>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/eeca473e52784eb1bb6ef202436b4715~tplv-k3u1fbpfcp-watermark.image" alt="AFNetWorking-Reachability.jpg"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">- (void)startMonitoring &#123;</span><br><span class="line">    </span><br><span class="line">    // 1.停止已经存在的监听</span><br><span class="line">    [self stopMonitoring];</span><br><span class="line"></span><br><span class="line">    if (!self.networkReachability) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 2.构建 block：AFNetworkReachabilityStatusBlock callback</span><br><span class="line">    __weak __typeof(self)weakSelf = self;</span><br><span class="line">    AFNetworkReachabilityStatusBlock callback = ^(AFNetworkReachabilityStatus status) &#123;</span><br><span class="line">        __strong __typeof(weakSelf)strongSelf = weakSelf;</span><br><span class="line"></span><br><span class="line">        strongSelf.networkReachabilityStatus = status;</span><br><span class="line">        if (strongSelf.networkReachabilityStatusBlock) &#123;</span><br><span class="line">            strongSelf.networkReachabilityStatusBlock(status);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    // 3.构建结构体 SCNetworkReachabilityContext context</span><br><span class="line">    SCNetworkReachabilityContext context = &#123;</span><br><span class="line">        0,</span><br><span class="line">        (__bridge void *)callback,</span><br><span class="line">        AFNetworkReachabilityRetainCallback,</span><br><span class="line">        AFNetworkReachabilityReleaseCallback,</span><br><span class="line">        NULL</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    // 4.设置回调</span><br><span class="line">    // AFNetworkReachabilityCallback =&gt; 监听到网络状态变化时需要执行的 block</span><br><span class="line">    SCNetworkReachabilitySetCallback(self.networkReachability, AFNetworkReachabilityCallback, &amp;context);</span><br><span class="line">    </span><br><span class="line">    // 5.启动：将监听任务添加到 mainRunloop 的 CommonModes 里边</span><br><span class="line">    SCNetworkReachabilityScheduleWithRunLoop(self.networkReachability, CFRunLoopGetMain(), kCFRunLoopCommonModes);</span><br><span class="line"></span><br><span class="line">    // 测试</span><br><span class="line">    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),^&#123;</span><br><span class="line">        SCNetworkReachabilityFlags flags;</span><br><span class="line">        // 这个函数用来获得测试连接的状态，第一个参数为之前建立的测试连接的引用，第二个参数用来保存获得的状态，如果能获得状态则返回TRUE，否则返回FALSE</span><br><span class="line">        if (SCNetworkReachabilityGetFlags(self.networkReachability, &amp;flags)) &#123;</span><br><span class="line">            AFPostReachabilityStatusChange(flags, callback);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>1.结束之前已经存在的网络状态监听 <code>[self stopMonitoring];</code>。</p>
@@ -166,7 +166,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://devhe.com/2019/03/17/AFNetWorking-Source-Learning-05/" data-id="cl7c2jec00004lzfy2kk8e9ij" data-title="AFNetWorking 源码学习笔记 ☞ Reachability" class="article-share-link">Share</a>
+      <a data-url="https://devhe.com/2019/03/17/AFNetWorking-Source-Learning-05/" data-id="cl7c2jec00004lzfy2kk8e9ij" data-title="AFNetWorking 源码学习笔记 ☞ Reachability" class="article-share-link">Teilen</a>
       
       
       
@@ -177,7 +177,7 @@
 <nav id="article-nav">
   
     <a href="/2019/04/10/MLeaksFinder-Source-Learning/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
+      <strong class="article-nav-caption">Neuer</strong>
       <div class="article-nav-title">
         
           MLeaksFinder 源码学习笔记
@@ -187,7 +187,7 @@
   
   
     <a href="/2019/03/10/AFNetWorking-Source-Learning-04/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
+      <strong class="article-nav-caption">Älter</strong>
       <div class="article-nav-title">AFNetWorking 源码学习笔记 ☞ Serialization</div>
     </a>
   
@@ -211,7 +211,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
+    <h3 class="widget-title">Archiv</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
@@ -221,7 +221,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">letzter Beitrag</h3>
     <div class="widget">
       <ul>
         
