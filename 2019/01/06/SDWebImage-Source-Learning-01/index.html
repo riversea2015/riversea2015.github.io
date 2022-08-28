@@ -16,7 +16,7 @@
 <meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c0f20aa7354448c7a42a77ecef9df553~tplv-k3u1fbpfcp-watermark.image">
 <meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/13496b287a0244e3b61e608590f95961~tplv-k3u1fbpfcp-watermark.image">
 <meta property="article:published_time" content="2019-01-06T04:19:15.000Z">
-<meta property="article:modified_time" content="2022-08-28T07:28:05.819Z">
+<meta property="article:modified_time" content="2022-08-28T07:51:37.921Z">
 <meta property="article:author" content="He Hai">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c0f20aa7354448c7a42a77ecef9df553~tplv-k3u1fbpfcp-watermark.image">
@@ -70,10 +70,10 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://devhe.com"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://devhe.com"></form>
       </div>
     </div>
   </div>
@@ -108,11 +108,11 @@
 
 <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>前段时间对项目中使用的 <a target="_blank" rel="noopener" href="https://github.com/SDWebImage/SDWebImage">SDWebImage</a> 进行了一次升级 (3.7.6 → 4.4.2)，升级过程中遇到了一些问题，于是又把源码读了一遍，为了记录读码过程，就有了这个系列：</p>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c3ec50e1942f">SDWebImage 源码学习笔记·前传 ☞ 升级</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/99c9564043d2">SDWebImage源码学习笔记 ☞ 结构及基本流程</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/221b335cc760">SDWebImage源码学习笔记 ☞ SDWebImageManager</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/06071cba3404">SDWebImage源码学习笔记 ☞ SDWebImageDownloader</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/e3f4a7f57899">SDWebImage源码学习笔记 ☞ SDImageCache</a></li>
+<li><a href="https://devhe.com/2019/01/06/SDWebImage-Source-Learning-01/">SDWebImage 源码学习笔记·前传 ☞ 升级</a></li>
+<li><a href="https://devhe.com/2019/01/12/SDWebImage-Source-Learning-02/">SDWebImage源码学习笔记 ☞ 结构及基本流程</a></li>
+<li><a href="https://devhe.com/2019/01/20/SDWebImage-Source-Learning-03/">SDWebImage源码学习笔记 ☞ SDWebImageManager</a></li>
+<li><a href="https://devhe.com/2019/01/26/SDWebImage-Source-Learning-04/">SDWebImage源码学习笔记 ☞ SDWebImageDownloader</a></li>
+<li><a href="https://devhe.com/2019/02/03/SDWebImage-Source-Learning-05/">SDWebImage源码学习笔记 ☞ SDImageCache</a></li>
 </ul>
 <p>本篇是第 1 篇，主要记述了升级过程中的遇到的问题及处理方案。</p>
 <h3 id="二、升级"><a href="#二、升级" class="headerlink" title="二、升级"></a>二、升级</h3><p>现在转回到本篇的主要内容，首先当然是升级了，不过最新版的 SDWebImage 里边分了几个子 pod ，默认下载不全。为了满足我们的日常使用要求，还需要加上 WebP 和 GIF 这两个子 pod：</p>
@@ -165,7 +165,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://devhe.com/2019/01/06/SDWebImage-Source-Learning-01/" data-id="cl7c27fgw0001jlfyesys8w9o" data-title="SDWebImage 源码学习笔记·前传 ☞ 升级" class="article-share-link">Teilen</a>
+      <a data-url="https://devhe.com/2019/01/06/SDWebImage-Source-Learning-01/" data-id="cl7c27fgw0001jlfyesys8w9o" data-title="SDWebImage 源码学习笔记·前传 ☞ 升级" class="article-share-link">Share</a>
       
       
       
@@ -176,7 +176,7 @@
 <nav id="article-nav">
   
     <a href="/2019/01/12/SDWebImage-Source-Learning-02/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Neuer</strong>
+      <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
           SDWebImage 源码学习笔记 ☞ 结构及基本流程
@@ -186,7 +186,7 @@
   
   
     <a href="/2018/12/30/MJRefresh-Source-Learning-Notes/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Älter</strong>
+      <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">MJRefresh 源码学习笔记</div>
     </a>
   
@@ -210,7 +210,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
@@ -220,7 +220,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
