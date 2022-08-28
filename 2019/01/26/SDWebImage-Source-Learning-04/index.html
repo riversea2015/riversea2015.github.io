@@ -13,7 +13,7 @@
 <meta property="og:locale">
 <meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c0f20aa7354448c7a42a77ecef9df553~tplv-k3u1fbpfcp-watermark.image">
 <meta property="article:published_time" content="2019-01-26T12:01:44.000Z">
-<meta property="article:modified_time" content="2022-08-28T07:25:03.542Z">
+<meta property="article:modified_time" content="2022-08-28T07:29:04.096Z">
 <meta property="article:author" content="He Hai">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c0f20aa7354448c7a42a77ecef9df553~tplv-k3u1fbpfcp-watermark.image">
@@ -65,12 +65,12 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Buscar"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Buscar"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://devhe.com"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://devhe.com"></form>
       </div>
     </div>
   </div>
@@ -166,12 +166,12 @@
 <p>最后看一下取消操作，即协议方法 <code>- (BOOL)cancel:(nullable id)token;</code> 的实现，将取消过程中用到的所有方法都展开就是下边这样：</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="type">BOOL</span>)cancel:(<span class="keyword">nullable</span> <span class="type">id</span>)token &#123;</span><br><span class="line">    <span class="type">BOOL</span> shouldCancel = <span class="literal">NO</span>;</span><br><span class="line">    </span><br><span class="line">    LOCK(<span class="keyword">self</span>.callbacksLock);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 移除 token，即移除一个存储着 completionBlock 和 progressBlock 的字典</span></span><br><span class="line">    [<span class="keyword">self</span>.callbackBlocks removeObjectIdenticalTo:token];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 如果已经没有回调，就去执行整体的 cancel 操作</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.callbackBlocks.count == <span class="number">0</span>) &#123;</span><br><span class="line">        shouldCancel = <span class="literal">YES</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    UNLOCK(<span class="keyword">self</span>.callbacksLock);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (shouldCancel) &#123;</span><br><span class="line">        <span class="comment">// *** 点开 ☟</span></span><br><span class="line">        [<span class="keyword">self</span> cancel];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> shouldCancel;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="type">void</span>)cancel &#123;</span><br><span class="line">    <span class="keyword">@synchronized</span> (<span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="comment">// *** 点开 ☟</span></span><br><span class="line">        [<span class="keyword">self</span> cancelInternal];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="type">void</span>)cancelInternal &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.isFinished) <span class="keyword">return</span>;</span><br><span class="line">    [<span class="variable language_">super</span> cancel];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.dataTask) &#123;</span><br><span class="line">        <span class="comment">// 取消下载任务，并发出停止的通知</span></span><br><span class="line">        [<span class="keyword">self</span>.dataTask cancel];</span><br><span class="line">        __<span class="keyword">weak</span> <span class="keyword">typeof</span>(<span class="keyword">self</span>) weakSelf = <span class="keyword">self</span>;</span><br><span class="line">        <span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">            [[<span class="built_in">NSNotificationCenter</span> defaultCenter] postNotificationName:SDWebImageDownloadStopNotification object:weakSelf];</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// As we cancelled the task, its callback won&#x27;t be called and thus won&#x27;t</span></span><br><span class="line">        <span class="comment">// maintain the isFinished and isExecuting flags.</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">self</span>.isExecuting) <span class="keyword">self</span>.executing = <span class="literal">NO</span>;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">self</span>.isFinished) <span class="keyword">self</span>.finished = <span class="literal">YES</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// *** 点开 ☟</span></span><br><span class="line">    [<span class="keyword">self</span> reset];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 重置变量</span></span><br><span class="line">- (<span class="type">void</span>)reset &#123;</span><br><span class="line">    LOCK(<span class="keyword">self</span>.callbacksLock);</span><br><span class="line">    [<span class="keyword">self</span>.callbackBlocks removeAllObjects];</span><br><span class="line">    UNLOCK(<span class="keyword">self</span>.callbacksLock);</span><br><span class="line">    <span class="keyword">self</span>.dataTask = <span class="literal">nil</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.ownedSession) &#123;</span><br><span class="line">        [<span class="keyword">self</span>.ownedSession invalidateAndCancel];</span><br><span class="line">        <span class="keyword">self</span>.ownedSession = <span class="literal">nil</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>SDWebImageDownloader 的内容就先介绍到这类，其他细节见 <a target="_blank" rel="noopener" href="https://github.com/riversea2015/CodeForBlogs/tree/master/HHSDWebImageStudy">HHSDWebImageStudy</a> 中的源码注释。</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>SDWebImageDownloader 的内容就先介绍到这类，其他细节见 <a target="_blank" rel="noopener" href="https://github.com/riversea2015/TechBlogs/tree/master/Codes/HHSDWebImageStudy">HHSDWebImageStudy</a> 中的源码注释。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://devhe.com/2019/01/26/SDWebImage-Source-Learning-04/" data-id="cl7c27fgx0002jlfy9ochh1nh" data-title="SDWebImage 源码学习笔记 ☞ SDWebImageDownloader" class="article-share-link">Compartir</a>
+      <a data-url="https://devhe.com/2019/01/26/SDWebImage-Source-Learning-04/" data-id="cl7c27fgx0002jlfy9ochh1nh" data-title="SDWebImage 源码学习笔记 ☞ SDWebImageDownloader" class="article-share-link">Teilen</a>
       
       
       
@@ -182,7 +182,7 @@
 <nav id="article-nav">
   
     <a href="/2019/02/03/SDWebImage-Source-Learning-05/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Nuevo</strong>
+      <strong class="article-nav-caption">Neuer</strong>
       <div class="article-nav-title">
         
           SDWebImage 源码学习笔记 ☞ SDImageCache
@@ -192,7 +192,7 @@
   
   
     <a href="/2019/01/20/SDWebImage-Source-Learning-03/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Viejo</strong>
+      <strong class="article-nav-caption">Älter</strong>
       <div class="article-nav-title">SDWebImage 源码学习笔记 ☞ SDWebImageManager</div>
     </a>
   
@@ -216,7 +216,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archivos</h3>
+    <h3 class="widget-title">Archiv</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
@@ -226,7 +226,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Posts recientes</h3>
+    <h3 class="widget-title">letzter Beitrag</h3>
     <div class="widget">
       <ul>
         
@@ -264,7 +264,7 @@
     <div id="footer-info" class="inner">
       
       &copy; 2022 He Hai<br>
-      Construido por <a href="https://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
