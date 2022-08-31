@@ -4,17 +4,22 @@
   <meta charset="utf-8">
   
   
-  <title>Archivos: 2018 | riversea2015</title>
+  <title>解决 Charles 在 Xcode 模拟器中无法抓包问题 | riversea2015</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="iOSer">
-<meta property="og:type" content="website">
-<meta property="og:title" content="riversea2015">
-<meta property="og:url" content="https://devhe.com/archives/2018/index.html">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="解决 Charles 在 Xcode 模拟器中无法抓包问题">
+<meta property="og:url" content="https://devhe.com/2022/08/31/Charles-Cannot-be-caught-on-Xcode-simulator/index.html">
 <meta property="og:site_name" content="riversea2015">
-<meta property="og:description" content="iOSer">
 <meta property="og:locale">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fccefc0a803645fea6389a2456ac9c0d~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3528201e1f8546c6a22faeed14a8414c~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/83dfa31aab7e46b2a6a6929ae7d1143d~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ac9747ab7bd04b24813d7ce5260845dd~tplv-k3u1fbpfcp-watermark.image">
+<meta property="article:published_time" content="2022-08-31T13:24:55.000Z">
+<meta property="article:modified_time" content="2022-08-31T14:35:08.493Z">
 <meta property="article:author" content="He Hai">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fccefc0a803645fea6389a2456ac9c0d~tplv-k3u1fbpfcp-watermark.image">
   
     <link rel="alternate" href="/atom.xml" title="riversea2015" type="application/atom+xml">
   
@@ -75,77 +80,63 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/12/30/MJRefresh-Source-Learning-Notes/" class="archive-article-date">
-  <time class="dt-published" datetime="2018-12-30T06:23:22.000Z" itemprop="datePublished">Dec 30</time>
+        <section id="main"><article id="post-Charles-Cannot-be-caught-on-Xcode-simulator" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/08/31/Charles-Cannot-be-caught-on-Xcode-simulator/" class="article-date">
+  <time class="dt-published" datetime="2022-08-31T13:24:55.000Z" itemprop="datePublished">2022-08-31</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/12/30/MJRefresh-Source-Learning-Notes/">MJRefresh 源码学习笔记</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      解决 Charles 在 Xcode 模拟器中无法抓包问题
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/12/23/MBProgressHUD-Source-Learning-Notes/" class="archive-article-date">
-  <time class="dt-published" datetime="2018-12-23T09:07:23.000Z" itemprop="datePublished">Dec 23</time>
-</a>
+    <div class="e-content article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/12/23/MBProgressHUD-Source-Learning-Notes/">MBProgressHUD 源码阅读笔记</a>
-    </h1>
-  
+        <p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fccefc0a803645fea6389a2456ac9c0d~tplv-k3u1fbpfcp-watermark.image" alt="charles_cover.png"></p>
+<span id="more"></span>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/12/15/hello-world/" class="archive-article-date">
-  <time class="dt-published" datetime="2018-12-15T09:07:23.000Z" itemprop="datePublished">Dec 15</time>
-</a>
+<p>最近刚换了工作，又换了一台 M1 的电脑，装了 Charles 之后，在 Xcode 模拟器上居然无法抓包，一度怀疑是自家 App 做了什么加密操作，或是 M1 芯片有什么诡异的 Bug，在尝试了能够搜索到的左右解决方案无过后，突发奇想，就发现了现在的解决方案。</p>
+<p>通常我们安装完Charles之后，会在Mac上安装它的根证书，在模拟器上也要安葬证书，但是有时，通过Charles内置的方法无法给模拟器装上证书，就需要在模拟器上执行类似真机上抓包需要的操作。</p>
+<h2 id="下载证书"><a href="#下载证书" class="headerlink" title="下载证书"></a>下载证书</h2><p>浏览器地址栏输入：chls.pro&#x2F;ssl，根据提示下载证书</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3528201e1f8546c6a22faeed14a8414c~tplv-k3u1fbpfcp-watermark.image" alt="图片2.png"></p>
+<h2 id="安装证书"><a href="#安装证书" class="headerlink" title="安装证书"></a>安装证书</h2><p>设置 -&gt; 通用 -&gt; 设备管理 -&gt; 安装 Charles 证书</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/83dfa31aab7e46b2a6a6929ae7d1143d~tplv-k3u1fbpfcp-watermark.image" alt="图片3.png"></p>
+<h2 id="启用证书"><a href="#启用证书" class="headerlink" title="启用证书"></a>启用证书</h2><p>设置 -&gt; 通用 - 关于本机 -&gt; 证书信任设置 - 启用 Charles 证书</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ac9747ab7bd04b24813d7ce5260845dd~tplv-k3u1fbpfcp-watermark.image" alt="图片4.png"></p>
+
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/12/15/hello-world/">Hello World</a>
-    </h1>
-  
-
-    </header>
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://devhe.com/2022/08/31/Charles-Cannot-be-caught-on-Xcode-simulator/" data-id="cl7hpzxfc00000bfy07gl22qb" data-title="解决 Charles 在 Xcode 模拟器中无法抓包问题" class="article-share-link">Compartir</a>
+      
+      
+      
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/08/24/ijkplayer-Compilation-and-Packaging/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Viejo</strong>
+      <div class="article-nav-title">ijkplayer 编译-打包-Pod支持</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
 
 
 </section>
