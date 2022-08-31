@@ -16,7 +16,7 @@
 <meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/83dfa31aab7e46b2a6a6929ae7d1143d~tplv-k3u1fbpfcp-watermark.image">
 <meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ac9747ab7bd04b24813d7ce5260845dd~tplv-k3u1fbpfcp-watermark.image">
 <meta property="article:published_time" content="2022-08-31T13:24:55.000Z">
-<meta property="article:modified_time" content="2022-08-31T14:35:08.493Z">
+<meta property="article:modified_time" content="2022-08-31T14:43:51.385Z">
 <meta property="article:author" content="He Hai">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fccefc0a803645fea6389a2456ac9c0d~tplv-k3u1fbpfcp-watermark.image">
@@ -68,12 +68,12 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Buscar"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Buscar"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://devhe.com"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://devhe.com"></form>
       </div>
     </div>
   </div>
@@ -105,19 +105,20 @@
         <p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fccefc0a803645fea6389a2456ac9c0d~tplv-k3u1fbpfcp-watermark.image" alt="charles_cover.png"></p>
 <span id="more"></span>
 
-<p>最近刚换了工作，又换了一台 M1 的电脑，装了 Charles 之后，在 Xcode 模拟器上居然无法抓包，一度怀疑是自家 App 做了什么加密操作，或是 M1 芯片有什么诡异的 Bug，在尝试了能够搜索到的左右解决方案无过后，突发奇想，就发现了现在的解决方案。</p>
-<p>通常我们安装完Charles之后，会在Mac上安装它的根证书，在模拟器上也要安葬证书，但是有时，通过Charles内置的方法无法给模拟器装上证书，就需要在模拟器上执行类似真机上抓包需要的操作。</p>
-<h2 id="下载证书"><a href="#下载证书" class="headerlink" title="下载证书"></a>下载证书</h2><p>浏览器地址栏输入：chls.pro&#x2F;ssl，根据提示下载证书</p>
+<p>最近刚换了工作，又换了一台 M1 的电脑，装了 <code>Charles</code> 之后，在 Xcode 模拟器上居然无法抓包，一度怀疑是自家 App 做了什么加密操作，或是 M1 芯片有什么诡异的 Bug，在尝试了能够搜索到的所有解决方案无果后，突发奇想，就发现了本文的方法。</p>
+<p>通常我们安装完 <code>Charles</code> 之后，会在 Mac 上安装它的根证书，在模拟器上也要安装证书，但有时，通过 <code>Charles</code> 内置的方法无法给模拟器装上证书，就需要在模拟器上执行类似真机上抓包需要的操作。</p>
+<h2 id="一、下载证书"><a href="#一、下载证书" class="headerlink" title="一、下载证书"></a>一、下载证书</h2><p>浏览器地址栏输入：chls.pro&#x2F;ssl，根据提示下载证书</p>
 <p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3528201e1f8546c6a22faeed14a8414c~tplv-k3u1fbpfcp-watermark.image" alt="图片2.png"></p>
-<h2 id="安装证书"><a href="#安装证书" class="headerlink" title="安装证书"></a>安装证书</h2><p>设置 -&gt; 通用 -&gt; 设备管理 -&gt; 安装 Charles 证书</p>
+<h2 id="二、安装证书"><a href="#二、安装证书" class="headerlink" title="二、安装证书"></a>二、安装证书</h2><p>设置 -&gt; 通用 -&gt; 设备管理 -&gt; 安装 Charles 证书</p>
 <p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/83dfa31aab7e46b2a6a6929ae7d1143d~tplv-k3u1fbpfcp-watermark.image" alt="图片3.png"></p>
-<h2 id="启用证书"><a href="#启用证书" class="headerlink" title="启用证书"></a>启用证书</h2><p>设置 -&gt; 通用 - 关于本机 -&gt; 证书信任设置 - 启用 Charles 证书</p>
+<h2 id="三、启用证书"><a href="#三、启用证书" class="headerlink" title="三、启用证书"></a>三、启用证书</h2><p>设置 -&gt; 通用 - 关于本机 -&gt; 证书信任设置 - 启用 Charles 证书</p>
 <p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ac9747ab7bd04b24813d7ce5260845dd~tplv-k3u1fbpfcp-watermark.image" alt="图片4.png"></p>
+<p>执行完以上操作就可以抓模拟器上的包了，如果不行，重启一下模拟器^_^</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://devhe.com/2022/08/31/Charles-Cannot-be-caught-on-Xcode-simulator/" data-id="cl7hpzxfc00000bfy07gl22qb" data-title="解决 Charles 在 Xcode 模拟器中无法抓包问题" class="article-share-link">Compartir</a>
+      <a data-url="https://devhe.com/2022/08/31/Charles-Cannot-be-caught-on-Xcode-simulator/" data-id="cl7hpzxfc00000bfy07gl22qb" data-title="解决 Charles 在 Xcode 模拟器中无法抓包问题" class="article-share-link">Teilen</a>
       
       
       
@@ -129,7 +130,7 @@
   
   
     <a href="/2022/08/24/ijkplayer-Compilation-and-Packaging/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Viejo</strong>
+      <strong class="article-nav-caption">Älter</strong>
       <div class="article-nav-title">ijkplayer 编译-打包-Pod支持</div>
     </a>
   
@@ -153,7 +154,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archivos</h3>
+    <h3 class="widget-title">Archiv</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
@@ -163,7 +164,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Posts recientes</h3>
+    <h3 class="widget-title">letzter Beitrag</h3>
     <div class="widget">
       <ul>
         
@@ -201,7 +202,7 @@
     <div id="footer-info" class="inner">
       
       &copy; 2022 He Hai<br>
-      Construido por <a href="https://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
